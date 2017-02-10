@@ -50,7 +50,7 @@ class AppRoot extends Component {
       <View style={GlobalStyles.container}>
         <Banner language={language} setLanguage={this.setAppLanguage}/>
         <Navigation/>
-        <DefinitionList/>
+        <DefinitionList currentLanguage={this.props.language} definitions={definitions}/>
       </View>
     );
   }

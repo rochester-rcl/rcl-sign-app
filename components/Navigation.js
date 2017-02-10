@@ -29,6 +29,7 @@ export default class Navigation extends Component {
     super(props);
     (this: any).handleValueChange = this.handleValueChange.bind(this);
     (this: any).handleModalToggle = this.handleModalToggle.bind(this);
+    (this: any).letterRange = ['a-g', 'h-m', 'n-r', 's-z'];
   }
 
   handleValueChange(selectedLetter: string) {
@@ -49,6 +50,7 @@ export default class Navigation extends Component {
 
     return(
       <View style={NavigationStyles.navContainer}>
+      <View style={NavigationStyles.toolContainer}>
         <Modal
           animationType={"fade"}
           transparent={false}
@@ -75,6 +77,14 @@ export default class Navigation extends Component {
           style={NavigationStyles.searchBar}
           placeholder="Search ..."
         />
+      </View>
+      <View style={NavigationStyles.letterRange}>
+        {this.letterRange.map((range, index) =>
+          <TouchableOpacity key={index} style={ButtonStyles.letterRangeButton}>
+            <Text style={ButtonStyles.buttonText}>{range}</Text>
+          </TouchableOpacity>
+        )}
+      </View>
       </View>
     );
   }

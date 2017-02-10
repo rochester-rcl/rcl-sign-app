@@ -65,23 +65,32 @@ export const PickerStyles: Object = StyleSheet.create({
 });
 
 export const NavigationStyles: Object = StyleSheet.create({
-  navContainer: {
-    backgroundColor: "#3b3738",
+  toolContainer: {
     height: 30,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    flex: 0.0675,
+    flex: 0.6,
+  },
+  navContainer: {
+    flex: 0.140,
+    alignSelf: 'stretch',
+    backgroundColor: '#3b3738',
   },
   searchBar: {
     backgroundColor: '#fff',
     borderColor: '#5ec44e',
-    borderRadius: 2,
+    borderRadius: 1,
     borderWidth: 3,
     textAlign: 'center',
     flex: 1,
     margin: 10,
     fontSize: 10,
+  },
+  letterRange: {
+    flex: 0.4,
+    flexDirection: 'row',
+    alignItems: 'center',
   }
 });
 
@@ -96,6 +105,11 @@ export const ButtonStyles: Object = StyleSheet.create({
     borderColor: "#3b3738",
     padding: 2,
   },
+  letterRangeButton: {
+    backgroundColor: '#5ec44e',
+    margin: 5,
+    flex: 1,
+  },
   buttonText: {
     color: '#fff',
     textAlign: 'center',
@@ -108,8 +122,19 @@ export const DefinitionListStyles: Object = StyleSheet.create({
     margin: 20,
     alignSelf: 'stretch',
     flex: 0.75,
-    backgroundColor: "#000",
+    backgroundColor: "#fff",
+    borderWidth: 10,
+    borderColor: "#3b3738",
   }
-})
+});
+
+export const DefinitionDisplayStyles: Object = StyleSheet.create({
+  definition: {
+    color: "#000",
+    padding: 5,
+    borderColor: "#ccc",
+    borderWidth: 1,
+  }
+});
 
 export default GlobalStyles;

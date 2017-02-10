@@ -4,17 +4,49 @@
 import React, { Component } from 'react';
 
 // React Native
-import { Text, View, ListView } from 'react-native';
+import { Text,
+         View,
+         ListView,
+         ActivityIndicator } from 'react-native';
 
 // Styles
 import { DefinitionListStyles } from '../styles/Styles';
 
+// Components
+import DefinitionDisplay from './DefinitionDisplay';
+
 export default class DefinitionList extends Component {
+  constructor(props: Object) {
+    super(props);
+    this.definitionData = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
+  }
   render() {
+    const { definitions, currentLanguage } = this.props;
+    if (definitions.length > 0) {
     return(
       <View style={DefinitionListStyles.definitionListContainer}>
-        <Text style={{color: '#fff'}}>List content goes here with a ListView</Text>
+        <ListView
+          dataSource={this.definitionData.cloneWithRows(definitions)}
+          renderRow={(data) =>
+            <DefinitionDisplay
+              engDefinition={data.eng_definition}
+              frDefinition={data.fr_definition}
+              currentLanguage={this.props.currentLanguage}
+            />
+          }
+        />
       </View>
     );
+    } else {
+      return(
+        <View style={DefinitionListStyles.definitionListContainer}>
+          <ActivityIndicator
+            animating={true}
+            style={{top: 100}}
+            size="large"
+          />
+        </View>
+      );
+    }
   }
 }
