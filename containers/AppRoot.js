@@ -26,6 +26,8 @@ class AppRoot extends Component {
     super(props);
     // Bind all methods to 'this' context here
     (this: any).setAppLanguage = this.setAppLanguage.bind(this);
+    (this: any).loadDefinitions = this.loadDefinitions.bind(this);
+    (this: any).flushDefinitionsCache = this.flushDefinitionsCache.bind(this);
   }
 
   componentWillMount() {
@@ -38,19 +40,49 @@ class AppRoot extends Component {
     this.props.loadDefinitionsAction(definitionQuery);
   }
 
+  loadDefinitions(definitionQuery: Object) {
+    let { range } = definitionQuery;
+    let { definitionsCache } = this.props;
+    if (this.props.definitionsCache.hasOwnProperty(range)) {
+      this.props.loadDefinitionsFromCacheAction(definitionsCache[range]);
+    } else {
+      this.props.loadDefinitionsAction(definitionQuery);
+    }
+  }
+
+  flushDefinitionsCache(): typeof Promise {
+    return new Promise((resolve, reject) => {
+      this.props.flushDefinitionsCacheAction(Object.values(this.props.definitionsCache));
+      resolve();
+    });
+  }
+
   setAppLanguage(language) {
     this.props.setAppLanguageAction(language);
   }
 
   render() {
-    const { definitions, language } = this.props;
-    console.log('initial load of definitions', definitions);
+    const {
+      definitions,
+      language,
+      loadDefinitionsAction,
+      definitionsCache,
+      fetchingDefinitions } = this.props;
+      console.log(fetchingDefinitions);
     // All of our 'dumb' components will be rendered as children here.
     return(
       <View style={GlobalStyles.container}>
         <Banner language={language} setLanguage={this.setAppLanguage}/>
-        <Navigation/>
-        <DefinitionList currentLanguage={this.props.language} definitions={definitions}/>
+        <Navigation
+          language={language}
+          loadDefinitions={this.loadDefinitions}
+          flushDefinitionsCache={this.flushDefinitionsCache}
+        />
+        <DefinitionList
+          currentLanguage={language}
+          definitions={definitions}
+          fetchingDefinitions={fetchingDefinitions}
+        />
       </View>
     );
   }
@@ -68,6 +100,8 @@ function mapStateToProps(state): Object {
   return {
     definitions: state.definitions,
     language: state.language,
+    definitionsCache: state.definitionsCache,
+    fetchingDefinitions: state.fetchingDefinitions,
   }
 }
 

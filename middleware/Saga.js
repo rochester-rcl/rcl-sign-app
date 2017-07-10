@@ -7,6 +7,12 @@ import { fetchDefinitions } from './LSFetch';
 import { put } from 'redux-saga/effects';
 import { takeEvery } from 'redux-saga/effects';
 
+// AsyncStorage
+import { AsyncStorage } from 'react-native';
+
+// uuid
+const uuidv4 = require('uuid/v4');
+
 /*
 * Generator function used to yield a saga that retrieves a set of definitions from the API
 * @param {Object} [loadDefinitionsAction = {type: LOAD_DEFINITIONS, definitionQuery: {language: 'en', letter: 'a', range:'a-g'}]
@@ -15,9 +21,38 @@ import { takeEvery } from 'redux-saga/effects';
 export function* loadDefinitionsSaga(loadDefinitionsAction: Object): Generator<Promise<Object>, any, any> {
   const { language, letter, range } = loadDefinitionsAction.definitionQuery;
   try {
+    yield put({ type: 'FETCHING_DEFINITIONS', fetchingDefinitions: true });
+    let results = {}
     const definitionResults: Object = yield fetchDefinitions(language, letter, range);
-    yield put({ type: 'DEFINITIONS_LOADED', definitions: definitionResults});
+    let uuid = uuidv4();
+    results.definitions = definitionResults;
+    results.cacheInfo = {};
+    results.cacheInfo[range] = uuid;
+    AsyncStorage.setItem(uuid, JSON.stringify(definitionResults));
+    yield put({ type: 'DEFINITIONS_LOADED', results: results });
+    yield put({ type: 'FETCHING_DEFINITIONS', fetchingDefinitions: false });
   } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* loadDefinitionsFromCacheSaga(action: Object): Generator<Promise<Object>, any, any> {
+  try {
+    const cachedDefinitionResults = yield AsyncStorage.getItem(action.uuid);
+    let results = {};
+    results.cacheInfo = {};
+    results.definitions = JSON.parse(cachedDefinitionResults);
+    yield put({ type: 'DEFINITIONS_LOADED', results: results });
+  } catch(error) {
+    console.log(error);
+  }
+}
+
+export function* flushDefinitionsCacheSaga(action: Object): Generator<Promise<Object>, any, any> {
+  try {
+    yield put({ type: 'DEFINITIONS_CACHE_CLEARED' });
+    yield AsyncStorage.multiRemove(action.uuids);
+  } catch(error) {
     console.log(error);
   }
 }
@@ -31,11 +66,29 @@ export function* watchForLoadDefinitions(): Generator<any, any, any> {
 }
 
 /*
+* Generator function used to listen for all LOAD_DEFINITIONS_FROM_CACHE dispatches and route them to loadDefinitionsSaga
+*
+*/
+export function* watchForLoadDefinitionsFromCache(): Generator<any, any, any> {
+  yield takeEvery('LOAD_DEFINITIONS_FROM_CACHE', loadDefinitionsFromCacheSaga);
+}
+
+/*
+* Generator function used to listen for all FLUSH_DEFINITIONS_CACHE dispatches and route them to loadDefinitionsSaga
+*
+*/
+export function* watchForFlushDefinitionsCache(): Generator<any, any, any> {
+  yield takeEvery('FLUSH_DEFINITIONS_CACHE', flushDefinitionsCacheSaga);
+}
+
+/*
 * Generator function that initializes all of our 'watch' sagas
 *
 */
 export default function* rootSaga(): Generator<any, any, any> {
   yield [
     watchForLoadDefinitions(),
+    watchForLoadDefinitionsFromCache(),
+    watchForFlushDefinitionsCache(),
   ];
 }

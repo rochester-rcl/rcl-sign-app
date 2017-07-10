@@ -9,7 +9,7 @@ const GlobalStyles: Object = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#4e59d4',
+    backgroundColor: '#fff',
   },
   welcome: {
     fontSize: 20,
@@ -30,9 +30,6 @@ export const BannerStyles: Object = StyleSheet.create({
     flex: 0.125,
     marginTop: 20,
   },
-  bannerImageContainer: {
-
-  },
   bannerImage: {
     width: 100,
     height: 50
@@ -47,7 +44,6 @@ export const BannerStyles: Object = StyleSheet.create({
   bannerText: {
     color: '#fff',
     marginTop: 5,
-    fontWeight: 'bold',
     fontSize: 10,
   }
 });
@@ -75,13 +71,14 @@ export const NavigationStyles: Object = StyleSheet.create({
   navContainer: {
     flex: 0.140,
     alignSelf: 'stretch',
-    backgroundColor: '#3b3738',
+    borderColor: '#3b3738',
+    borderWidth: 3,
   },
   searchBar: {
     backgroundColor: '#fff',
     borderColor: '#5ec44e',
-    borderRadius: 1,
-    borderWidth: 3,
+    borderRadius: 0,
+    borderWidth: 1,
     textAlign: 'center',
     flex: 1,
     margin: 10,
@@ -113,7 +110,6 @@ export const ButtonStyles: Object = StyleSheet.create({
   buttonText: {
     color: '#fff',
     textAlign: 'center',
-    fontWeight: 'bold',
   }
 });
 
@@ -123,7 +119,7 @@ export const DefinitionListStyles: Object = StyleSheet.create({
     alignSelf: 'stretch',
     flex: 0.75,
     backgroundColor: "#fff",
-    borderWidth: 10,
+    borderWidth: 6,
     borderColor: "#3b3738",
   }
 });
@@ -134,6 +130,7 @@ export const DefinitionDisplayStyles: Object = StyleSheet.create({
     padding: 5,
     borderColor: "#ccc",
     borderWidth: 1,
+    fontFamily: 'Helvetica-Light, sans-serif-light',
   }
 });
 

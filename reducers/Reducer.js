@@ -1,8 +1,15 @@
 /* @flow */
 
 const defaultState: Object = {
+
   definitions: [],
   language: 'en', // defaults to English, for now
+   /* an array of uuids that gets flushed every time we change a letter. Each uuid
+   corresponds to a range in the current range, stored in AsyncStorage. The saga
+   checks AsyncStorage storage for the definitions before it sends a request */
+  definitionsCache: {},
+  fetchingDefinitions: false,
+
 }
 
 /*
@@ -17,7 +24,20 @@ export default function lsfReducer(state: Object = defaultState, action: Object)
     case 'DEFINITIONS_LOADED':
       return {
         ...state,
-        definitions: action.definitions,
+        definitions: action.results.definitions,
+        definitionsCache: {...state.definitionsCache, ...action.results.cacheInfo}
+      }
+
+    case 'DEFINITIONS_CACHE_CLEARED':
+      return {
+        ...state,
+        definitionsCache: {},
+      }
+
+    case 'FETCHING_DEFINITIONS':
+      return {
+        ...state,
+        fetchingDefinitions: action.fetchingDefinitions,
       }
 
     case 'SET_LANGUAGE':

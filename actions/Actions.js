@@ -3,6 +3,8 @@
 // Constants for our actions
 export const LOAD_DEFINITIONS = 'LOAD_DEFINITIONS';
 export const SET_LANGUAGE = 'SET_LANGUAGE';
+export const LOAD_DEFINITIONS_FROM_CACHE = 'LOAD_DEFINITIONS_FROM_CACHE';
+export const FLUSH_DEFINITIONS_CACHE = 'FLUSH_DEFINITIONS_CACHE';
 
 /*
 * Pure function used to dispatch an API call for definitions
@@ -13,6 +15,20 @@ export function loadDefinitionsAction(definitionQuery: Object): Object {
   return {
     type: LOAD_DEFINITIONS,
     definitionQuery: definitionQuery,
+  }
+}
+
+export function loadDefinitionsFromCacheAction(uuid: string): Object {
+  return {
+    type: LOAD_DEFINITIONS_FROM_CACHE,
+    uuid: uuid,
+  }
+}
+
+export function flushDefinitionsCacheAction(uuids): Object {
+  return {
+    type: FLUSH_DEFINITIONS_CACHE,
+    uuids: uuids
   }
 }
 
