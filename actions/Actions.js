@@ -25,10 +25,10 @@ export function loadDefinitionsFromCacheAction(uuid: string): Object {
   }
 }
 
-export function flushDefinitionsCacheAction(uuids): Object {
+export function flushDefinitionsCacheAction(callbackAction: Object): Object {
   return {
     type: FLUSH_DEFINITIONS_CACHE,
-    uuids: uuids
+    callbackAction: callbackAction,
   }
 }
 

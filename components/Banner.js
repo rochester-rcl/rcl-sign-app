@@ -23,7 +23,7 @@ const Banner = (props: Object) => {
         </View>
       </TouchableOpacity>
       <View style={BannerStyles.bannerImageContainer}>
-        <Image resizeMode={'contain'} style={BannerStyles.bannerImage} source={require('../images/home_logo.png')}/>
+        <Image resizeMode={'contain'} style={BannerStyles.bannerImageHome} source={require('../images/home_logo.png')}/>
       </View>
       <TouchableOpacity onPress={() => { setLanguage('en') } }>
         <View style={BannerStyles.bannerImageContainer}>

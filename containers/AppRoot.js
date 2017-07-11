@@ -40,21 +40,26 @@ class AppRoot extends Component {
     this.props.loadDefinitionsAction(definitionQuery);
   }
 
-  loadDefinitions(definitionQuery: Object) {
+  loadDefinitions(definitionQuery: Object, clearCache: boolean) {
     let { range } = definitionQuery;
     let { definitionsCache } = this.props;
-    if (this.props.definitionsCache.hasOwnProperty(range)) {
-      this.props.loadDefinitionsFromCacheAction(definitionsCache[range]);
+    if (clearCache) {
+      console.log('clear cache option');
+      this.flushDefinitionsCache(this.props.loadDefinitionsAction(definitionQuery));
     } else {
-      this.props.loadDefinitionsAction(definitionQuery);
+      console.log('no clear cache option');
+      if (this.props.definitionsCache.hasOwnProperty(range)) {
+        console.log('cache has values');
+        this.props.loadDefinitionsFromCacheAction(definitionsCache[range]);
+      } else {
+        console.log('cache does not have values');
+        this.props.loadDefinitionsAction(definitionQuery);
+      }
     }
   }
 
-  flushDefinitionsCache(): typeof Promise {
-    return new Promise((resolve, reject) => {
-      this.props.flushDefinitionsCacheAction(Object.values(this.props.definitionsCache));
-      resolve();
-    });
+  flushDefinitionsCache(callbackAction: Object): typeof Promise {
+    this.props.flushDefinitionsCacheAction(callbackAction);
   }
 
   setAppLanguage(language) {

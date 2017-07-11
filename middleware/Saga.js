@@ -23,7 +23,7 @@ export function* loadDefinitionsSaga(loadDefinitionsAction: Object): Generator<P
   try {
     yield put({ type: 'FETCHING_DEFINITIONS', fetchingDefinitions: true });
     let results = {}
-    const definitionResults: Object = yield fetchDefinitions(language, letter, range);
+    let definitionResults = yield fetchDefinitions(language, letter, range);
     let uuid = uuidv4();
     results.definitions = definitionResults;
     results.cacheInfo = {};
@@ -50,8 +50,23 @@ export function* loadDefinitionsFromCacheSaga(action: Object): Generator<Promise
 
 export function* flushDefinitionsCacheSaga(action: Object): Generator<Promise<Object>, any, any> {
   try {
-    yield put({ type: 'DEFINITIONS_CACHE_CLEARED' });
-    yield AsyncStorage.multiRemove(action.uuids);
+    const cacheCleared = yield AsyncStorage.getAllKeys().then((keys) => {
+          if (keys) {
+            return AsyncStorage.multiRemove(keys).then((errors) => {
+              if (!errors) {
+                return true;
+              } else {
+                return false;
+              }
+            });
+          } else {
+            return false;
+          }
+      });
+    if (cacheCleared) {
+      yield put({ type: 'DEFINITIONS_CACHE_CLEARED' });
+      yield put(action.callbackAction);
+    }
   } catch(error) {
     console.log(error);
   }

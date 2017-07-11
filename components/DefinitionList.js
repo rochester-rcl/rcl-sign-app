@@ -44,6 +44,7 @@ export default class DefinitionList extends Component {
             animating={true}
             style={{top: 100}}
             size="large"
+            color='#4286f4'
           />
         </View>
       );

@@ -24,7 +24,7 @@ import {
   ModalStyles } from '../styles/Styles';
 
 export default class Navigation extends Component {
-  state = { currentLetter: 'a', displayModal: false, currentRange: 'a-g' };
+  state = { currentLetter: 'a', displayModal: false, currentRange: 'a-g', currentIndex: 0 };
   constructor(props: Object) {
     super(props);
     (this: any).handleLetterChange = this.handleLetterChange.bind(this);
@@ -38,28 +38,25 @@ export default class Navigation extends Component {
     const { currentLetter, currentRange } = this.state;
     if (selectedLetter !== currentLetter) {
       this.setState({ currentLetter: selectedLetter });
-      // Promise ensures cache is cleared before we end up adding to it
-      this.props.flushDefinitionsCache().then(() => {
-        this.loadNewDefinitions(selectedLetter, currentRange);
-      });
+      this.loadNewDefinitions(selectedLetter, currentRange, true);
     }
     this.handleModalToggle();
   }
 
-  handleRangeSelect(selectedRange: string) {
+  handleRangeSelect(selectedRange: string, index: number) {
     const { currentLetter, currentRange } = this.state;
     if (selectedRange !== currentRange) {
-      this.setState({ currentRange: selectedRange });
-      this.loadNewDefinitions(currentLetter, selectedRange);
+      this.setState({ currentRange: selectedRange, currentIndex: index });
+      this.loadNewDefinitions(currentLetter, selectedRange, false);
     }
   }
 
-  loadNewDefinitions(currentLetter, currentRange): void {
+  loadNewDefinitions(currentLetter: string, currentRange: string, clearCache: boolean): void {
     this.props.loadDefinitions({
       language: this.props.language,
       letter: currentLetter,
       range: currentRange,
-    });
+    }, clearCache);
   }
 
   handleModalToggle() {
@@ -71,7 +68,7 @@ export default class Navigation extends Component {
   }
 
   render() {
-    const { displayModal, currentLetter, currentRange } = this.state;
+    const { displayModal, currentLetter, currentRange, currentIndex } = this.state;
     let title: string = currentLetter.toUpperCase();
     return(
       <View style={NavigationStyles.navContainer}>
@@ -96,7 +93,7 @@ export default class Navigation extends Component {
             onPress={this.handleModalToggle}
             style={ButtonStyles.buttonBackground}
           >
-            <Text style={ButtonStyles.buttonText}>{title}</Text>
+            <Text style={ButtonStyles.selectedRangeButtonText}>{title}</Text>
           </TouchableOpacity>
           <TextInput
             style={NavigationStyles.searchBar}
@@ -107,10 +104,10 @@ export default class Navigation extends Component {
           {this.letterRange.map((range, index) =>
             <TouchableOpacity
               key={index}
-              style={ButtonStyles.letterRangeButton}
-              onPress={() => this.handleRangeSelect(range)}
+              style={index === currentIndex ? ButtonStyles.selectedRangeButton : ButtonStyles.letterRangeButton}
+              onPress={() => this.handleRangeSelect(range, index)}
             >
-              <Text style={ButtonStyles.buttonText}>{range}</Text>
+              <Text style={index === currentIndex ? ButtonStyles.selectedRangeButtonText : ButtonStyles.buttonText}>{range}</Text>
             </TouchableOpacity>
           )}
         </View>

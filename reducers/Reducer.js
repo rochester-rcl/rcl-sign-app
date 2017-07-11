@@ -22,9 +22,13 @@ const defaultState: Object = {
 export default function lsfReducer(state: Object = defaultState, action: Object): Object {
   switch (action.type) {
     case 'DEFINITIONS_LOADED':
+      let definitions = action.results.definitions;
+      if (!definitions) {
+        definitions = ['No definitions found',];
+      }
       return {
         ...state,
-        definitions: action.results.definitions,
+        definitions: definitions,
         definitionsCache: {...state.definitionsCache, ...action.results.cacheInfo}
       }
 
