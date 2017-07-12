@@ -32,6 +32,8 @@ export const BannerStyles: Object = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 5,
     justifyContent: 'center',
+    borderBottomColor: '#3778e6',
+    borderBottomWidth: 3,
   },
   bannerImage: {
     width: 50,
@@ -59,7 +61,8 @@ export const BannerStyles: Object = StyleSheet.create({
 export const ModalStyles: Object = StyleSheet.create({
   letterPickerModal: {
     justifyContent: 'center',
-  }
+    backgroundColor: '#000',
+  },
 });
 
 export const PickerStyles: Object = StyleSheet.create({
@@ -69,17 +72,17 @@ export const PickerStyles: Object = StyleSheet.create({
 });
 
 export const NavigationStyles: Object = StyleSheet.create({
-  toolContainer: {
-    height: 30,
+  letterPicker: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     flex: 0.6,
+    backgroundColor: '#ddd',
   },
   navContainer: {
-    flex: 0.140,
+    flex: 0.25,
     alignSelf: 'stretch',
-    borderBottomColor: '#ccc',
+    borderBottomColor: '#828282',
     borderBottomWidth: 3,
   },
   searchBar: {
@@ -87,7 +90,7 @@ export const NavigationStyles: Object = StyleSheet.create({
     borderColor: '#ccc',
     borderWidth: 2,
     textAlign: 'center',
-    flex: 1,
+    flex: 0.20,
     margin: 10,
     fontSize: 10,
   },
@@ -101,10 +104,19 @@ export const NavigationStyles: Object = StyleSheet.create({
 export const ButtonStyles: Object = StyleSheet.create({
   buttonBackground: {
     backgroundColor: '#5ec44e',
-    flex: 0.25,
-    margin: 10,
+    flex: 0.125,
+    marginLeft: 20,
+    marginRight: 20,
     overflow: 'hidden',
-    padding: 2,
+  },
+  buttonBackgroundBlurred: {
+    backgroundColor: '#fff',
+    flex: 0.125,
+    marginLeft: 20,
+    marginRight: 20,
+    overflow: 'hidden',
+    borderColor: '#ccc',
+    borderWidth: 2,
   },
   selectedRangeButton: {
     backgroundColor: '#5ec44e',
@@ -143,6 +155,11 @@ export const DefinitionDisplayStyles: Object = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth: 1,
     fontFamily: 'Helvetica-Light, sans-serif-light',
+  },
+  errorMessage: {
+    flex: 1,
+    alignSelf: 'center',
+    marginTop: 10,
   }
 });
 

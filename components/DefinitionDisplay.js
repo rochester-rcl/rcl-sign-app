@@ -15,7 +15,6 @@ import { DefinitionDisplayStyles } from '../styles/Styles';
 
   const DefinitionDisplay = (props: Object) => {
     const { engDefinition, frDefinition } = props;
-
     if (props.currentLanguage === 'en') {
       return(
         <View>
@@ -28,7 +27,7 @@ import { DefinitionDisplayStyles } from '../styles/Styles';
       return(
         <View>
           <TouchableOpacity>
-            <Text style={{color: '#000'}}>{frDefinition.title + ' / ' + engDefinition.title}</Text>
+            <Text style={DefinitionDisplayStyles.definition}>{frDefinition.title + ' / ' + engDefinition.title}</Text>
           </TouchableOpacity>
         </View>
       );

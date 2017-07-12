@@ -22,13 +22,17 @@ export function* loadDefinitionsSaga(loadDefinitionsAction: Object): Generator<P
   const { language, letter, range } = loadDefinitionsAction.definitionQuery;
   try {
     yield put({ type: 'FETCHING_DEFINITIONS', fetchingDefinitions: true });
-    let results = {}
     let definitionResults = yield fetchDefinitions(language, letter, range);
-    let uuid = uuidv4();
+    let results = {};
+    if (!definitionResults.hasOwnProperty('message')) {
+      let uuid = uuidv4();
+      results.cacheInfo = {};
+      results.cacheInfo[range] = uuid;
+      AsyncStorage.setItem(uuid, JSON.stringify(definitionResults));
+    } else {
+      definitionResults.error = true;
+    }
     results.definitions = definitionResults;
-    results.cacheInfo = {};
-    results.cacheInfo[range] = uuid;
-    AsyncStorage.setItem(uuid, JSON.stringify(definitionResults));
     yield put({ type: 'DEFINITIONS_LOADED', results: results });
     yield put({ type: 'FETCHING_DEFINITIONS', fetchingDefinitions: false });
   } catch (error) {

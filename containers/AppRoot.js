@@ -44,15 +44,11 @@ class AppRoot extends Component {
     let { range } = definitionQuery;
     let { definitionsCache } = this.props;
     if (clearCache) {
-      console.log('clear cache option');
       this.flushDefinitionsCache(this.props.loadDefinitionsAction(definitionQuery));
     } else {
-      console.log('no clear cache option');
       if (this.props.definitionsCache.hasOwnProperty(range)) {
-        console.log('cache has values');
         this.props.loadDefinitionsFromCacheAction(definitionsCache[range]);
       } else {
-        console.log('cache does not have values');
         this.props.loadDefinitionsAction(definitionQuery);
       }
     }
@@ -72,8 +68,8 @@ class AppRoot extends Component {
       language,
       loadDefinitionsAction,
       definitionsCache,
-      fetchingDefinitions } = this.props;
-      console.log(fetchingDefinitions);
+      fetchingDefinitions
+    } = this.props;
     // All of our 'dumb' components will be rendered as children here.
     return(
       <View style={GlobalStyles.container}>

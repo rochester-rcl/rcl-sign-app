@@ -10,7 +10,7 @@ import { Text,
          ActivityIndicator } from 'react-native';
 
 // Styles
-import { DefinitionListStyles } from '../styles/Styles';
+import { DefinitionListStyles, DefinitionDisplayStyles } from '../styles/Styles';
 
 // Components
 import DefinitionDisplay from './DefinitionDisplay';
@@ -37,7 +37,13 @@ export default class DefinitionList extends Component {
         />
       </View>
     );
-    } else {
+  } else if (definitions.hasOwnProperty('error')) {
+    return (
+      <View style={DefinitionListStyles.definitionListContainer}>
+        <Text style={DefinitionDisplayStyles.errorMessage}>{definitions.message}</Text>
+      </View>
+    );
+  } else {
       return(
         <View style={DefinitionListStyles.definitionListContainer}>
           <ActivityIndicator
