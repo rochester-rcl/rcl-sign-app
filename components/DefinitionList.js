@@ -21,7 +21,11 @@ export default class DefinitionList extends Component {
     this.definitionData = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
   }
   render() {
-    const { definitions, currentLanguage, fetchingDefinitions } = this.props;
+    const {
+      definitions,
+      currentLanguage,
+      fetchingDefinitions,
+      toggleModal } = this.props;
     if (definitions.length > 0 && !fetchingDefinitions) {
     return(
       <View style={DefinitionListStyles.definitionListContainer}>
@@ -31,7 +35,8 @@ export default class DefinitionList extends Component {
             <DefinitionDisplay
               engDefinition={data.eng_definition}
               frDefinition={data.fr_definition}
-              currentLanguage={this.props.currentLanguage}
+              currentLanguage={currentLanguage}
+              toggleModal={toggleModal}
             />
           }
         />

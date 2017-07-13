@@ -5,6 +5,7 @@ export const LOAD_DEFINITIONS = 'LOAD_DEFINITIONS';
 export const SET_LANGUAGE = 'SET_LANGUAGE';
 export const LOAD_DEFINITIONS_FROM_CACHE = 'LOAD_DEFINITIONS_FROM_CACHE';
 export const FLUSH_DEFINITIONS_CACHE = 'FLUSH_DEFINITIONS_CACHE';
+export const TOGGLE_VIDEO_MODAL = 'TOGGLE_VIDEO_MODAL';
 
 /*
 * Pure function used to dispatch an API call for definitions
@@ -41,5 +42,16 @@ export function setAppLanguageAction(language: string): Object {
   return {
     type: SET_LANGUAGE,
     language: language,
+  }
+}
+
+export function toggleVideoModalAction(videos: Object, display: boolean): Object {
+  return {
+    type: TOGGLE_VIDEO_MODAL,
+    videoModal: {
+      en: videos.en,
+      fr: videos.fr,
+      display: display,
+    }
   }
 }

@@ -20,6 +20,7 @@ import GlobalStyles from '../styles/Styles';
 import Banner from '../components/Banner';
 import Navigation from '../components/Navigation';
 import DefinitionList from '../components/DefinitionList';
+import VideoModal from '../components/VideoModal';
 
 class AppRoot extends Component {
   constructor(props: Object) {
@@ -68,8 +69,11 @@ class AppRoot extends Component {
       language,
       loadDefinitionsAction,
       definitionsCache,
-      fetchingDefinitions
+      fetchingDefinitions,
+      videoModal,
+      toggleVideoModalAction
     } = this.props;
+    
     // All of our 'dumb' components will be rendered as children here.
     return(
       <View style={GlobalStyles.container}>
@@ -83,6 +87,14 @@ class AppRoot extends Component {
           currentLanguage={language}
           definitions={definitions}
           fetchingDefinitions={fetchingDefinitions}
+          toggleModal={toggleVideoModalAction}
+        />
+        <VideoModal
+          enVideo={videoModal.en}
+          frVideo={videoModal.fr}
+          language={language}
+          displayModal={videoModal.display}
+          toggleModal={toggleVideoModalAction}
         />
       </View>
     );
@@ -103,6 +115,7 @@ function mapStateToProps(state): Object {
     language: state.language,
     definitionsCache: state.definitionsCache,
     fetchingDefinitions: state.fetchingDefinitions,
+    videoModal: state.videoModal,
   }
 }
 

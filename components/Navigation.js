@@ -58,7 +58,7 @@ export default class Navigation extends Component {
   handleRangeSelect(selectedRange: string, index: number) {
     const { currentLetter, currentRange } = this.state;
     this.handleSearchFocus(false);
-    this.refs.textInput.blur();
+    this.textInput.blur();
     if (selectedRange !== currentRange) {
       this.setState({ currentRange: selectedRange, currentIndex: index });
       this.loadNewDefinitions(currentLetter, selectedRange, false);
@@ -75,7 +75,7 @@ export default class Navigation extends Component {
 
   handleModalToggle() {
     this.handleSearchFocus(false);
-    this.refs.textInput.blur();
+    this.textInput.blur();
     if (!this.state.displayModal) {
       this.setState({ displayModal: true });
     } else {
@@ -89,7 +89,7 @@ export default class Navigation extends Component {
 
   onKeyboardHide(): void {
     this.handleSearchFocus(false);
-    this.refs.textInput.blur();
+    this.textInput.blur();
   }
 
   onKeyboardShow(): void {
@@ -110,9 +110,8 @@ export default class Navigation extends Component {
           style={NavigationStyles.searchBar}
           placeholder="Search ..."
           onFocus={() => this.handleSearchFocus(true)}
-          onBlur={() => console.log('blur')}
           underlineColorAndroid='#4286f4'
-          ref='textInput'
+          ref={(ref) => this.textInput = ref}
         />
         <View style={NavigationStyles.letterPicker}>
           <Modal

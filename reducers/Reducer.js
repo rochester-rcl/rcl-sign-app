@@ -9,6 +9,11 @@ const defaultState: Object = {
    checks AsyncStorage storage for the definitions before it sends a request */
   definitionsCache: {},
   fetchingDefinitions: false,
+  videoModal: {
+    en: null,
+    fr: null,
+    display: false
+  },
 
 }
 
@@ -48,6 +53,12 @@ export default function lsfReducer(state: Object = defaultState, action: Object)
       return {
         ...state,
         language: action.language,
+      }
+
+    case 'TOGGLE_VIDEO_MODAL':
+      return {
+        ...state,
+        videoModal: action.videoModal,
       }
 
     default:

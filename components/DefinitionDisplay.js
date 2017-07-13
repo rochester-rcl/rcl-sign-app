@@ -14,11 +14,16 @@ import {
 import { DefinitionDisplayStyles } from '../styles/Styles';
 
   const DefinitionDisplay = (props: Object) => {
-    const { engDefinition, frDefinition } = props;
+    const { engDefinition, frDefinition, toggleModal } = props;
+    const selectVideos = () => {
+      let enUrl = engDefinition.video_url[0];
+      let frUrl = frDefinition.video_url[0];
+      toggleModal({en: enUrl, fr: frUrl}, true);
+    }
     if (props.currentLanguage === 'en') {
       return(
         <View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={selectVideos}>
             <Text style={DefinitionDisplayStyles.definition}>{engDefinition.title + ' / ' + frDefinition.title}</Text>
           </TouchableOpacity>
         </View>

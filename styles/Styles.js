@@ -33,7 +33,7 @@ export const BannerStyles: Object = StyleSheet.create({
     paddingBottom: 5,
     justifyContent: 'center',
     borderBottomColor: '#3778e6',
-    borderBottomWidth: 3,
+    borderBottomWidth: 2,
   },
   bannerImage: {
     width: 50,
@@ -83,7 +83,7 @@ export const NavigationStyles: Object = StyleSheet.create({
     flex: 0.25,
     alignSelf: 'stretch',
     borderBottomColor: '#828282',
-    borderBottomWidth: 3,
+    borderBottomWidth: 2,
   },
   searchBar: {
     backgroundColor: '#fff',
@@ -151,7 +151,7 @@ export const DefinitionListStyles: Object = StyleSheet.create({
 export const DefinitionDisplayStyles: Object = StyleSheet.create({
   definition: {
     color: "#000",
-    padding: 5,
+    padding: 10,
     borderColor: "#ccc",
     borderWidth: 1,
     fontFamily: 'Helvetica-Light, sans-serif-light',
@@ -162,5 +162,12 @@ export const DefinitionDisplayStyles: Object = StyleSheet.create({
     marginTop: 10,
   }
 });
+
+export const VideoStyles: Object = StyleSheet.create({
+  videoPlayer: {
+    flex: 1,
+    backgroundColor: '#000',
+  }
+})
 
 export default GlobalStyles;
