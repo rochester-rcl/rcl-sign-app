@@ -73,7 +73,7 @@ class AppRoot extends Component {
       videoModal,
       toggleVideoModalAction
     } = this.props;
-    
+
     // All of our 'dumb' components will be rendered as children here.
     return(
       <View style={GlobalStyles.container}>
@@ -90,8 +90,7 @@ class AppRoot extends Component {
           toggleModal={toggleVideoModalAction}
         />
         <VideoModal
-          enVideo={videoModal.en}
-          frVideo={videoModal.fr}
+          videoModalContent={videoModal}
           language={language}
           displayModal={videoModal.display}
           toggleModal={toggleVideoModalAction}

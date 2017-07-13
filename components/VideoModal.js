@@ -17,7 +17,7 @@ import Video from 'react-native-video';
 import { ModalStyles, VideoStyles } from '../styles/Styles';
 
 export default class VideoModal extends Component {
-
+  state = { videoLoaded: false, enVideoPaused: true, frVideoPaused: true };
   constructor(props): void {
     super(props);
     (this: any).sortVideo = this.sortVideo.bind(this);
@@ -25,27 +25,32 @@ export default class VideoModal extends Component {
   }
 
   sortVideo(): Array<string> {
-    let { enVideo, frVideo } = this.props;
-
+    let { videoModalContent } = this.props;
+    let { en, fr } = videoModalContent;
     let videos = [
       {
-        url: frVideo,
+        url: fr.video_url,
         ref: (ref) => { this.frPlayer = ref },
+        lang: 'fr',
+        title: fr.title,
       },
       {
-        url: enVideo,
+        url: en.video_url,
         ref: (ref) => { this.enPlayer = ref },
+        lang: 'en',
+        title: en.title,
       }
     ];
     if (this.props.language === 'fr') return videos.reverse();
     return videos;
   }
   handleOnLoad(): void {
-    this.enPlayer.presentFullscreenPlayer();
+
   }
   render() {
-    const { enVideo, frVideo, displayModal, toggleModal } = this.props;
-    const exitModal = () => toggleModal({en: enVideo, fr: frVideo}, false);
+    const { videoModalContent, displayModal, toggleModal } = this.props;
+    const { enVideoPaused, frVideoPaused } = this.state;
+    const exitModal = () => toggleModal(videoModalContent, false);
     return(
       <Modal
         animationType={"fade"}
@@ -54,14 +59,16 @@ export default class VideoModal extends Component {
         visible={displayModal}
         onRequestClose={exitModal}>
           {this.sortVideo().map((video, index) =>
-            <Video
-              style={VideoStyles.videoPlayer}
-              source={ {uri: video.url} }
-              ref={video.ref}
-              onError={(error) => console.log(error, video.url)}
-              resizeMode="cover"
-              onTimedMetadata={(event) => console.log(event)}
-              onLoad={this.handleOnLoad} />
+              <Video
+                key={index}
+                style={VideoStyles.videoPlayer}
+                source={ {uri: video.url} }
+                ref={video.ref}
+                onError={(error) => console.log(error, video.url)}
+                resizeMode="cover"
+                paused={video.lang === 'en' ? enVideoPaused : frVideoPaused}
+                onTimedMetadata={(event) => console.log(event)}
+                onLoad={this.handleOnLoad} />
           )}
         </Modal>
     );

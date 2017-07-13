@@ -10,10 +10,17 @@ const defaultState: Object = {
   definitionsCache: {},
   fetchingDefinitions: false,
   videoModal: {
-    en: null,
-    fr: null,
+    en: {
+      url: null,
+      title: null,
+    },
+    fr: {
+      url: null,
+      title: null,
+    },
     display: false
   },
+  videoLoaded: false,
 
 }
 

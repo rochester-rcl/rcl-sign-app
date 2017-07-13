@@ -16,9 +16,7 @@ import { DefinitionDisplayStyles } from '../styles/Styles';
   const DefinitionDisplay = (props: Object) => {
     const { engDefinition, frDefinition, toggleModal } = props;
     const selectVideos = () => {
-      let enUrl = engDefinition.video_url[0];
-      let frUrl = frDefinition.video_url[0];
-      toggleModal({en: enUrl, fr: frUrl}, true);
+      toggleModal({en: engDefinition, fr: frDefinition}, true);
     }
     if (props.currentLanguage === 'en') {
       return(
