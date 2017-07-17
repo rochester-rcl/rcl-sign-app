@@ -68,6 +68,12 @@ export default function lsfReducer(state: Object = defaultState, action: Object)
         videoModal: action.videoModal,
       }
 
+    case 'LAYOUT_CHANGED':
+      return {
+        ...state,
+        layoutAspect: action.layoutAspect,
+      }
+
     default:
       return state;
   }

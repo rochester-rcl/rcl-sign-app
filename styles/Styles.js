@@ -26,14 +26,13 @@ const GlobalStyles: Object = StyleSheet.create({
 export const BannerStyles: Object = StyleSheet.create({
   bannerContainer: {
     flexDirection: 'row',
-    flex: 0.05,
+    flex: 0.10,
     alignSelf: 'stretch',
-    backgroundColor: '#4286f4',
+    backgroundColor: '#6ea5fa',
     paddingTop: 10,
-    paddingBottom: 5,
+    paddingBottom: 10,
     justifyContent: 'center',
-    borderBottomColor: '#3778e6',
-    borderBottomWidth: 2,
+    alignItems: 'center',
   },
   bannerImage: {
     width: 50,
@@ -61,7 +60,6 @@ export const BannerStyles: Object = StyleSheet.create({
 export const ModalStyles: Object = StyleSheet.create({
   letterPickerModal: {
     justifyContent: 'center',
-    backgroundColor: '#000',
   },
 });
 
@@ -76,22 +74,20 @@ export const NavigationStyles: Object = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    flex: 0.6,
+    flex: 0.3,
     backgroundColor: '#ddd',
   },
   navContainer: {
-    flex: 0.25,
+    flex: 0.3,
     alignSelf: 'stretch',
-    borderBottomColor: '#828282',
-    borderBottomWidth: 2,
+    elevation: 10,
+    shadowColor: '#ccc',
+    backgroundColor: '#fff',
   },
   searchBar: {
     backgroundColor: '#fff',
-    borderColor: '#ccc',
-    borderWidth: 2,
     textAlign: 'center',
-    flex: 0.20,
-    margin: 10,
+    flex: 0.2,
     fontSize: 10,
   },
   letterRange: {
@@ -104,10 +100,10 @@ export const NavigationStyles: Object = StyleSheet.create({
 export const ButtonStyles: Object = StyleSheet.create({
   buttonBackground: {
     backgroundColor: '#5ec44e',
-    flex: 0.125,
-    marginLeft: 20,
-    marginRight: 20,
+    flex: 1,
+    marginHorizontal: 40,
     overflow: 'hidden',
+    borderRadius: 2,
   },
   buttonBackgroundBlurred: {
     backgroundColor: '#fff',
@@ -117,11 +113,18 @@ export const ButtonStyles: Object = StyleSheet.create({
     overflow: 'hidden',
     borderColor: '#ccc',
     borderWidth: 2,
+    borderRadius: 2,
   },
   selectedRangeButton: {
     backgroundColor: '#5ec44e',
     margin: 5,
     flex: 1,
+    borderRadius: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#5ec44e',
+    padding: 5,
   },
   letterRangeButton: {
     backgroundColor: '#fff',
@@ -129,13 +132,17 @@ export const ButtonStyles: Object = StyleSheet.create({
     borderWidth: 2,
     margin: 5,
     flex: 1,
+    borderRadius: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5,
   },
   selectedRangeButtonText: {
     color: '#fff',
     textAlign: 'center',
   },
   buttonText: {
-    color: '#282828',
+    color: '#484848',
     textAlign: 'center',
   }
 });
@@ -150,11 +157,10 @@ export const DefinitionListStyles: Object = StyleSheet.create({
 
 export const DefinitionDisplayStyles: Object = StyleSheet.create({
   definition: {
-    color: "#000",
-    padding: 10,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    fontFamily: 'Helvetica-Light, sans-serif-light',
+    color: "#484848",
+    margin: 10,
+    borderBottomColor: "#ddd",
+    borderBottomWidth: 1,
   },
   errorMessage: {
     flex: 1,
@@ -167,6 +173,27 @@ export const VideoStyles: Object = StyleSheet.create({
   videoPlayer: {
     flex: 1,
     backgroundColor: '#000',
+  },
+  touchableVideo: {
+    flex: 1,
+    backgroundColor: '#000',
+  },
+  videoTitleContainer: {
+    position: 'absolute',
+    flexDirection: 'row',
+  },
+  videoTitle: {
+    color: '#fff',
+    elevation: 5,
+    fontSize: 20,
+    padding: 10,
+  },
+  videoImage: {
+    width: 50,
+    height: 25,
+    opacity: 0.8,
+    paddingRight: 10,
+    alignSelf: 'center',
   }
 })
 

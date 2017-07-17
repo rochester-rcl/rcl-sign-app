@@ -6,6 +6,7 @@ export const SET_LANGUAGE = 'SET_LANGUAGE';
 export const LOAD_DEFINITIONS_FROM_CACHE = 'LOAD_DEFINITIONS_FROM_CACHE';
 export const FLUSH_DEFINITIONS_CACHE = 'FLUSH_DEFINITIONS_CACHE';
 export const TOGGLE_VIDEO_MODAL = 'TOGGLE_VIDEO_MODAL';
+export const LAYOUT_CHANGED = 'LAYOUT_CHANGED';
 
 /*
 * Pure function used to dispatch an API call for definitions
@@ -53,5 +54,12 @@ export function toggleVideoModalAction(videos: Object, display: boolean): Object
       fr: videos.fr,
       display: display,
     }
+  }
+}
+
+export function updateLayoutAspectAction(layoutAspect: string): Object {
+  return {
+    type: LAYOUT_CHANGED,
+    layoutAspect: layoutAspect,
   }
 }

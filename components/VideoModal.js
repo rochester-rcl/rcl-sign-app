@@ -8,6 +8,8 @@ import {
   Text,
   View,
   Modal,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
 
 // Video Component
@@ -17,11 +19,13 @@ import Video from 'react-native-video';
 import { ModalStyles, VideoStyles } from '../styles/Styles';
 
 export default class VideoModal extends Component {
-  state = { videoLoaded: false, enVideoPaused: true, frVideoPaused: true };
+  state = { videoLoaded: false, enVideoPaused: false, frVideoPaused: false };
   constructor(props): void {
     super(props);
     (this: any).sortVideo = this.sortVideo.bind(this);
     (this: any).handleOnLoad = this.handleOnLoad.bind(this);
+    (this: any).handlePlayback = this.handlePlayback.bind(this);
+    (this: any).handleOnEnd = this.handleOnEnd.bind(this);
   }
 
   sortVideo(): Array<string> {
@@ -44,13 +48,36 @@ export default class VideoModal extends Component {
     if (this.props.language === 'fr') return videos.reverse();
     return videos;
   }
-  handleOnLoad(): void {
-
+  handleOnLoad(lang: string): void {
+    this.handlePlayback(lang, true);
   }
+
+  handlePlayback(lang: string, override: boolean): void {
+    let { enVideoPaused, frVideoPaused } = this.state;
+    if (lang === 'en') {
+      this.setState({ enVideoPaused: override ? override : !enVideoPaused });
+    } else {
+      this.setState({ frVideoPaused: override ? override : !frVideoPaused });
+    }
+  }
+
+  handleOnEnd(lang: string): void {
+    if (lang === 'en') {
+      this.enPlayer.seek(0);
+    } else {
+      this.frPlayer.seek(0);
+    }
+    this.handlePlayback(lang, true);
+  }
+
   render() {
     const { videoModalContent, displayModal, toggleModal } = this.props;
     const { enVideoPaused, frVideoPaused } = this.state;
-    const exitModal = () => toggleModal(videoModalContent, false);
+    const exitModal = () => {
+      this.handlePlayback('en', true);
+      this.handlePlayback('fr', true);
+      toggleModal(videoModalContent, false);
+    }
     return(
       <Modal
         animationType={"fade"}
@@ -59,16 +86,29 @@ export default class VideoModal extends Component {
         visible={displayModal}
         onRequestClose={exitModal}>
           {this.sortVideo().map((video, index) =>
+            <TouchableOpacity
+              key={index}
+              style={VideoStyles.touchableVideo}
+              onPress={() => this.handlePlayback(video.lang)}>
               <Video
-                key={index}
                 style={VideoStyles.videoPlayer}
-                source={ {uri: video.url} }
+                source={{ uri: video.url }}
                 ref={video.ref}
-                onError={(error) => console.log(error, video.url)}
+                onError={(error) => console.log(error)}
                 resizeMode="cover"
                 paused={video.lang === 'en' ? enVideoPaused : frVideoPaused}
                 onTimedMetadata={(event) => console.log(event)}
-                onLoad={this.handleOnLoad} />
+                onLoad={() => this.handleOnLoad(video.lang)}
+                onEnd={() => this.handleOnEnd(video.lang)} />
+              <View style={VideoStyles.videoTitleContainer}>
+                <Image
+                  resizeMode={'cover'}
+                  style={ VideoStyles.videoImage }
+                  source={video.lang === 'en' ? require('../images/us_flag.png')
+                          : require('../images/fr_flag.png')}/>
+                <Text style={VideoStyles.videoTitle}>{video.title}</Text>
+              </View>
+            </TouchableOpacity>
           )}
         </Modal>
     );

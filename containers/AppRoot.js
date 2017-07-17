@@ -23,12 +23,15 @@ import DefinitionList from '../components/DefinitionList';
 import VideoModal from '../components/VideoModal';
 
 class AppRoot extends Component {
+  LAYOUT_PORTRAIT = 'LAYOUT_PORTRAIT';
+  LAYOUT_LANDSCAPE = 'LAYOUT_LANDSCAPE';
   constructor(props: Object) {
     super(props);
     // Bind all methods to 'this' context here
     (this: any).setAppLanguage = this.setAppLanguage.bind(this);
     (this: any).loadDefinitions = this.loadDefinitions.bind(this);
     (this: any).flushDefinitionsCache = this.flushDefinitionsCache.bind(this);
+    (this: any).handleLayoutChange = this.handleLayoutChange.bind(this);
   }
 
   componentWillMount() {
@@ -63,6 +66,12 @@ class AppRoot extends Component {
     this.props.setAppLanguageAction(language);
   }
 
+  handleLayoutChange({nativeEvent}): void {
+    let { width, height } = nativeEvent.layout;
+    let aspect = height > width ? this.LAYOUT_PORTRAIT : this.LAYOUT_LANDSCAPE;
+    if (aspect !== this.props.layoutAspect) this.props.updateLayoutAspectAction(aspect);
+  }
+
   render() {
     const {
       definitions,
@@ -71,12 +80,15 @@ class AppRoot extends Component {
       definitionsCache,
       fetchingDefinitions,
       videoModal,
-      toggleVideoModalAction
+      toggleVideoModalAction,
+      layoutAspect
     } = this.props;
-
     // All of our 'dumb' components will be rendered as children here.
     return(
-      <View style={GlobalStyles.container}>
+      <View
+        style={GlobalStyles.container}
+        onLayout={this.handleLayoutChange}
+        >
         <Banner language={language} setLanguage={this.setAppLanguage}/>
         <Navigation
           language={language}
@@ -94,6 +106,7 @@ class AppRoot extends Component {
           language={language}
           displayModal={videoModal.display}
           toggleModal={toggleVideoModalAction}
+          layoutAspect={layoutAspect}
         />
       </View>
     );
@@ -115,6 +128,7 @@ function mapStateToProps(state): Object {
     definitionsCache: state.definitionsCache,
     fetchingDefinitions: state.fetchingDefinitions,
     videoModal: state.videoModal,
+    layoutAspect: state.layoutAspect,
   }
 }
 
