@@ -61,6 +61,18 @@ export const ModalStyles: Object = StyleSheet.create({
   letterPickerModal: {
     justifyContent: 'center',
   },
+  videoModalPortrait: {
+    justifyContent: 'center',
+    flexDirection: 'column',
+    flex: 1,
+    backgroundColor: '#000',
+  },
+  videoModalLandscape: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    backgroundColor: '#000',
+  }
 });
 
 export const PickerStyles: Object = StyleSheet.create({
@@ -179,8 +191,8 @@ export const VideoStyles: Object = StyleSheet.create({
     backgroundColor: '#000',
   },
   videoTitleContainer: {
-    position: 'absolute',
     flexDirection: 'row',
+    alignSelf: 'center',
   },
   videoTitle: {
     color: '#fff',

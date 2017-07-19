@@ -26,13 +26,14 @@ import {
   ModalStyles } from '../styles/Styles';
 
 export default class Navigation extends Component {
-  state = {
+  state: Object = {
     currentLetter: 'a',
     displayModal: false,
     currentRange: 'a-g',
     currentIndex: 0,
     searchFocused: false,
   };
+  letterRange: Array<string> = ['a-g', 'h-m', 'n-r', 's-z'];
   constructor(props: Object) {
     super(props);
     (this: any).handleLetterChange = this.handleLetterChange.bind(this);
@@ -43,7 +44,6 @@ export default class Navigation extends Component {
     (this: any).onKeyboardShow = this.onKeyboardShow.bind(this);
     (this: any).keyboardHideListener = Keyboard.addListener('keyboardDidHide', this.onKeyboardHide);
     (this: any).keyboardShowListener = Keyboard.addListener('keyboardDidShow', this.onKeyboardShow);
-    (this: any).letterRange = ['a-g', 'h-m', 'n-r', 's-z'];
   }
 
   handleLetterChange(selectedLetter: string) {
@@ -83,7 +83,7 @@ export default class Navigation extends Component {
     }
   }
 
-  handleSearchFocus(focusState): void {
+  handleSearchFocus(focusState: boolean): void {
     this.setState({ searchFocused: focusState });
   }
 

@@ -18,7 +18,7 @@ import DefinitionDisplay from './DefinitionDisplay';
 export default class DefinitionList extends Component {
   constructor(props: Object) {
     super(props);
-    this.definitionData = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
+    (this: any).definitionData = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
   }
   render() {
     const {

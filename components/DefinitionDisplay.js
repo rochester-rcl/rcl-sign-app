@@ -29,7 +29,7 @@ import { DefinitionDisplayStyles } from '../styles/Styles';
     } else {
       return(
         <View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={selectVideos}>
             <Text style={DefinitionDisplayStyles.definition}>{frDefinition.title + ' / ' + engDefinition.title}</Text>
           </TouchableOpacity>
         </View>

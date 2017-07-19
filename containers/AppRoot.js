@@ -4,7 +4,12 @@
 import React, { Component } from 'react';
 
 // React Native
-import { Text, View } from 'react-native';
+import {
+  Text,
+  View,
+  Platform,
+  UIManager,
+  LayoutAnimation } from 'react-native';
 
 // Redux
 import { connect } from 'react-redux';
@@ -21,6 +26,20 @@ import Banner from '../components/Banner';
 import Navigation from '../components/Navigation';
 import DefinitionList from '../components/DefinitionList';
 import VideoModal from '../components/VideoModal';
+
+if (Platform.OS === 'android') {
+  UIManager.setLayoutAnimationEnabledExperimental(true)
+}
+const fadeInOut = {
+  duration: 300,
+    create: {
+      type: LayoutAnimation.Types.linear,
+      property: LayoutAnimation.Properties.opacity,
+    },
+    update: {
+      type: LayoutAnimation.Types.easeInEaseOut,
+    },
+};
 
 class AppRoot extends Component {
   LAYOUT_PORTRAIT = 'LAYOUT_PORTRAIT';
@@ -44,6 +63,12 @@ class AppRoot extends Component {
     this.props.loadDefinitionsAction(definitionQuery);
   }
 
+  componentWillReceiveProps(nextProps: Object): void {
+    if (nextProps.layoutAspect !== this.props.layoutAspect) {
+      LayoutAnimation.configureNext(fadeInOut);
+    }
+  }
+
   loadDefinitions(definitionQuery: Object, clearCache: boolean) {
     let { range } = definitionQuery;
     let { definitionsCache } = this.props;
@@ -58,7 +83,7 @@ class AppRoot extends Component {
     }
   }
 
-  flushDefinitionsCache(callbackAction: Object): typeof Promise {
+  flushDefinitionsCache(callbackAction: Object): void {
     this.props.flushDefinitionsCacheAction(callbackAction);
   }
 

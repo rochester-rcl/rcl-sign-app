@@ -10,6 +10,8 @@ import {
   Modal,
   TouchableOpacity,
   Image,
+  Animated,
+  StyleSheet,
 } from 'react-native';
 
 // Video Component
@@ -19,8 +21,14 @@ import Video from 'react-native-video';
 import { ModalStyles, VideoStyles } from '../styles/Styles';
 
 export default class VideoModal extends Component {
-  state = { videoLoaded: false, enVideoPaused: false, frVideoPaused: false };
-  constructor(props): void {
+  state = {
+    videoLoaded: false,
+    enVideoPaused: false,
+    frVideoPaused: false,
+    layoutAnimation: new Animated.Value(0),
+  };
+
+  constructor(props: Object): void {
     super(props);
     (this: any).sortVideo = this.sortVideo.bind(this);
     (this: any).handleOnLoad = this.handleOnLoad.bind(this);
@@ -28,7 +36,7 @@ export default class VideoModal extends Component {
     (this: any).handleOnEnd = this.handleOnEnd.bind(this);
   }
 
-  sortVideo(): Array<string> {
+  sortVideo(): Array<Object> {
     let { videoModalContent } = this.props;
     let { en, fr } = videoModalContent;
     let videos = [
@@ -48,11 +56,12 @@ export default class VideoModal extends Component {
     if (this.props.language === 'fr') return videos.reverse();
     return videos;
   }
+
   handleOnLoad(lang: string): void {
     this.handlePlayback(lang, true);
   }
 
-  handlePlayback(lang: string, override: boolean): void {
+  handlePlayback(lang: string, override?: boolean): void {
     let { enVideoPaused, frVideoPaused } = this.state;
     if (lang === 'en') {
       this.setState({ enVideoPaused: override ? override : !enVideoPaused });
@@ -71,20 +80,26 @@ export default class VideoModal extends Component {
   }
 
   render() {
-    const { videoModalContent, displayModal, toggleModal } = this.props;
-    const { enVideoPaused, frVideoPaused } = this.state;
+    const { videoModalContent, displayModal, toggleModal, layoutAspect } = this.props;
+    const { enVideoPaused, frVideoPaused, layoutAnimation } = this.state;
     const exitModal = () => {
       this.handlePlayback('en', true);
       this.handlePlayback('fr', true);
       toggleModal(videoModalContent, false);
     }
+
     return(
       <Modal
         animationType={"fade"}
         transparent={false}
-        style={ModalStyles.letterPickerModal}
         visible={displayModal}
         onRequestClose={exitModal}>
+        <View
+          style={
+            layoutAspect === 'LAYOUT_PORTRAIT' ? ModalStyles.videoModalPortrait :
+            ModalStyles.videoModalLandscape
+          }
+        >
           {this.sortVideo().map((video, index) =>
             <TouchableOpacity
               key={index}
@@ -95,7 +110,7 @@ export default class VideoModal extends Component {
                 source={{ uri: video.url }}
                 ref={video.ref}
                 onError={(error) => console.log(error)}
-                resizeMode="cover"
+                resizeMode='contain'
                 paused={video.lang === 'en' ? enVideoPaused : frVideoPaused}
                 onTimedMetadata={(event) => console.log(event)}
                 onLoad={() => this.handleOnLoad(video.lang)}
@@ -110,6 +125,7 @@ export default class VideoModal extends Component {
               </View>
             </TouchableOpacity>
           )}
+          </View>
         </Modal>
     );
   }
