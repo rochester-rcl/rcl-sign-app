@@ -102,6 +102,7 @@ class AppRoot extends Component {
       definitions,
       language,
       loadDefinitionsAction,
+      searchDefinitionsAction,
       definitionsCache,
       fetchingDefinitions,
       videoModal,
@@ -118,6 +119,7 @@ class AppRoot extends Component {
         <Navigation
           language={language}
           loadDefinitions={this.loadDefinitions}
+          searchDefinitions={searchDefinitionsAction}
           flushDefinitionsCache={this.flushDefinitionsCache}
         />
         <DefinitionList

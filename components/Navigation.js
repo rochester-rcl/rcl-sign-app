@@ -32,6 +32,7 @@ export default class Navigation extends Component {
     currentRange: 'a-g',
     currentIndex: 0,
     searchFocused: false,
+    searchTerm: null,
   };
   letterRange: Array<string> = ['a-g', 'h-m', 'n-r', 's-z'];
   constructor(props: Object) {
@@ -39,6 +40,8 @@ export default class Navigation extends Component {
     (this: any).handleLetterChange = this.handleLetterChange.bind(this);
     (this: any).handleModalToggle = this.handleModalToggle.bind(this);
     (this: any).handleRangeSelect = this.handleRangeSelect.bind(this);
+    (this: any).handleSearchSubmit = this.handleSearchSubmit.bind(this);
+    (this: any).handleSearchTextChange = this.handleSearchTextChange.bind(this);
     (this: any).loadNewDefinitions = this.loadNewDefinitions.bind(this);
     (this: any).onKeyboardHide = this.onKeyboardHide.bind(this);
     (this: any).onKeyboardShow = this.onKeyboardShow.bind(this);
@@ -53,6 +56,14 @@ export default class Navigation extends Component {
       this.loadNewDefinitions(selectedLetter, currentRange, true);
     }
     this.handleModalToggle();
+  }
+
+  handleSearchSubmit() {
+    this.props.searchDefinitions(this.props.language, this.state.searchTerm);
+  }
+
+  handleSearchTextChange(text: string) {
+    this.setState({ searchTerm: text });
   }
 
   handleRangeSelect(selectedRange: string, index: number) {
@@ -112,6 +123,8 @@ export default class Navigation extends Component {
           onFocus={() => this.handleSearchFocus(true)}
           underlineColorAndroid='#4286f4'
           ref={(ref) => this.textInput = ref}
+          onChangeText={this.handleSearchTextChange}
+          onSubmitEditing={this.handleSearchSubmit}
         />
         <View style={NavigationStyles.letterPicker}>
           <Modal

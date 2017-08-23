@@ -1,12 +1,20 @@
 /* @flow */
 
+/*
+  TODO
+  1) implement search action
+  2) convert all instances of action types to constants
+*/
+
 // Constants for our actions
 export const LOAD_DEFINITIONS = 'LOAD_DEFINITIONS';
+export const SEARCH_DEFINITIONS = 'SEARCH_DEFINITIONS';
 export const SET_LANGUAGE = 'SET_LANGUAGE';
 export const LOAD_DEFINITIONS_FROM_CACHE = 'LOAD_DEFINITIONS_FROM_CACHE';
 export const FLUSH_DEFINITIONS_CACHE = 'FLUSH_DEFINITIONS_CACHE';
 export const TOGGLE_VIDEO_MODAL = 'TOGGLE_VIDEO_MODAL';
 export const LAYOUT_CHANGED = 'LAYOUT_CHANGED';
+
 
 /*
 * Pure function used to dispatch an API call for definitions
@@ -17,6 +25,14 @@ export function loadDefinitionsAction(definitionQuery: Object): Object {
   return {
     type: LOAD_DEFINITIONS,
     definitionQuery: definitionQuery,
+  }
+}
+
+export function searchDefinitionsAction(language: string, term: string): Object {
+  return {
+    type: SEARCH_DEFINITIONS,
+    language: language,
+    term: term,
   }
 }
 

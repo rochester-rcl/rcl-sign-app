@@ -1,7 +1,7 @@
 /* @flow */
 
 // Fetch
-import { fetchDefinitions } from './LSFetch';
+import { fetchDefinitions, searchDefinitions } from './LSFetch';
 
 // Redux Saga
 import { put } from 'redux-saga/effects';
@@ -24,6 +24,7 @@ export function* loadDefinitionsSaga(loadDefinitionsAction: Object): Generator<P
     yield put({ type: 'FETCHING_DEFINITIONS', fetchingDefinitions: true });
     let definitionResults = yield fetchDefinitions(language, letter, range);
     let results = {};
+    results.searchResults = false;
     if (!definitionResults.hasOwnProperty('message')) {
       let uuid = uuidv4();
       results.cacheInfo = {};
@@ -36,6 +37,19 @@ export function* loadDefinitionsSaga(loadDefinitionsAction: Object): Generator<P
     yield put({ type: 'DEFINITIONS_LOADED', results: results });
     yield put({ type: 'FETCHING_DEFINITIONS', fetchingDefinitions: false });
   } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* searchDefinitionsSaga(searchDefinitionsAction: Object): Generator<Promise<Object>, any, any> {
+  let { language, term } = searchDefinitionsAction;
+  try {
+    let results = {};
+    results.definitions = yield searchDefinitions(language, term);
+    results.searchResults = true;
+    console.log(results);
+    yield put({ type: 'DEFINITIONS_LOADED', results: results });
+  } catch(error) {
     console.log(error);
   }
 }
@@ -100,6 +114,10 @@ export function* watchForFlushDefinitionsCache(): Generator<any, any, any> {
   yield takeEvery('FLUSH_DEFINITIONS_CACHE', flushDefinitionsCacheSaga);
 }
 
+export function* watchForSearchDefinitions(): Generator<any, any, any> {
+  yield takeEvery('SEARCH_DEFINITIONS', searchDefinitionsSaga);
+}
+
 /*
 * Generator function that initializes all of our 'watch' sagas
 *
@@ -109,5 +127,6 @@ export default function* rootSaga(): Generator<any, any, any> {
     watchForLoadDefinitions(),
     watchForLoadDefinitionsFromCache(),
     watchForFlushDefinitionsCache(),
+    watchForSearchDefinitions(),
   ];
 }

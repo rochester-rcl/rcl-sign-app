@@ -21,7 +21,7 @@ const defaultState: Object = {
     display: false
   },
   videoLoaded: false,
-
+  searchResults: false,
 }
 
 /*
@@ -34,14 +34,16 @@ const defaultState: Object = {
 export default function lsfReducer(state: Object = defaultState, action: Object): Object {
   switch (action.type) {
     case 'DEFINITIONS_LOADED':
-      let definitions = action.results.definitions;
+      let results = action.results;
+      let definitions = results.definitions;
+      let cacheInfo = results.cacheInfo ? results.cacheInfo : state.definitionsCache;
       if (!definitions) {
         definitions = ['No definitions found',];
       }
       return {
         ...state,
         definitions: definitions,
-        definitionsCache: {...state.definitionsCache, ...action.results.cacheInfo}
+        definitionsCache: {...state.definitionsCache, ...cacheInfo}
       }
 
     case 'DEFINITIONS_CACHE_CLEARED':
