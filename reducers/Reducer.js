@@ -21,7 +21,7 @@ const defaultState: Object = {
     display: false
   },
   videoLoaded: false,
-  searchResults: false,
+  searchResults: false
 }
 
 /*
@@ -68,6 +68,12 @@ export default function lsfReducer(state: Object = defaultState, action: Object)
       return {
         ...state,
         videoModal: action.videoModal,
+      }
+
+    case 'TOGGLE_SEARCH_RESULT_DISPLAY':
+      return {
+        ...state,
+        searchResults: action.toggle,
       }
 
     case 'LAYOUT_CHANGED':

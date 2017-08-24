@@ -13,6 +13,7 @@ export const SET_LANGUAGE = 'SET_LANGUAGE';
 export const LOAD_DEFINITIONS_FROM_CACHE = 'LOAD_DEFINITIONS_FROM_CACHE';
 export const FLUSH_DEFINITIONS_CACHE = 'FLUSH_DEFINITIONS_CACHE';
 export const TOGGLE_VIDEO_MODAL = 'TOGGLE_VIDEO_MODAL';
+export const TOGGLE_SEARCH_RESULT_DISPLAY = 'TOGGLE_SEARCH_RESULT_DISPLAY';
 export const LAYOUT_CHANGED = 'LAYOUT_CHANGED';
 
 
@@ -77,5 +78,12 @@ export function updateLayoutAspectAction(layoutAspect: string): Object {
   return {
     type: LAYOUT_CHANGED,
     layoutAspect: layoutAspect,
+  }
+}
+
+export function toggleSearchResultsDisplay(toggle: boolean): Object {
+  return {
+    type: TOGGLE_SEARCH_RESULT_DISPLAY,
+    toggle: toggle,
   }
 }
