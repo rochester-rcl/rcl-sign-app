@@ -51,8 +51,9 @@ export default class Navigation extends Component {
 
   handleLetterChange(selectedLetter: string) {
     const { currentLetter, currentRange } = this.state;
-    if (selectedLetter !== currentLetter) {
-      this.setState({ currentLetter: selectedLetter });
+    if (selectedLetter !== currentLetter || this.props.searchResults) {
+      this.setState({ currentLetter: selectedLetter },
+        () => this.props.toggleSearchResultsDisplay(false));
       this.loadNewDefinitions(selectedLetter, currentRange, true);
     }
     this.handleModalToggle();
@@ -68,10 +69,12 @@ export default class Navigation extends Component {
 
   handleRangeSelect(selectedRange: string, index: number) {
     const { currentLetter, currentRange } = this.state;
+    this.props.toggleSearchResultsDisplay(false);
     this.handleSearchFocus(false);
     this.textInput.blur();
-    if (selectedRange !== currentRange) {
-      this.setState({ currentRange: selectedRange, currentIndex: index });
+    if (selectedRange !== currentRange || this.props.searchResults) {
+      this.setState({ currentRange: selectedRange, currentIndex: index },
+        () => this.props.toggleSearchResultsDisplay(false));
       this.loadNewDefinitions(currentLetter, selectedRange, false);
     }
   }
@@ -114,6 +117,7 @@ export default class Navigation extends Component {
 
   render() {
     const { displayModal, currentLetter, currentRange, currentIndex, searchFocused } = this.state;
+    const { searchResults } = this.props;
     let title: string = currentLetter.toUpperCase();
     return(
       <View style={NavigationStyles.navContainer}>
@@ -146,19 +150,19 @@ export default class Navigation extends Component {
           </Modal>
           <TouchableOpacity
             onPress={this.handleModalToggle}
-            style={ searchFocused ? ButtonStyles.buttonBackgroundBlurred : ButtonStyles.buttonBackground}
+            style={ searchFocused || searchResults ? ButtonStyles.buttonBackgroundBlurred : ButtonStyles.buttonBackground}
           >
-            <Text style={ searchFocused ? ButtonStyles.buttonText : ButtonStyles.selectedRangeButtonText}>{title}</Text>
+            <Text style={ searchFocused || searchResults ? ButtonStyles.buttonText : ButtonStyles.selectedRangeButtonText}>{title}</Text>
           </TouchableOpacity>
         </View>
         <View style={NavigationStyles.letterRange}>
           {this.letterRange.map((range, index) =>
             <TouchableOpacity
               key={index}
-              style={index !== currentIndex || searchFocused ? ButtonStyles.letterRangeButton : ButtonStyles.selectedRangeButton}
+              style={index !== currentIndex || searchFocused || searchResults ? ButtonStyles.letterRangeButton : ButtonStyles.selectedRangeButton}
               onPress={() => this.handleRangeSelect(range, index)}
             >
-              <Text style={index !== currentIndex || searchFocused ? ButtonStyles.buttonText : ButtonStyles.selectedRangeButtonText}>{range}</Text>
+              <Text style={index !== currentIndex || searchFocused || searchResults ? ButtonStyles.buttonText : ButtonStyles.selectedRangeButtonText}>{range}</Text>
             </TouchableOpacity>
           )}
         </View>

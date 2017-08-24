@@ -14,7 +14,6 @@ export function fetchDefinitions(language: string, letter: string, range: string
 
 export function searchDefinitions(language: string, term: string): Object {
   let endpoint: string = LSFSearchEndpoint + language + '/' + term;
-  console.log(endpoint);
   return fetch(endpoint).then((response) => {
     return response.json().then((definitions) => {
       return definitions;

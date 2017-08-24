@@ -107,7 +107,9 @@ class AppRoot extends Component {
       fetchingDefinitions,
       videoModal,
       toggleVideoModalAction,
-      layoutAspect
+      toggleSearchResultsDisplayAction,
+      searchResults,
+      layoutAspect,
     } = this.props;
     // All of our 'dumb' components will be rendered as children here.
     return(
@@ -121,12 +123,15 @@ class AppRoot extends Component {
           loadDefinitions={this.loadDefinitions}
           searchDefinitions={searchDefinitionsAction}
           flushDefinitionsCache={this.flushDefinitionsCache}
+          searchResults={searchResults}
+          toggleSearchResultsDisplay={toggleSearchResultsDisplayAction}
         />
         <DefinitionList
           currentLanguage={language}
           definitions={definitions}
           fetchingDefinitions={fetchingDefinitions}
           toggleModal={toggleVideoModalAction}
+          searchResults={searchResults}
         />
         <VideoModal
           videoModalContent={videoModal}
@@ -156,6 +161,7 @@ function mapStateToProps(state): Object {
     fetchingDefinitions: state.fetchingDefinitions,
     videoModal: state.videoModal,
     layoutAspect: state.layoutAspect,
+    searchResults: state.searchResults,
   }
 }
 

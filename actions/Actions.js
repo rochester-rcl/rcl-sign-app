@@ -81,7 +81,7 @@ export function updateLayoutAspectAction(layoutAspect: string): Object {
   }
 }
 
-export function toggleSearchResultsDisplay(toggle: boolean): Object {
+export function toggleSearchResultsDisplayAction(toggle: boolean): Object {
   return {
     type: TOGGLE_SEARCH_RESULT_DISPLAY,
     toggle: toggle,
