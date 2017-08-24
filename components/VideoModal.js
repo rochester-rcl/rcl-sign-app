@@ -18,7 +18,7 @@ import {
 import Video from 'react-native-video';
 
 // Stylesheets
-import { ModalStyles, VideoStyles } from '../styles/Styles';
+import { ModalStyles, VideoStyles, ButtonStyles } from '../styles/Styles';
 
 export default class VideoModal extends Component {
   state = {
@@ -83,6 +83,7 @@ export default class VideoModal extends Component {
     const { videoModalContent, displayModal, toggleModal, layoutAspect } = this.props;
     const { enVideoPaused, frVideoPaused, layoutAnimation } = this.state;
     const exitModal = () => {
+      console.log('hi');
       this.handlePlayback('en', true);
       this.handlePlayback('fr', true);
       toggleModal(videoModalContent, false);
@@ -100,6 +101,13 @@ export default class VideoModal extends Component {
             ModalStyles.videoModalLandscape
           }
         >
+          <TouchableOpacity
+            onPress={exitModal}
+            style={ButtonStyles.backButton}>
+            <Text style={ButtonStyles.backButtonText}>
+              back
+            </Text>
+          </TouchableOpacity>
           {this.sortVideo().map((video, index) =>
             <TouchableOpacity
               key={index}

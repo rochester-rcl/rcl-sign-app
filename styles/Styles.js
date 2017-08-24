@@ -156,6 +156,15 @@ export const ButtonStyles: Object = StyleSheet.create({
   buttonText: {
     color: '#484848',
     textAlign: 'center',
+  },
+  backButton: {
+    flexDirection: 'row',
+    zIndex: 1000,
+    flex: 0.15,
+    justifyContent: 'flex-end',
+  },
+  backButtonText: {
+    color: '#fff',
   }
 });
 
