@@ -138,6 +138,13 @@ export default class Navigation extends Component {
             visible={this.state.displayModal}
             onRequestClose={this.handleModalToggle}
             >
+            <TouchableOpacity
+              onPress={this.handleModalToggle}
+              style={ButtonStyles.backButton}>
+              <Text style={ButtonStyles.backButtonTextInverted}>
+                back
+              </Text>
+            </TouchableOpacity>
             <Text style={{marginTop: 40, alignSelf: 'center', flex: 0.25}}> Add some sort of prompt here? </Text>
             <Picker
               style={PickerStyles.languagePicker}
