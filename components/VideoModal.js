@@ -80,10 +80,9 @@ export default class VideoModal extends Component {
   }
 
   render() {
-    const { videoModalContent, displayModal, toggleModal, layoutAspect } = this.props;
+    const { videoModalContent, displayModal, toggleModal, layoutAspect, language } = this.props;
     const { enVideoPaused, frVideoPaused, layoutAnimation } = this.state;
     const exitModal = () => {
-      console.log('hi');
       this.handlePlayback('en', true);
       this.handlePlayback('fr', true);
       toggleModal(videoModalContent, false);
@@ -105,7 +104,7 @@ export default class VideoModal extends Component {
             onPress={exitModal}
             style={ButtonStyles.backButton}>
             <Text style={ButtonStyles.backButtonText}>
-              back
+              {language === 'en' ? 'back' : 'retour'}
             </Text>
           </TouchableOpacity>
           {this.sortVideo().map((video, index) =>

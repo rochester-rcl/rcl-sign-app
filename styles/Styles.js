@@ -159,7 +159,7 @@ export const ButtonStyles: Object = StyleSheet.create({
   },
   backButton: {
     flexDirection: 'column',
-    flex: 0.15,
+    flex: 0.25,
   },
   backButtonText: {
     color: '#fff',
