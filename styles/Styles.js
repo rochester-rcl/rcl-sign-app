@@ -158,13 +158,28 @@ export const ButtonStyles: Object = StyleSheet.create({
     textAlign: 'center',
   },
   backButton: {
-    flexDirection: 'row',
-    zIndex: 1000,
+    flexDirection: 'column',
     flex: 0.15,
-    justifyContent: 'flex-end',
   },
   backButtonText: {
     color: '#fff',
+    alignSelf: 'flex-end',
+    margin: 20,
+    borderColor: '#ccc',
+    borderWidth: 2,
+    padding: 5,
+    borderRadius: 5,
+    textAlign: 'center',
+  },
+  backButtonTextInverted: {
+    color: '#484848',
+    alignSelf: 'flex-end',
+    margin: 20,
+    borderColor: '#484848',
+    borderWidth: 2,
+    padding: 5,
+    borderRadius: 5,
+    textAlign: 'center',
   }
 });
 
