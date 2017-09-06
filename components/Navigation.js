@@ -33,6 +33,7 @@ export default class Navigation extends Component {
     currentIndex: 0,
     searchFocused: false,
     searchTerm: null,
+    isSearching: false,
   };
   letterRange: Array<string> = ['a-g', 'h-m', 'n-r', 's-z'];
   constructor(props: Object) {
@@ -60,7 +61,10 @@ export default class Navigation extends Component {
   }
 
   handleSearchSubmit() {
-    this.props.searchDefinitions(this.props.language, this.state.searchTerm);
+    this.setState({
+      isSearching: true,
+    },
+    () => this.props.searchDefinitions(this.props.language, this.state.searchTerm));
   }
 
   handleSearchTextChange(text: string) {
@@ -113,17 +117,27 @@ export default class Navigation extends Component {
   componentDidUpdate(prevProps: Object, prevState: Object): void {
     let { currentLetter, currentRange} = this.state;
     if (prevProps.language !== this.props.language) this.loadNewDefinitions(currentLetter, currentRange, true);
+    if (prevProps.searchResults !== this.props.searchResults) {
+        this.setState({ isSearching: this.props.searchResults });
+    }
   }
 
   render() {
-    const { displayModal, currentLetter, currentRange, currentIndex, searchFocused } = this.state;
-    const { searchResults } = this.props;
+    const { displayModal, currentLetter, currentRange, currentIndex, searchFocused, isSearching } = this.state;
+    const { searchResults, language } = this.props;
     let title: string = currentLetter.toUpperCase();
+    let promptMessage = language === 'en' ? 'Choose a letter' : 'Choisissez une lettre';
+    const searchMessage = () => {
+      if (language === 'fr') return 'Chercher ...';
+      return 'Search ...';
+    }
+
     return(
       <View style={NavigationStyles.navContainer}>
         <TextInput
           style={NavigationStyles.searchBar}
-          placeholder="Search ..."
+          placeholder={searchMessage()}
+          placeholderColor='#000'
           onFocus={() => this.handleSearchFocus(true)}
           underlineColorAndroid='#4286f4'
           ref={(ref) => this.textInput = ref}
@@ -138,7 +152,7 @@ export default class Navigation extends Component {
             visible={this.state.displayModal}
             onRequestClose={this.handleModalToggle}
             >
-            <Text style={{marginTop: 40, alignSelf: 'center', flex: 0.25}}> Add some sort of prompt here? </Text>
+            <Text style={{marginTop: 40, alignSelf: 'center', flex: 0.25}}>{promptMessage}</Text>
             <Picker
               style={PickerStyles.languagePicker}
               selectedValue={currentLetter}
@@ -150,19 +164,19 @@ export default class Navigation extends Component {
           </Modal>
           <TouchableOpacity
             onPress={this.handleModalToggle}
-            style={ searchFocused || searchResults ? ButtonStyles.buttonBackgroundBlurred : ButtonStyles.buttonBackground}
+            style={ searchFocused || searchResults || isSearching ? ButtonStyles.buttonBackgroundBlurred : ButtonStyles.buttonBackground}
           >
-            <Text style={ searchFocused || searchResults ? ButtonStyles.buttonText : ButtonStyles.selectedRangeButtonText}>{title}</Text>
+            <Text style={ searchFocused || searchResults || isSearching ? ButtonStyles.buttonText : ButtonStyles.selectedRangeButtonText}>{title}</Text>
           </TouchableOpacity>
         </View>
         <View style={NavigationStyles.letterRange}>
           {this.letterRange.map((range, index) =>
             <TouchableOpacity
               key={index}
-              style={index !== currentIndex || searchFocused || searchResults ? ButtonStyles.letterRangeButton : ButtonStyles.selectedRangeButton}
+              style={index !== currentIndex || searchFocused || searchResults || isSearching ? ButtonStyles.letterRangeButton : ButtonStyles.selectedRangeButton}
               onPress={() => this.handleRangeSelect(range, index)}
             >
-              <Text style={index !== currentIndex || searchFocused || searchResults ? ButtonStyles.buttonText : ButtonStyles.selectedRangeButtonText}>{range}</Text>
+              <Text style={index !== currentIndex || searchFocused || searchResults || isSearching ? ButtonStyles.buttonText : ButtonStyles.selectedRangeButtonText}>{range}</Text>
             </TouchableOpacity>
           )}
         </View>

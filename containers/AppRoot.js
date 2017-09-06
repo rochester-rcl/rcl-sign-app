@@ -88,6 +88,7 @@ class AppRoot extends Component {
   }
 
   setAppLanguage(language) {
+    this.props.toggleSearchResultsDisplayAction(false);
     this.props.setAppLanguageAction(language);
   }
 
@@ -117,7 +118,10 @@ class AppRoot extends Component {
         style={GlobalStyles.container}
         onLayout={this.handleLayoutChange}
         >
-        <Banner language={language} setLanguage={this.setAppLanguage}/>
+        <Banner
+          language={language}
+          setLanguage={this.setAppLanguage}
+        />
         <Navigation
           language={language}
           loadDefinitions={this.loadDefinitions}
