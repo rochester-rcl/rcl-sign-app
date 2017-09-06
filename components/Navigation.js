@@ -159,7 +159,7 @@ export default class Navigation extends Component {
                 {language === 'en' ? 'back' : 'retour'}
               </Text>
             </TouchableOpacity>
-            <Text style={{marginTop: 40, alignSelf: 'center', flex: 0.25}}> Add some sort of prompt here? </Text>
+            <Text style={{marginTop: 40, alignSelf: 'center', flex: 0.25}}>{promptMessage}</Text>
             <Picker
               style={PickerStyles.languagePicker}
               selectedValue={currentLetter}
