@@ -48,7 +48,7 @@ export function* searchDefinitionsSaga(searchDefinitionsAction: Object): Generat
     yield put({ type: 'FETCHING_DEFINITIONS', fetchingDefinitions: true });
     let definitions = yield searchDefinitions(language, term);
     if (definitions.hasOwnProperty('message')) {
-      results.error = true;
+      definitions.error = true;
     }
     results.definitions = definitions;
     yield put({ type: 'DEFINITIONS_LOADED', results: results });

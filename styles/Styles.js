@@ -160,12 +160,11 @@ export const ButtonStyles: Object = StyleSheet.create({
   backButton: {
     flexDirection: 'column',
     flex: 0.25,
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginRight: 20,
   },
   backButtonText: {
     color: '#fff',
-    alignSelf: 'center',
+    alignSelf: 'flex-end',
     marginTop: 30,
     borderColor: '#ccc',
     borderWidth: 2,
@@ -180,7 +179,7 @@ export const ButtonStyles: Object = StyleSheet.create({
   },
   backButtonTextInverted: {
     color: '#484848',
-    alignSelf: 'center',
+    alignSelf: 'flex-end',
     marginTop: 30,
     borderColor: '#484848',
     borderWidth: 2,

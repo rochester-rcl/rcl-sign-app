@@ -37,9 +37,6 @@ export default function lsfReducer(state: Object = defaultState, action: Object)
       let results = action.results;
       let definitions = results.definitions;
       let cacheInfo = results.cacheInfo ? results.cacheInfo : state.definitionsCache;
-      if (!definitions) {
-        definitions = ['No definitions found',];
-      }
       return {
         ...state,
         definitions: definitions,

@@ -32,7 +32,6 @@ export default class DefinitionList extends Component {
       if (currentLanguage === 'en') return(definitions.length + ' Results');
       return(definitions.length + ' Résultat')
     }
-
     if (definitions.length > 0 && !fetchingDefinitions) {
       if (searchResults) {
         return(
@@ -70,7 +69,7 @@ export default class DefinitionList extends Component {
           </View>
         );
       }
-  } else if (definitions.hasOwnProperty('error')) {
+  } else if (definitions.hasOwnProperty('error') && !fetchingDefinitions) {
     return (
       <View style={DefinitionListStyles.definitionListContainer}>
         <Text style={DefinitionDisplayStyles.errorMessage}>{definitions.message}</Text>
