@@ -13,8 +13,11 @@ import {
 // Styles
 import { BannerStyles } from '../styles/Styles';
 
+import IntroScreen  from './IntroScreen';
+
+
 const Banner = (props: Object) => {
-  let { language, setLanguage } = props;
+  let { language, setLanguage, introText, showIntro, toggleIntro } = props;
   return(
     <View style={BannerStyles.bannerContainer}>
       <TouchableOpacity onPress={() => { setLanguage('fr') } }>
@@ -23,7 +26,15 @@ const Banner = (props: Object) => {
         </View>
       </TouchableOpacity>
       <View style={BannerStyles.bannerImageContainer}>
-        <Image resizeMode={'contain'} style={BannerStyles.bannerImageHome} source={require('../images/home_logo.png')}/>
+        <TouchableOpacity onPress={toggleIntro}>
+          <Image resizeMode={'contain'} style={BannerStyles.bannerImageHome} source={require('../images/home_logo.png')}/>
+          <IntroScreen
+            introText={introText}
+            language={language}
+            visible={showIntro}
+            onClose={toggleIntro}
+          />
+        </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={() => { setLanguage('en') } }>
         <View style={BannerStyles.bannerImageContainer}>

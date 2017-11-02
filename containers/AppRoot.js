@@ -44,10 +44,12 @@ const fadeInOut = {
 class AppRoot extends Component {
   LAYOUT_PORTRAIT = 'LAYOUT_PORTRAIT';
   LAYOUT_LANDSCAPE = 'LAYOUT_LANDSCAPE';
+  state = { showIntroScreen: false }
   constructor(props: Object) {
     super(props);
     // Bind all methods to 'this' context here
     (this: any).setAppLanguage = this.setAppLanguage.bind(this);
+    (this: any).toggleIntroScreen = this.toggleIntroScreen.bind(this);
     (this: any).loadDefinitions = this.loadDefinitions.bind(this);
     (this: any).flushDefinitionsCache = this.flushDefinitionsCache.bind(this);
     (this: any).handleLayoutChange = this.handleLayoutChange.bind(this);
@@ -87,9 +89,13 @@ class AppRoot extends Component {
     this.props.flushDefinitionsCacheAction(callbackAction);
   }
 
-  setAppLanguage(language) {
+  setAppLanguage(language): void {
     this.props.toggleSearchResultsDisplayAction(false);
     this.props.setAppLanguageAction(language);
+  }
+
+  toggleIntroScreen(): void {
+    this.setState({ showIntroScreen: !this.state.showIntroScreen });
   }
 
   handleLayoutChange({nativeEvent}): void {
@@ -102,6 +108,7 @@ class AppRoot extends Component {
     const {
       definitions,
       language,
+      introText,
       loadDefinitionsAction,
       searchDefinitionsAction,
       definitionsCache,
@@ -112,6 +119,7 @@ class AppRoot extends Component {
       searchResults,
       layoutAspect,
     } = this.props;
+    const { showIntroScreen } = this.state;
     // All of our 'dumb' components will be rendered as children here.
     return(
       <View
@@ -121,6 +129,9 @@ class AppRoot extends Component {
         <Banner
           language={language}
           setLanguage={this.setAppLanguage}
+          introText={introText}
+          showIntro={showIntroScreen}
+          toggleIntro={this.toggleIntroScreen}
         />
         <Navigation
           language={language}
@@ -166,6 +177,7 @@ function mapStateToProps(state): Object {
     videoModal: state.videoModal,
     layoutAspect: state.layoutAspect,
     searchResults: state.searchResults,
+    introText: state.introText,
   }
 }
 

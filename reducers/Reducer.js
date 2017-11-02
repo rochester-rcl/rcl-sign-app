@@ -21,7 +21,40 @@ const defaultState: Object = {
     display: false
   },
   videoLoaded: false,
-  searchResults: false
+  searchResults: false,
+  introText: {
+    en: {
+      intro: "Thank you for choosing the LSF-ASL dictionary app developed at the University of Rochester, NY USA",
+      instructions: [
+        "Choose your search language by clicking on one of the flags.",
+        "Click on a letter to see a listing of entries alphabetically.",
+        "Use the search box to search for a specific term.",
+      ],
+      contact: {
+        message: "You will see videos of both the LSF and ASL sign for the entry you choose.",
+        link: {
+          message: "To contact us, please tap ",
+          address: "lsfaslrochester@gmail.com",
+        }
+      },
+    },
+
+    fr: {
+      intro: "Je vous remercie d’avoir choisi l’app dictionnaire de LSF-ASL développé à l’Université de Rochester, NY USA.",
+      instructions: [
+        "Choisissez votre langue de recherche en cliquant sur un des drapeaux.",
+        "Cliquez sur une lettre pour voir une liste d’entrées par ordre alphabétique.",
+        "Utiliser la zone de recherche pour rechercher un terme spécifique.",
+      ],
+      contact: {
+        message: "Vous pourrez voir des vidéos pour le signe LSF et ASL que vous choisissez.",
+        link: {
+          message: "Pour nous contacter, veuillez cliquer sur ",
+          address: "lsfaslrochester@gmail.com",
+        }
+      },
+    },
+  }
 }
 
 /*

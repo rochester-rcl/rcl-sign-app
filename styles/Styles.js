@@ -72,7 +72,7 @@ export const ModalStyles: Object = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     backgroundColor: '#000',
-  }
+  },
 });
 
 export const PickerStyles: Object = StyleSheet.create({
@@ -160,14 +160,34 @@ export const ButtonStyles: Object = StyleSheet.create({
   backButton: {
     flexDirection: 'row',
     flex: 0.25,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+  },
+  introBackButton: {
+    flexDirection: 'row',
+    flex: 0.25,
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
   },
   backButtonText: {
     color: '#fff',
     alignSelf: 'center',
-    marginTop: 20,
+    margin: 20,
     borderColor: '#ccc',
+    borderWidth: 2,
+    paddingTop: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 5,
+    borderRadius: 5,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  introBackButtonText: {
+    color: '#fff',
+    alignSelf: 'center',
+    margin: 20,
+    borderColor: '#fff',
     borderWidth: 2,
     paddingTop: 5,
     paddingLeft: 10,
@@ -180,7 +200,7 @@ export const ButtonStyles: Object = StyleSheet.create({
   backButtonTextInverted: {
     color: '#484848',
     alignSelf: 'center',
-    marginTop: 20,
+    margin: 20,
     borderColor: '#484848',
     borderWidth: 2,
     paddingTop: 5,
@@ -241,6 +261,45 @@ export const VideoStyles: Object = StyleSheet.create({
     paddingRight: 10,
     alignSelf: 'center',
   }
+})
+
+export const IntroStyles: Object = StyleSheet.create({
+  introView: {
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    flex: 1,
+    alignItems: 'center',
+  },
+  headerView: {
+    flex: 1,
+    backgroundColor: '#6ea5fa',
+    flexDirection: 'column',
+  },
+  header: {
+    fontSize: 20,
+    textAlign: 'center',
+    color: '#fff',
+    padding: 20,
+  },
+  instructions: {
+    marginTop: 20,
+    flex: 1
+  },
+  contactView: {
+    marginBottom: 20,
+    alignItems: 'center',
+    flex: 1,
+  },
+  contactText: {
+    textAlign: 'center',
+    padding: 10,
+  },
+  contactLink: {
+    color: '#6ea5fa',
+    fontSize: 16,
+    padding: 10,
+  }
+
 })
 
 export default GlobalStyles;

@@ -159,7 +159,7 @@ export default class Navigation extends Component {
                 {language === 'en' ? 'back' : 'retour'}
               </Text>
             </TouchableOpacity>
-            <Text style={{marginTop: 40, alignSelf: 'center', flex: 0.25}}>{promptMessage}</Text>
+            <Text style={{marginTop: 20, alignSelf: 'center', flex: 0.15}}>{promptMessage}</Text>
             <Picker
               style={PickerStyles.languagePicker}
               selectedValue={currentLetter}
