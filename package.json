@@ -1,0 +1,30 @@
+{
+  "name": "LSFWeb",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-redux": "^5.0.5",
+    "react-scripts": "1.1.5",
+    "react-stylesheet": "^2.2.2",
+    "redux": "^3.7.1",
+    "redux-saga": "^0.15.4",
+    "semantic-ui": "^2.4.0",
+    "uuid": "^3.1.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-jest": "18.0.0",
+    "babel-preset-flow": "^6.23.0",
+    "flow-bin": "^0.36.0",
+    "jest": "18.1.0",
+    "react-test-renderer": "15.4.2"
+  }
+}
