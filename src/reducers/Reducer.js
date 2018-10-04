@@ -1,7 +1,7 @@
 /* @flow */
 
 const defaultState: Object = {
-
+  nav: null,
   definitions: [],
   language: 'en', // defaults to English, for now
    /* an array of uuids that gets flushed every time we change a letter. Each uuid
@@ -57,6 +57,8 @@ const defaultState: Object = {
   }
 }
 
+// TODO replace all action creators with constants
+
 /*
 * Our application's reducer function that handles all the state changes.
 * Must return a copy of the state that has the new mutations - we shouldn't
@@ -66,6 +68,13 @@ const defaultState: Object = {
 */
 export default function lsfReducer(state: Object = defaultState, action: Object): Object {
   switch (action.type) {
+
+    case 'NAV_LOADED':
+      return {
+        ...state,
+        nav: action.nav
+      }
+
     case 'DEFINITIONS_LOADED':
       let results = action.results;
       let definitions = results.definitions;

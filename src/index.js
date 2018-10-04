@@ -9,7 +9,6 @@ import ReactDOM from 'react-dom';
 
 // Styles
 import './index.css';
-import './semantic/dist/semantic.min.css'
 
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';

@@ -1,7 +1,7 @@
 /* @flow */
 
 // Endpoint
-import { LSFBaseEndpoint, LSFSearchEndpoint } from '../utils/Constants';
+import { LSFBaseEndpoint, LSFSearchEndpoint, LSF_NAV_ENDPOINT } from '../utils/Constants';
 
 export function fetchDefinitions(language: string, letter: string, range: string): Object{
   let endpoint: string = LSFBaseEndpoint + language + '/' + letter + '/' + range;
@@ -19,4 +19,9 @@ export function searchDefinitions(language: string, term: string): Object {
       return definitions;
     });
   });
+}
+
+export function fetchNav(language: string): Object {
+  const endpoint: string = LSF_NAV_ENDPOINT + language;
+  return fetch(endpoint).then((response) => response.json().then((nav) => nav));
 }

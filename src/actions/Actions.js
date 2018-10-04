@@ -7,6 +7,8 @@
 */
 
 // Constants for our actions
+export const LOAD_NAV = 'LOAD_NAV';
+export const NAV_LOADED = 'NAV_LOADED';
 export const LOAD_DEFINITIONS = 'LOAD_DEFINITIONS';
 export const SEARCH_DEFINITIONS = 'SEARCH_DEFINITIONS';
 export const SET_LANGUAGE = 'SET_LANGUAGE';
@@ -85,5 +87,11 @@ export function toggleSearchResultsDisplayAction(toggle: boolean): Object {
   return {
     type: TOGGLE_SEARCH_RESULT_DISPLAY,
     toggle: toggle,
+  }
+}
+
+export function loadNavAction(): Object {
+  return {
+    type: LOAD_NAV,
   }
 }

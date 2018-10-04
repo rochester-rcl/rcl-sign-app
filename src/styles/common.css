@@ -1,0 +1,40 @@
+/* STATIC PAGES */
+.lsf-static-page-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 24px;
+  font-weight: 300;
+}
+
+.lsf-static-page-title {
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 40px !important;
+  font-weight: 700 !important;
+  color: #4e4e4e !important;
+  width: 50%;
+  text-align: center;
+}
+
+.lsf-static-page-content {
+  width: 95%;
+  font-size: 24px !important;
+}
+
+.lsf-static-page-content a {
+  color: #4177bf;
+}
+
+.lsf-static-page-content li {
+  margin-top: 15px;
+  list-style: none;
+}
+
+/* LOADER */
+.lsf-loader {
+  color: #4177bf !important;
+}

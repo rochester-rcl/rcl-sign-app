@@ -24,7 +24,7 @@ import {GlobalStyles} from '../styles/Styles';
 
 // Components
 import Banner from '../components/Banner';
-import Navigation from '../components/Navigation';
+import DictionaryNavigation from '../components/DictionaryNavigation';
 import DefinitionList from '../components/DefinitionList';
 import VideoModal from '../components/VideoModal';
 
@@ -44,7 +44,7 @@ const fadeInOut = {
     },
 };
 
-class AppRoot extends Component {
+class DictionaryContainer extends Component {
   LAYOUT_PORTRAIT = 'LAYOUT_PORTRAIT';
   LAYOUT_LANDSCAPE = 'LAYOUT_LANDSCAPE';
   state = { showIntroScreen: false }
@@ -128,14 +128,7 @@ class AppRoot extends Component {
     // All of our 'dumb' components will be rendered as children here.
     return(
       <div>
-        <Banner
-          language={language}
-          setLanguage={this.setAppLanguage}
-          introText={introText}
-          showIntro={showIntroScreen}
-          toggleIntro={this.toggleIntroScreen}
-        />
-        <Navigation
+        <DictionaryNavigation
           language={language}
           loadDefinitions={this.loadDefinitions}
           searchDefinitions={searchDefinitionsAction}
@@ -197,4 +190,4 @@ function mapActionCreatorsToProps(dispatch) {
   return bindActionCreators(AppActions, dispatch);
 }
 
-export default connect(mapStateToProps, mapActionCreatorsToProps)(AppRoot);
+export default connect(mapStateToProps, mapActionCreatorsToProps)(DictionaryContainer);
