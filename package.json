@@ -20,6 +20,7 @@
     "redux-saga": "^0.15.4",
     "semantic-ui-css": "^2.4.0",
     "semantic-ui-react": "^0.82.5",
+    "timelinejs3": "^3.4.0",
     "uuid": "^3.1.0"
   },
   "devDependencies": {

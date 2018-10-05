@@ -15,6 +15,7 @@ import * as AppActions from "../actions/Actions";
 // Containers
 
 import DictionaryContainer from "./DictionaryContainer";
+import EtymologyContainer from "./EtymologyContainer";
 
 // Components
 import StaticPage from "../components/StaticPage";
@@ -22,6 +23,8 @@ import StaticPage from "../components/StaticPage";
 import Navigation from "../components/Navigation";
 
 import Loading from "../components/Loader";
+
+import Timeline from "../components/Timeline";
 
 export class AppRouter extends Component {
   _element = React.createElement;
@@ -102,8 +105,12 @@ export class AppRouter extends Component {
       }
     }
     if (items == null) {
-      return <Loading text="Loading ..." />;
+      return <Loading text="Loading ..." page={true} />;
     } else {
+      const timelineShortcode = items.find(
+        item => item.path === "history" || item.path === "histoire"
+      ).content;
+
       return (
         <Router history={history}>
           <div className="lsf-app-root-container">
@@ -114,6 +121,15 @@ export class AppRouter extends Component {
             />
             <Route path="/dictionary" component={DictionaryContainer} />
             <Route path="/dictionnaire" component={DictionaryContainer} />
+            <Route path="/old-asl-lsf" component={EtymologyContainer} />
+            <Route
+              path="/history"
+              render={props => <Timeline src={timelineShortcode} />}
+            />
+            <Route
+              path="/histoire"
+              render={props => <Timeline src={timelineShortcode} />}
+            />
             {this.staticRoutes.map(route => (
               <Route
                 path={"/" + route.path}
@@ -140,7 +156,7 @@ function mapStateToProps(state): Object {
     definitions: state.definitions,
     language: state.language,
     definitionsCache: state.definitionsCache,
-    fetchingDefinitions: state.fetchingDefinitions,
+    fetchingDefinitions: state.fetching,
     videoModal: state.videoModal,
     layoutAspect: state.layoutAspect,
     searchResults: state.searchResults,

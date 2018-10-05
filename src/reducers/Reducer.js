@@ -1,14 +1,17 @@
 /* @flow */
 
+import * as Actions from '../actions/Actions';
+
 const defaultState: Object = {
   nav: null,
   definitions: [],
+  etymology: [],
   language: 'en', // defaults to English, for now
    /* an array of uuids that gets flushed every time we change a letter. Each uuid
    corresponds to a range in the current range, stored in AsyncStorage. The saga
    checks AsyncStorage storage for the definitions before it sends a request */
   definitionsCache: {},
-  fetchingDefinitions: false,
+  fetching: false,
   videoModal: {
     en: {
       url: null,
@@ -69,13 +72,13 @@ const defaultState: Object = {
 export default function lsfReducer(state: Object = defaultState, action: Object): Object {
   switch (action.type) {
 
-    case 'NAV_LOADED':
+    case Actions.NAV_LOADED:
       return {
         ...state,
         nav: action.nav
       }
 
-    case 'DEFINITIONS_LOADED':
+    case Actions.DEFINITIONS_LOADED:
       let results = action.results;
       let definitions = results.definitions;
       let cacheInfo = results.cacheInfo ? results.cacheInfo : state.definitionsCache;
@@ -85,37 +88,43 @@ export default function lsfReducer(state: Object = defaultState, action: Object)
         definitionsCache: {...state.definitionsCache, ...cacheInfo}
       }
 
-    case 'DEFINITIONS_CACHE_CLEARED':
+    case Actions.ETYMOLOGY_LOADED:
+      return {
+        ...state,
+        etymology: action.etymology,
+      }
+
+    case Actions.DEFINITIONS_CACHE_CLEARED:
       return {
         ...state,
         definitionsCache: {},
       }
 
-    case 'FETCHING_DEFINITIONS':
+    case Actions.FETCHING:
       return {
         ...state,
-        fetchingDefinitions: action.fetchingDefinitions,
+        fetching: action.fetching,
       }
 
-    case 'SET_LANGUAGE':
+    case Actions.SET_LANGUAGE:
       return {
         ...state,
         language: action.language,
       }
 
-    case 'TOGGLE_VIDEO_MODAL':
+    case Actions.TOGGLE_VIDEO_MODAL:
       return {
         ...state,
         videoModal: action.videoModal,
       }
 
-    case 'TOGGLE_SEARCH_RESULT_DISPLAY':
+    case Actions.TOGGLE_SEARCH_RESULT_DISPLAY:
       return {
         ...state,
         searchResults: action.toggle,
       }
 
-    case 'LAYOUT_CHANGED':
+    case Actions.LAYOUT_CHANGED:
       return {
         ...state,
         layoutAspect: action.layoutAspect,

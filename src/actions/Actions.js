@@ -10,6 +10,10 @@
 export const LOAD_NAV = 'LOAD_NAV';
 export const NAV_LOADED = 'NAV_LOADED';
 export const LOAD_DEFINITIONS = 'LOAD_DEFINITIONS';
+export const DEFINITIONS_LOADED = 'DEFINITIONS_LOADED';
+export const DEFINITIONS_CACHE_CLEARED = 'DEFINITIONS_CACHE_CLEARED';
+export const LOAD_ETYMOLOGY = 'LOAD_ETYMOLOGY';
+export const ETYMOLOGY_LOADED = 'ETYMOLOGY_LOADED';
 export const SEARCH_DEFINITIONS = 'SEARCH_DEFINITIONS';
 export const SET_LANGUAGE = 'SET_LANGUAGE';
 export const LOAD_DEFINITIONS_FROM_CACHE = 'LOAD_DEFINITIONS_FROM_CACHE';
@@ -17,6 +21,7 @@ export const FLUSH_DEFINITIONS_CACHE = 'FLUSH_DEFINITIONS_CACHE';
 export const TOGGLE_VIDEO_MODAL = 'TOGGLE_VIDEO_MODAL';
 export const TOGGLE_SEARCH_RESULT_DISPLAY = 'TOGGLE_SEARCH_RESULT_DISPLAY';
 export const LAYOUT_CHANGED = 'LAYOUT_CHANGED';
+export const FETCHING = 'FETCHING';
 
 
 /*
@@ -50,6 +55,13 @@ export function flushDefinitionsCacheAction(callbackAction: Object): Object {
   return {
     type: FLUSH_DEFINITIONS_CACHE,
     callbackAction: callbackAction,
+  }
+}
+
+export function loadEtymologyAction(etymologyQuery: Object): Object {
+  return {
+    type: LOAD_ETYMOLOGY,
+    etymologyQuery: etymologyQuery,
   }
 }
 

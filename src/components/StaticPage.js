@@ -8,7 +8,7 @@ const StaticPage = (props: Object) => {
   const { content, title } = props;
   return(
     <Segment className="lsf-static-page-container">
-      <Header className="lsf-static-page-title" as="h1" dividing>{title}</Header>
+      <h1 className="lsf-static-page-title">{title}</h1>
       <Divider horizontal/>
       <div className="lsf-static-page-content" dangerouslySetInnerHTML={{__html: content}} />
     </Segment>

@@ -1,7 +1,7 @@
 /* @flow */
 
 // Fetch
-import { fetchDefinitions, searchDefinitions, fetchNav } from "./LSFetch";
+import { fetchDefinitions, searchDefinitions, fetchEtymology, fetchNav } from "./LSFetch";
 
 // Redux Saga
 import { put } from "redux-saga/effects";
@@ -11,8 +11,10 @@ import { takeEvery } from "redux-saga/effects";
 // constants
 import {
   LOAD_DEFINITIONS,
+  LOAD_ETYMOLOGY,
+  ETYMOLOGY_LOADED,
   LOAD_NAV,
-  FETCHING_DEFINITIONS,
+  FETCHING,
   SEARCH_DEFINITIONS,
   NAV_LOADED
 } from "../actions/Actions";
@@ -48,8 +50,8 @@ export function* loadDefinitionsSaga(
   const { language, letter, range } = loadDefinitionsAction.definitionQuery;
   try {
     yield put({
-      type: "FETCHING_DEFINITIONS",
-      fetchingDefinitions: true
+      type: "FETCHING",
+      fetching: true
     });
     let definitionResults = yield fetchDefinitions(language, letter, range);
     let results = {};
@@ -68,10 +70,22 @@ export function* loadDefinitionsSaga(
       results: results
     });
     yield put({
-      type: "FETCHING_DEFINITIONS",
-      fetchingDefinitions: false
+      type: "FETCHING",
+      fetching: false
     });
   } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* loadEtymologySaga(loadEtymologyAction: Object) {
+  try {
+    const { language, letter } = loadEtymologyAction.etymologyQuery
+    yield put({ type: FETCHING, fetching: true });
+    const etymo = yield fetchEtymology(language, letter);
+    yield put({ type: ETYMOLOGY_LOADED, etymology: etymo })
+    yield put({ type: FETCHING, fetching: false });
+  } catch(error) {
     console.log(error);
   }
 }
@@ -83,8 +97,8 @@ export function* searchDefinitionsSaga(
   try {
     let results = {};
     yield put({
-      type: "FETCHING_DEFINITIONS",
-      fetchingDefinitions: true
+      type: "FETCHING",
+      fetching: true
     });
     let definitions = yield searchDefinitions(language, term);
     if (definitions.hasOwnProperty("message")) {
@@ -100,8 +114,8 @@ export function* searchDefinitionsSaga(
       toggle: true
     });
     yield put({
-      type: "FETCHING_DEFINITIONS",
-      fetchingDefinitions: false
+      type: "FETCHING",
+      fetching: false
     });
   } catch (error) {
     console.log(error);
@@ -165,6 +179,10 @@ export function* watchForLoadDefinitions(): Generator<any, any, any> {
   yield takeEvery("LOAD_DEFINITIONS", loadDefinitionsSaga);
 }
 
+export function* watchForLoadEtymology(): Generator<any, any, any> {
+  yield takeEvery(LOAD_ETYMOLOGY, loadEtymologySaga);
+}
+
 /*
  * Generator function used to listen for all LOAD_DEFINITIONS_FROM_CACHE dispatches and route them to loadDefinitionsSaga
  *
@@ -193,6 +211,7 @@ export default function* rootSaga(): Generator<any, any, any> {
   yield [
     watchForLoadNav(),
     watchForLoadDefinitions(),
+    watchForLoadEtymology(),
     watchForLoadDefinitionsFromCache(),
     watchForFlushDefinitionsCache(),
     watchForSearchDefinitions()

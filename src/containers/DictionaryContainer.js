@@ -168,7 +168,7 @@ function mapStateToProps(state): Object {
     definitions: state.definitions,
     language: state.language,
     definitionsCache: state.definitionsCache,
-    fetchingDefinitions: state.fetchingDefinitions,
+    fetchingDefinitions: state.fetching,
     videoModal: state.videoModal,
     layoutAspect: state.layoutAspect,
     searchResults: state.searchResults,
