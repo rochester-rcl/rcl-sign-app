@@ -84,8 +84,14 @@ export class AppRouter extends Component {
     const { routeTranslations } = this.state;
     const { language } = this.props;
     // remove slash from path
-    const path = pathname.substring(1);
-    history.push(routeTranslations[language][path]);
+    let path = pathname.substring(1);
+    let params = '';
+    if (path.includes("/")) {
+      const splitPath = path.split("/");
+      path = splitPath[0];
+      params = splitPath.slice(1).join('/');
+    }
+    history.push(routeTranslations[language][path] + '/' + params);
   }
 
   renderStatic(ownProps: Object, route: Object) {
@@ -121,7 +127,8 @@ export class AppRouter extends Component {
             />
             <Route path="/dictionary" component={DictionaryContainer} />
             <Route path="/dictionnaire" component={DictionaryContainer} />
-            <Route path="/old-asl-lsf" component={EtymologyContainer} />
+            <Route path="/old-asl-lsf/:letter?" component={EtymologyContainer} />
+            <Route path="/ancienne-asl-lsf/:letter?" component={EtymologyContainer} />
             <Route
               path="/history"
               render={props => <Timeline src={timelineShortcode} />}

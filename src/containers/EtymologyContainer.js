@@ -24,6 +24,21 @@ class EtymologyContainer extends Component {
     (this: any).handleSelectLetter = this.handleSelectLetter.bind(this);
   }
 
+  componentDidMount() {
+    const { letter, language, loadEtymologyAction } = this.props;
+    if (letter !== undefined) {
+      loadEtymologyAction({
+        language: language,
+        letter: letter
+      });
+    } else {
+      loadEtymologyAction({
+        language: language,
+        letter: 'a'
+      });
+    }
+  }
+
   handleSelectLetter(event: SyntheticEvent, { value }) {
     const { language, loadEtymologyAction } = this.props;
     loadEtymologyAction(
@@ -54,6 +69,7 @@ function mapStateToProps(state, ownProps: Object): Object {
     etymology: state.etymology,
     language: state.language,
     fetchingEtymology: state.fetching,
+    letter: ownProps.match.params.letter,
   }
 }
 
