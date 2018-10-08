@@ -15,6 +15,7 @@ export const DEFINITIONS_CACHE_CLEARED = 'DEFINITIONS_CACHE_CLEARED';
 export const LOAD_ETYMOLOGY = 'LOAD_ETYMOLOGY';
 export const ETYMOLOGY_LOADED = 'ETYMOLOGY_LOADED';
 export const SEARCH_DEFINITIONS = 'SEARCH_DEFINITIONS';
+export const SEARCH_ETYMOLOGY = 'SEARCH_ETYMOLOGY';
 export const SET_LANGUAGE = 'SET_LANGUAGE';
 export const LOAD_DEFINITIONS_FROM_CACHE = 'LOAD_DEFINITIONS_FROM_CACHE';
 export const FLUSH_DEFINITIONS_CACHE = 'FLUSH_DEFINITIONS_CACHE';
@@ -62,6 +63,14 @@ export function loadEtymologyAction(etymologyQuery: Object): Object {
   return {
     type: LOAD_ETYMOLOGY,
     etymologyQuery: etymologyQuery,
+  }
+}
+
+export function searchEtymologyAction(language: string, term: string): Object {
+  return {
+    type: SEARCH_ETYMOLOGY,
+    language: language,
+    term: term
   }
 }
 

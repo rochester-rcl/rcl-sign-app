@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 // Semantic UI
-import { Segment, Header } from 'semantic-ui-react';
+import { Segment, Header, Message } from 'semantic-ui-react';
 // Actions
 import * as AppActions from "../actions/Actions";
 
@@ -22,19 +22,26 @@ class EtymologyContainer extends Component {
   constructor(props: Object) {
     super(props);
     (this: any).handleSelectLetter = this.handleSelectLetter.bind(this);
+    (this: any).handleSearch = this.handleSearch.bind(this);
   }
 
   componentDidMount() {
-    const { letter, language, loadEtymologyAction } = this.props;
-    if (letter !== undefined) {
-      loadEtymologyAction({
+    const { language, letter } = this.props;
+    // kluge to load english letters at the first go because a state change won't be trigger if language === 'en'
+    if (language === 'en') {
+      this.props.loadEtymologyAction({
         language: language,
-        letter: letter
+        letter: (letter !== undefined) ? letter : 'a'
       });
-    } else {
-      loadEtymologyAction({
+    }
+  }
+
+  componentDidUpdate(prevProps: Object, prevState: Object) {
+    const { language, loadEtymologyAction, letter } = this.props;
+    if (prevProps.language !== language) {
+      this.props.loadEtymologyAction({
         language: language,
-        letter: 'a'
+        letter: (letter !== undefined) ? letter : 'a'
       });
     }
   }
@@ -47,18 +54,25 @@ class EtymologyContainer extends Component {
         letter: value,
       }
     );
+    this.props.history.push(value);
+  }
+
+  handleSearch(term: string) {
+    const { language, searchEtymologyAction } = this.props;
+    searchEtymologyAction(language, term);
   }
 
   render() {
-    const { language, etymology, fetchingEtymology } = this.props;
+    const { language, etymology, fetchingEtymology, letter } = this.props;
     const title = (language === 'en') ? 'Old ASL/LSF' : 'Ancienne ASL/LSF';
     return (
       // etymology component goes here
       <Segment className="lsf-etymology-container">
         <h1 className="lsf-static-page-title">{title}</h1>
-        <LetterNavigation language={language} onSelectLetter={this.handleSelectLetter} />
+        <LetterNavigation language={language} placeholder={(letter !== undefined) ? letter : 'A'} onSelectLetter={this.handleSelectLetter} onSearch={this.handleSearch} />
         {(fetchingEtymology === true) ? <Segment><Loading text="loading etymology" page={false} /></Segment> : null}
         {(etymology.length > 0 && fetchingEtymology === false) ? <EtymologyList etymology={etymology} language={language} /> : null}
+        {(etymology.error === true) ? <Message className="lsf-info-message">{etymology.message}</Message> : null}
       </Segment>
     )
   }
@@ -70,6 +84,7 @@ function mapStateToProps(state, ownProps: Object): Object {
     language: state.language,
     fetchingEtymology: state.fetching,
     letter: ownProps.match.params.letter,
+    history: ownProps.history,
   }
 }
 

@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 
 // semantic ui react
-import { Segment, Card, Modal, List, Image } from "semantic-ui-react";
+import { Segment, Card, Modal, List, Image, Flag } from "semantic-ui-react";
 
 class EtymologyDisplay extends Component {
   state = { active: false };
@@ -28,6 +28,8 @@ class EtymologyDisplay extends Component {
       language === "en"
         ? engEtymology.descriptionEn
         : engEtymology.descriptionFr;
+    const mainFlag = (language === "en") ? "us" : "fr";
+    const secondaryFlag = (language === "en") ? "fr" : "us";
     return (
       <div className="lsf-etymology-term" onClick={this.handleClick}>
         <h3 className="lsf-etymology-term-title">
@@ -46,17 +48,20 @@ class EtymologyDisplay extends Component {
                 <Image src={mainEtymology.imageUrl} />
                 <Card.Content>
                   <Card.Header className="etymology-term-display-header">
+                    <Flag name={mainFlag} />
                     {mainEtymology.title}
                   </Card.Header>
-                  <Card.Description>{mainDescription}</Card.Description>
+                  {(language === 'en') ? <Card.Description>{mainDescription}</Card.Description> : null}
                 </Card.Content>
               </Card>
               <Card>
                 <Image src={secondaryEtymology.imageUrl} />
                 <Card.Content>
                   <Card.Header className="etymology-term-display-header">
+                    <Flag name={secondaryFlag} />
                     {secondaryEtymology.title}
                   </Card.Header>
+                  {(language === 'fr') ? <Card.Description>{mainDescription}</Card.Description> : null}
                 </Card.Content>
               </Card>
             </Card.Group>

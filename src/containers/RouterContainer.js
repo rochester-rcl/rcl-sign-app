@@ -29,7 +29,7 @@ import Timeline from "../components/Timeline";
 export class AppRouter extends Component {
   _element = React.createElement;
 
-  state = { routeTranslations: { en: {}, fr: {} } };
+  state = { routeTranslations: { en: {}, fr: {} }, pageInitialized: false };
 
   constructor(props: Object) {
     super(props);
@@ -73,7 +73,7 @@ export class AppRouter extends Component {
     });
     // set language based on URL
     const { pathname } = history.location;
-    const path = pathname.substring(1);
+    const path = pathname.split('/')[1];
     if (translationsEn[path] !== undefined) {
       this.props.setAppLanguageAction("fr");
     }
@@ -83,15 +83,13 @@ export class AppRouter extends Component {
     const { pathname } = history.location;
     const { routeTranslations } = this.state;
     const { language } = this.props;
-    // remove slash from path
-    let path = pathname.substring(1);
-    let params = '';
-    if (path.includes("/")) {
-      const splitPath = path.split("/");
-      path = splitPath[0];
-      params = splitPath.slice(1).join('/');
-    }
-    history.push(routeTranslations[language][path] + '/' + params);
+    // a bit of a kluge but allows for additional params to be translated
+    let paths = pathname.split('/');
+    const path = paths[1];
+    const params = paths.slice(2).join('/');
+    let newPath = routeTranslations[language][path];
+    if (newPath === undefined) newPath = path;
+    history.push( '/' + newPath + '/' + params);
   }
 
   renderStatic(ownProps: Object, route: Object) {
@@ -158,7 +156,7 @@ export class AppRouter extends Component {
 *@param {Object} state - the Redux state set up in Reducer.js
 *@return {Object}
 */
-function mapStateToProps(state): Object {
+function mapStateToProps(state, ownProps): Object {
   return {
     definitions: state.definitions,
     language: state.language,

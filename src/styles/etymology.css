@@ -12,6 +12,7 @@
 .lsf-etymology-term-title {
   font-family: "Roboto Condensed", sans-serif;
   color: #4e4e4e;
+  font-weight: 400;
   cursor: pointer;
 }
 
@@ -21,6 +22,7 @@
 
 .etymology-term-display-header {
   font-family: "Roboto Condensed", sans-serif !important;
+  font-weight: 400 !important;
   color: #4e4e4e !important;
 }
 

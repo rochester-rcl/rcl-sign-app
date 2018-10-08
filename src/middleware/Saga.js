@@ -1,7 +1,7 @@
 /* @flow */
 
 // Fetch
-import { fetchDefinitions, searchDefinitions, fetchEtymology, fetchNav } from "./LSFetch";
+import { fetchDefinitions, searchDefinitions, fetchEtymology, searchEtymology, fetchNav } from "./LSFetch";
 
 // Redux Saga
 import { put } from "redux-saga/effects";
@@ -16,6 +16,7 @@ import {
   LOAD_NAV,
   FETCHING,
   SEARCH_DEFINITIONS,
+  SEARCH_ETYMOLOGY,
   NAV_LOADED
 } from "../actions/Actions";
 
@@ -83,7 +84,21 @@ export function* loadEtymologySaga(loadEtymologyAction: Object) {
     const { language, letter } = loadEtymologyAction.etymologyQuery
     yield put({ type: FETCHING, fetching: true });
     const etymo = yield fetchEtymology(language, letter);
+    if (etymo.hasOwnProperty('message')) etymo.error = true;
     yield put({ type: ETYMOLOGY_LOADED, etymology: etymo })
+    yield put({ type: FETCHING, fetching: false });
+  } catch(error) {
+    console.log(error);
+  }
+}
+
+export function* searchEtymologySaga(searchEtymologyAction: Object): Generator <any, any, any> {
+  try {
+    const { language, term } = searchEtymologyAction;
+    yield put({ type: FETCHING, fetching: true });
+    const etymo = yield searchEtymology(language, term);
+    if (etymo.hasOwnProperty('message')) etymo.error = true;
+    yield put({ type: ETYMOLOGY_LOADED, etymology: etymo });
     yield put({ type: FETCHING, fetching: false });
   } catch(error) {
     console.log(error);
@@ -203,6 +218,9 @@ export function* watchForSearchDefinitions(): Generator<any, any, any> {
   yield takeEvery("SEARCH_DEFINITIONS", searchDefinitionsSaga);
 }
 
+export function* watchForSearchEtymology(): Generator<any, any, any> {
+  yield takeEvery(SEARCH_ETYMOLOGY, searchEtymologySaga);
+}
 /*
  * Generator function that initializes all of our 'watch' sagas
  *
@@ -214,6 +232,7 @@ export default function* rootSaga(): Generator<any, any, any> {
     watchForLoadEtymology(),
     watchForLoadDefinitionsFromCache(),
     watchForFlushDefinitionsCache(),
-    watchForSearchDefinitions()
+    watchForSearchDefinitions(),
+    watchForSearchEtymology(),
   ];
 }

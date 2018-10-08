@@ -23,7 +23,7 @@ export default class Navigation extends Component {
     this.setState({
       activeItem: name
     }, () => {
-      history.push('/' + name.toLowerCase());
+      history.push('/' + name.toLowerCase() + '/');
     });
   }
 
