@@ -4,17 +4,6 @@
 import React, {Component} from 'react';
 
 // React Native
-/*
-import {
-  Text, //text
-  View, //div
-  Picker, //Renders the native picker component on iOS and Android
-  TouchableOpacity, //button
-  Modal, // The Modal component is a simple way to present content above an enclosing view.
-  TextInput, //form input
-  Keyboard // allows you to listen for native events and react to them, as well as make changes to the keyboard, like dismissing it.
-} from 'react-native';
-*/
 
 // Constants
 import {Alphabet} from '../utils/Constants';
@@ -22,7 +11,8 @@ import {Alphabet} from '../utils/Constants';
 // Stylesheets
 import {PickerStyles, NavigationStyles, ButtonStyles, ModalStyles} from '../styles/Styles';
 
-//const Item = Picker.Item;
+// Semantic UI
+import {Button, Icon, Search, Modal} from 'semantic-ui-react';
 
 export default class DictionaryNavigation extends Component {
   state: Object = {
@@ -32,8 +22,10 @@ export default class DictionaryNavigation extends Component {
     currentIndex: 0,
     searchFocused: false,
     searchTerm: null,
-    isSearching: false
+    isSearching: false,
+    open: false
   };
+
   letterRange: Array<string> = ['a-g', 'h-m', 'n-r', 's-z'];
   constructor(props : Object) {
     super(props);
@@ -48,6 +40,9 @@ export default class DictionaryNavigation extends Component {
     //(this : any).keyboardHideListener = Keyboard.addListener('keyboardDidHide', this.onKeyboardHide);
     //(this : any).keyboardShowListener = Keyboard.addListener('keyboardDidShow', this.onKeyboardShow);
   }
+
+  handleShowModal = dimmer => () => this.setState({dimmer, open: true});
+  handleCloseModal = () => this.setState({open: false});
 
   handleLetterChange(selectedLetter : string) {
     const {currentLetter, currentRange} = this.state;
@@ -94,7 +89,7 @@ export default class DictionaryNavigation extends Component {
 
   handleModalToggle() {
     this.handleSearchFocus(false);
-    this.textInput.blur();
+    this.handleShowModal('blurring');
     if (!this.state.displayModal) {
       this.setState({displayModal: true});
     } else {
@@ -131,9 +126,13 @@ export default class DictionaryNavigation extends Component {
       currentRange,
       currentIndex,
       searchFocused,
-      isSearching
+      isSearching,
+      open,
+      dimmer
     } = this.state;
+
     const {searchResults, language} = this.props;
+
     let title: string = currentLetter.toUpperCase();
     let promptMessage = language === 'en'
       ? 'Choose a letter'
@@ -144,83 +143,91 @@ export default class DictionaryNavigation extends Component {
       return 'Search ...';
     }
 
-    return (<NavigationStyles variant={{
-        navContainer: true
-      }}>
-      <NavigationStyles variant={{
-          searchBar: true
-        }} placeholder={searchMessage()} placeholderColor='#000' onFocus={() => this.handleSearchFocus(true)} underlineColorAndroid='#4286f4' ref={(ref) => this.textInput = ref} onChangeText={this.handleSearchTextChange} onSubmitEditing={this.handleSearchSubmit}/>
-      <NavigationStyles variant={{
-          letterPicker: true
-        }}>
-        <ModalStyles animationType={"fade"} transparent={false} variant={{
-            letterPickerModal: true
-          }} visible={this.state.displayModal} onRequestClose={this.handleModalToggle}>
-          <ButtonStyles onPress={this.handleModalToggle} variant={{
-              backButton: true
-            }}>
-            <ButtonStyles variant={{
-                backButtonTextInverted: true
-              }}>
-              {
-                language === 'en'
-                  ? 'back'
-                  : 'retour'
-              }
-            </ButtonStyles>
-          </ButtonStyles>
-          <p style={{
-              marginTop: 20,
-              alignSelf: 'center',
-              flex: 0.15
-            }}>{promptMessage}</p>
-          <PickerStyles variant={{
-              languagePicker: true
-            }} selectedValue={currentLetter} onValueChange={(letter) => this.handleLetterChange(letter)}>
+    return (
+    <div>
+
+      <Search
+        placeholder={searchMessage()}
+        placeholderColor='#000'
+        onSearchChange={this.handleSearchTextChange}
+        onResultSelect={this.handleSearchSubmit}/>
+
+      <Button onClick={this.handleShowModal('blurring')}>Blurring</Button>
+
+      <Modal
+        dimmer={dimmer}
+        open={open}
+        onClose={this.handleCloseModal}>
+
+        <Button
+          onClick={this.handleModalToggle}
+          >
             {
-              Alphabet.map((letter, index) => {
-                return <div key={index} label={letter.toUpperCase()} value={letter}/>
-              })
+              language === 'en'
+                ? 'back'
+                : 'retour'
             }
-          </PickerStyles>
-        </ModalStyles>
-        <ButtonStyles onPress={this.handleModalToggle} variant={searchFocused || searchResults || isSearching
-            ? {
-              buttonBackgroundBlurred: true
-            }
-            : {
-              buttonBackground: true
-            }}>
-          <ButtonStyles variant={searchFocused || searchResults || isSearching
+        </Button>
+
+        <p>{promptMessage}</p>
+
+        {/*not showing up -- need to fix*/}
+        <div
+          selectedValue={currentLetter}
+          onValueChange={(letter) => this.handleLetterChange(letter)}>
+          {
+            Alphabet.map((letter, index) => {
+              return (<div key={index} label={letter.toUpperCase()} value={letter}/>)
+            })
+          }
+        </div>
+
+      </Modal>
+
+        <span>
+
+          <Button
+            onClick={this.handleModalToggle}
+            variant={searchFocused || searchResults || isSearching
               ? {
-                buttonText: true
+                buttonBackgroundBlurred: true
               }
               : {
-                selectedRangeButtonText: true
-              }}>{title}</ButtonStyles>
-        </ButtonStyles>
-      </NavigationStyles>
-      <NavigationStyles variant={{
-          letterRange: true
-        }}>
-        {
-          this.letterRange.map((range, index) => <ButtonStyles key={index} variant={index !== currentIndex || searchFocused || searchResults || isSearching
-              ? {
-                letterRangeButton: true
-              }
-              : {
-                selectedRangeButton: true
-              }} onPress={() => this.handleRangeSelect(range, index)}>
-            <ButtonStyles variant={index !== currentIndex || searchFocused || searchResults || isSearching
+                buttonBackground: true
+              }}>{title}
+
+            {/*<Button variant={searchFocused || searchResults || isSearching
                 ? {
                   buttonText: true
                 }
                 : {
                   selectedRangeButtonText: true
-                }}>{range}</ButtonStyles>
-          </ButtonStyles>)
-        }
-      </NavigationStyles>
-    </NavigationStyles>);
+                }}>{title}
+            </Button>*/}
+
+          </Button>
+
+          <div>
+            {
+              this.letterRange.map((range, index) => <Button key={index} variant={index !== currentIndex || searchFocused || searchResults || isSearching
+                  ? {
+                    letterRangeButton: true
+                  }
+                  : {
+                    selectedRangeButton: true
+                  }} onPress={() => this.handleRangeSelect(range, index)}>{range}
+                {/*<Button variant={index !== currentIndex || searchFocused || searchResults || isSearching
+                    ? {
+                      buttonText: true
+                    }
+                    : {
+                      selectedRangeButtonText: true
+                    }}>{range}</Button>*/}
+                </Button>)
+            }
+        </div>
+      </span>
+    </div>
+    );
   }
 }

@@ -45,6 +45,7 @@ const fadeInOut = {
 };
 
 class DictionaryContainer extends Component {
+
   LAYOUT_PORTRAIT = 'LAYOUT_PORTRAIT';
   LAYOUT_LANDSCAPE = 'LAYOUT_LANDSCAPE';
   state = { showIntroScreen: false }
@@ -128,21 +129,21 @@ class DictionaryContainer extends Component {
     // All of our 'dumb' components will be rendered as children here.
     return(
       <div>
-        <DictionaryNavigation
+        {<DictionaryNavigation
           language={language}
           loadDefinitions={this.loadDefinitions}
           searchDefinitions={searchDefinitionsAction}
           flushDefinitionsCache={this.flushDefinitionsCache}
           searchResults={searchResults}
           toggleSearchResultsDisplay={toggleSearchResultsDisplayAction}
-        />
-        <DefinitionList
+        />}
+        {<DefinitionList
           currentLanguage={language}
           definitions={definitions}
           fetchingDefinitions={fetchingDefinitions}
           toggleModal={toggleVideoModalAction}
           searchResults={searchResults}
-        />
+        />}
         <VideoModal
           videoModalContent={videoModal}
           language={language}
