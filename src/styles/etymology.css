@@ -1,0 +1,32 @@
+.lsf-etymology-container {
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+}
+.lsf-etymology-list-container {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.lsf-etymology-term-title {
+  font-family: "Roboto Condensed", sans-serif;
+  color: #4e4e4e;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.lsf-etymology-term-title:hover {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.etymology-term-display-header {
+  font-family: "Roboto Condensed", sans-serif !important;
+  font-weight: 400 !important;
+  color: #4e4e4e !important;
+}
+
+.lsf-etymology-display > * {
+  font-family: "Roboto Condensed", sans-serif;
+  color: #4e4e4e;
+}

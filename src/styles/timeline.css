@@ -1,0 +1,20 @@
+.lsf-timeline-container {
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.tl-timeline {
+  height: 100%;
+  width: 100%;
+}
+
+.tl-timeline > * {
+  font-family: "Roboto Condensed", sans-serif !important;
+}
+
+.tl-headline {
+  font-family: "Roboto Condensed", sans-serif !important;
+  font-weight: 400;
+}
