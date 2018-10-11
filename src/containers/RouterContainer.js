@@ -135,8 +135,9 @@ export class AppRouter extends Component {
               path="/histoire"
               render={props => <Timeline src={timelineShortcode} />}
             />
-            {this.staticRoutes.map(route => (
+          {this.staticRoutes.map((route, index) => (
               <Route
+                key={index++}
                 path={"/" + route.path}
                 render={props => this.renderStatic(props, route)}
               />

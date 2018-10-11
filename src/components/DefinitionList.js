@@ -43,7 +43,7 @@ export default class DefinitionList extends Component {
     if (definitions.length > 0 && !fetchingDefinitions) {
       if (searchResults) {
         return (
-          <DefinitionListStyles variant = {{ definitionListContainer: true }}>
+          <div>
             <p style={{
                 alignSelf: 'center',
                 marginBottom: 5
@@ -57,35 +57,35 @@ export default class DefinitionList extends Component {
                 <DefinitionDisplay
                   engDefinition={data.eng_definition} frDefinition={data.fr_definition} currentLanguage={currentLanguage} toggleModal={toggleModal}/>}/>
             */}
-          </DefinitionListStyles>
+          </div>
         );
       } else {
         return (
-          <DefinitionListStyles variant = {{ definitionListContainer: true }}>
+          <div >
             {definitions.map((data) =>
               <DefinitionDisplay
                 engDefinition={data.eng_definition} frDefinition={data.fr_definition} currentLanguage={currentLanguage}
                 toggleModal={toggleModal}/>)
             }
 
-          </DefinitionListStyles>
+          </div>
         );
       }
     } else if (definitions.hasOwnProperty('error') && !fetchingDefinitions) {
       return (
-        <DefinitionListStyles variant = {{ definitionListContainer: true }}>
+        <div >
           <DefinitionDisplayStyles variant = {{ errorMessage: true }}>
             {definitions.message}
           </DefinitionDisplayStyles>
-        </DefinitionListStyles>
+        </div>
       );
     } else {
       return (
-        <DefinitionListStyles variant = {{ definitionListContainer: true }}>
-          <button animating={true} style={{
+        <div >
+          <button style={{
               top: 100
             }} size="large" color='#4286f4'/>
-        </DefinitionListStyles>
+        </div>
       );
     }
   }

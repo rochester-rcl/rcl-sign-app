@@ -40,6 +40,7 @@ export default class Navigation extends Component {
         <Menu borderless className="lsf-nav-menu">
           {items.map(item => (
             <Menu.Item
+              key={item.path}
               name={item.path}
               active={activeItem === item.path}
               onClick={this.handleClick}

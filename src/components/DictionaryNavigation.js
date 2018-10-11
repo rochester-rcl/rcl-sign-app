@@ -23,6 +23,7 @@ export default class DictionaryNavigation extends Component {
     searchFocused: false,
     searchTerm: null,
     isSearching: false,
+    isActive: false,
     open: false
   };
 
@@ -35,14 +36,30 @@ export default class DictionaryNavigation extends Component {
     (this : any).handleSearchSubmit = this.handleSearchSubmit.bind(this);
     (this : any).handleSearchTextChange = this.handleSearchTextChange.bind(this);
     (this : any).loadNewDefinitions = this.loadNewDefinitions.bind(this);
+    (this: any).handleShowModal = this.handleShowModal.bind(this);
+    (this: any).handleCloseModal = this.handleCloseModal.bind(this);
+    (this: any).handleActiveSelection = this.handleActiveSelection.bind(this);
     (this : any).onKeyboardHide = this.onKeyboardHide.bind(this);
     (this : any).onKeyboardShow = this.onKeyboardShow.bind(this);
     //(this : any).keyboardHideListener = Keyboard.addListener('keyboardDidHide', this.onKeyboardHide);
     //(this : any).keyboardShowListener = Keyboard.addListener('keyboardDidShow', this.onKeyboardShow);
   }
 
-  handleShowModal = dimmer => () => this.setState({dimmer, open: true});
-  handleCloseModal = () => this.setState({open: false});
+  handleShowModal = dimmer => () =>
+  {
+    this.setState({dimmer, open: true})
+    this.handleActiveSelection();
+  }
+
+  handleCloseModal = () =>
+  {
+    this.setState({open: false});
+  }
+
+  handleActiveSelection = () =>
+  {
+      this.setState({isActive: true});
+  }
 
   handleLetterChange(selectedLetter : string) {
     const {currentLetter, currentRange} = this.state;
@@ -69,7 +86,7 @@ export default class DictionaryNavigation extends Component {
     const {currentLetter, currentRange} = this.state;
     this.props.toggleSearchResultsDisplay(false);
     this.handleSearchFocus(false);
-    this.textInput.blur();
+    //this.textInput.blur();
     if (selectedRange !== currentRange || this.props.searchResults) {
       this.setState({
         currentRange: selectedRange,
@@ -148,18 +165,17 @@ export default class DictionaryNavigation extends Component {
 
       <Search
         placeholder={searchMessage()}
-        placeholderColor='#000'
         onSearchChange={this.handleSearchTextChange}
         onResultSelect={this.handleSearchSubmit}/>
 
-      <Button onClick={this.handleShowModal('blurring')}>Blurring</Button>
+      {/*<Button onClick={this.handleShowModal('blurring')}>Blurring</Button>*/}
 
       <Modal
         dimmer={dimmer}
         open={open}
         onClose={this.handleCloseModal}>
 
-        <Button
+        {/*<Button
           onClick={this.handleModalToggle}
           >
             {
@@ -167,65 +183,70 @@ export default class DictionaryNavigation extends Component {
                 ? 'back'
                 : 'retour'
             }
-        </Button>
+        </Button>*/}
 
-        <p>{promptMessage}</p>
+        <Modal.Header>{promptMessage}</Modal.Header>
 
         {/*not showing up -- need to fix*/}
-        <div
+        <Modal.Content
+          scrolling
+          size='small'
           selectedValue={currentLetter}
           onValueChange={(letter) => this.handleLetterChange(letter)}>
+          <div role='list' class='ui link list center aligned container'>
           {
             Alphabet.map((letter, index) => {
-              return (<div key={index} label={letter.toUpperCase()} value={letter}/>)
+              return (
+                <a
+                  role='listitem'
+                  class='item'
+                  key={index}
+                  label={letter.toUpperCase()}
+                  value={letter}>
+                  {letter.toUpperCase()}
+                </a>)
             })
           }
-        </div>
+          </div>
+        </Modal.Content>
 
       </Modal>
 
-        <span>
+        <Button
+          onClick={this.handleShowModal('bluring')}
+          >{title}
 
-          <Button
-            onClick={this.handleModalToggle}
-            variant={searchFocused || searchResults || isSearching
+          {/*<Button variant={searchFocused || searchResults || isSearching
               ? {
-                buttonBackgroundBlurred: true
+                buttonText: true
               }
               : {
-                buttonBackground: true
+                selectedRangeButtonText: true
               }}>{title}
+          </Button>*/}
 
-            {/*<Button variant={searchFocused || searchResults || isSearching
+        </Button>
+
+        <span>
+
+          {
+            this.letterRange.map((range, index) => <Button key={index} variant={index !== currentIndex || searchFocused || searchResults || isSearching
                 ? {
-                  buttonText: true
+                  letterRangeButton: true
                 }
                 : {
-                  selectedRangeButtonText: true
-                }}>{title}
-            </Button>*/}
-
-          </Button>
-
-          <div>
-            {
-              this.letterRange.map((range, index) => <Button key={index} variant={index !== currentIndex || searchFocused || searchResults || isSearching
+                  selectedRangeButton: true
+                }} onClick={() => this.handleRangeSelect(range, index)}>{range}
+              {/*<Button variant={index !== currentIndex || searchFocused || searchResults || isSearching
                   ? {
-                    letterRangeButton: true
+                    buttonText: true
                   }
                   : {
-                    selectedRangeButton: true
-                  }} onPress={() => this.handleRangeSelect(range, index)}>{range}
-                {/*<Button variant={index !== currentIndex || searchFocused || searchResults || isSearching
-                    ? {
-                      buttonText: true
-                    }
-                    : {
-                      selectedRangeButtonText: true
-                    }}>{range}</Button>*/}
-                </Button>)
-            }
-        </div>
+                    selectedRangeButtonText: true
+                  }}>{range}</Button>*/}
+              </Button>)
+          }
+
       </span>
     </div>
     );
