@@ -136,7 +136,6 @@ export default class Navigation extends Component {
       if (language === 'fr') return 'Chercher ...';
       return 'Search ...';
     }
-    console.log(layoutAspect === 'LAYOUT_LANDSCAPE');
     return(
       <View style={layoutAspect === 'LAYOUT_LANDSCAPE' ? NavigationStyles.navContainerLandscape : NavigationStyles.navContainer}>
         <TextInput
@@ -156,6 +155,7 @@ export default class Navigation extends Component {
             style={ModalStyles.letterPickerModal}
             visible={this.state.displayModal}
             onRequestClose={this.handleModalToggle}
+            supportedOrientations={['portrait', 'landscape']}
             >
             <TouchableOpacity
               onPress={this.handleModalToggle}

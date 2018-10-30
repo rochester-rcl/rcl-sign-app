@@ -33,6 +33,7 @@ const IntroScreen = (props: Object) => {
       transparent={false}
       visible={visible}
       onRequestClose={onClose}
+      supportedOrientations={['portrait', 'landscape']}
       >
       <View style={IntroStyles.introView}>
         <View style={IntroStyles.headerView}>

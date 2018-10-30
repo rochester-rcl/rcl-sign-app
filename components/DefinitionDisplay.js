@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import {
   Text,
   View,
+  Platform,
   Image,
   TouchableOpacity } from 'react-native';
 
@@ -22,7 +23,10 @@ import { DefinitionDisplayStyles } from '../styles/Styles';
       return(
         <View>
           <TouchableOpacity onPress={selectVideos}>
-            <Text style={DefinitionDisplayStyles.definition}>{engDefinition.title + ' / ' + frDefinition.title}</Text>
+            <Text style={
+              Platform.OS === 'ios' ? DefinitionDisplayStyles.definitionIOS :
+              DefinitionDisplayStyles.definition}>{engDefinition.title + ' / ' + frDefinition.title}
+            </Text>
           </TouchableOpacity>
         </View>
       );

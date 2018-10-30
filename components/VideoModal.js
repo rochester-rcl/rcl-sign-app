@@ -93,6 +93,7 @@ export default class VideoModal extends Component {
         animationType={"fade"}
         transparent={false}
         visible={displayModal}
+        supportedOrientations={['portrait', 'landscape']}
         onRequestClose={exitModal}>
         <View
           style={

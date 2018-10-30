@@ -94,7 +94,6 @@ export const NavigationStyles: Object = StyleSheet.create({
     alignSelf: 'stretch',
     elevation: 10,
     shadowColor: '#ccc',
-    backgroundColor: '#fff',
   },
   navContainerLandscape: {
     flex: 0.5,
@@ -119,6 +118,10 @@ export const NavigationStyles: Object = StyleSheet.create({
     flex: 0.4,
     flexDirection: 'row',
     alignItems: 'center',
+    shadowColor: '#ccc',
+    shadowRadius: 1,
+    shadowOpacity: 0.4,
+    shadowOffset: { width: 2, height: 2 }
   },
   hideNav: {
     display: 'none',
@@ -241,6 +244,12 @@ export const DefinitionDisplayStyles: Object = StyleSheet.create({
     borderBottomColor: "#ddd",
     borderBottomWidth: 1,
   },
+  definitionIOS: {
+    color: "#484848",
+    margin: 10,
+    textDecorationLine: "underline",
+    textDecorationColor: "#ddd",
+  },
   errorMessage: {
     flex: 1,
     alignSelf: 'center',
@@ -287,11 +296,13 @@ export const IntroStyles: Object = StyleSheet.create({
     flex: 1,
     backgroundColor: '#6ea5fa',
     flexDirection: 'column',
+    alignSelf: 'stretch',
   },
   header: {
     fontSize: 20,
     textAlign: 'center',
     color: '#fff',
+    flex: 1,
   },
   instructions: {
     marginTop: 20,
