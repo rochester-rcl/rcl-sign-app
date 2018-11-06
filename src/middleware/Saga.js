@@ -28,9 +28,7 @@ import {
 // uuid
 const uuidv4 = require("uuid/v4");
 
-export function* loadNavSaga(
-  loadNavigationAction: Object
-): Generator<Promise<Object>, any, any> {
+export function* loadNavSaga(loadNavigationAction: Object): Generator<Promise<Object>, any, any> {
   try {
     const engNav = yield fetchNav("en");
     const frNav = yield fetchNav("fr");
@@ -45,9 +43,7 @@ export function* loadNavSaga(
  * @param {Object} [loadDefinitionsAction = {type: LOAD_DEFINITIONS, definitionQuery: {language: 'en', letter: 'a', range:'a-g'}]
  *
  */
-export function* loadDefinitionsSaga(
-  loadDefinitionsAction: Object
-): Generator<Promise<Object>, any, any> {
+export function* loadDefinitionsSaga(loadDefinitionsAction: Object): Generator<Promise<Object>, any, any> {
   const { language, letter, range } = loadDefinitionsAction.definitionQuery;
   try {
     yield put({
@@ -105,9 +101,7 @@ export function* searchEtymologySaga(searchEtymologyAction: Object): Generator <
   }
 }
 
-export function* searchDefinitionsSaga(
-  searchDefinitionsAction: Object
-): Generator<Promise<Object>, any, any> {
+export function* searchDefinitionsSaga(searchDefinitionsAction: Object): Generator<Promise<Object>, any, any> {
   let { language, term } = searchDefinitionsAction;
   try {
     let results = {};
@@ -137,9 +131,7 @@ export function* searchDefinitionsSaga(
   }
 }
 
-export function* loadDefinitionsFromCacheSaga(
-  action: Object
-): Generator<Promise<Object>, any, any> {
+export function* loadDefinitionsFromCacheSaga(action: Object): Generator<Promise<Object>, any, any> {
   try {
     const cachedDefinitionResults = yield localStorage.getItem(action.uuid);
     let results = {};
@@ -154,9 +146,7 @@ export function* loadDefinitionsFromCacheSaga(
   }
 }
 
-export function* flushDefinitionsCacheSaga(
-  action: Object
-): Generator<Promise<Object>, any, any> {
+export function* flushDefinitionsCacheSaga(action: Object): Generator<Promise<Object>, any, any> {
   try {
     const cacheCleared = yield localStorage.getAllKeys().then(keys => {
       if (keys) {

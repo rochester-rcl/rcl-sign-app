@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 
 // React Native
-//import {Text, View, ListView, ActivityIndicator} from 'react-native';
+import {Container, Modal, Segment} from 'semantic-ui-react';
 
 // Styles
 import {DefinitionListStyles, DefinitionDisplayStyles} from '../styles/Styles';
@@ -32,6 +32,7 @@ export default class DefinitionList extends Component {
     */
 
   render() {
+    console.log(this.props);
     const {definitions, currentLanguage, fetchingDefinitions, searchResults, toggleModal} = this.props;
 
     const searchResultMessage = () => {
@@ -41,6 +42,7 @@ export default class DefinitionList extends Component {
     };
 
     if (definitions.length > 0 && !fetchingDefinitions) {
+      console.log(definitions);
       if (searchResults) {
         return (
           <DefinitionListStyles variant = {{ definitionListContainer: true }}>
@@ -61,31 +63,33 @@ export default class DefinitionList extends Component {
         );
       } else {
         return (
-          <DefinitionListStyles variant = {{ definitionListContainer: true }}>
+          <div>
             {definitions.map((data) =>
               <DefinitionDisplay
-                engDefinition={data.eng_definition} frDefinition={data.fr_definition} currentLanguage={currentLanguage}
+                engDefinition={data.eng_definition} frDefinition={data.fr_definition}
+                currentLanguage={currentLanguage}
                 toggleModal={toggleModal}/>)
             }
 
-          </DefinitionListStyles>
+          </div>
         );
       }
     } else if (definitions.hasOwnProperty('error') && !fetchingDefinitions) {
       return (
-        <DefinitionListStyles variant = {{ definitionListContainer: true }}>
-          <DefinitionDisplayStyles variant = {{ errorMessage: true }}>
+        <div >
+          <div>
             {definitions.message}
-          </DefinitionDisplayStyles>
-        </DefinitionListStyles>
+          </div>
+        </div>
       );
     } else {
       return (
-        <DefinitionListStyles variant = {{ definitionListContainer: true }}>
-          <button animating={true} style={{
+        <div>
+          <button
+            animating={true} style={{
               top: 100
             }} size="large" color='#4286f4'/>
-        </DefinitionListStyles>
+        </div>
       );
     }
   }

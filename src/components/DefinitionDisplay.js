@@ -23,7 +23,7 @@ import { DefinitionDisplayStyles } from '../styles/Styles';
       return(
         <div>
           <button onPress={selectVideos}>
-            <DefinitionDisplayStyles variant={{ definition: true }}>{engDefinition.title + ' / ' + frDefinition.title}</DefinitionDisplayStyles>
+            <div>{engDefinition.title + ' / ' + frDefinition.title}</div>
           </button>
         </div>
       );
@@ -31,7 +31,7 @@ import { DefinitionDisplayStyles } from '../styles/Styles';
       return(
         <div>
           <button onPress={selectVideos}>
-            <DefinitionDisplayStyles variant={{ definition: true }}>{frDefinition.title + ' / ' + engDefinition.title}</DefinitionDisplayStyles>
+            <div>{frDefinition.title + ' / ' + engDefinition.title}</div>
           </button>
         </div>
       );

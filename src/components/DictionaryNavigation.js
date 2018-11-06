@@ -3,18 +3,15 @@
 // React
 import React, {Component} from 'react';
 
-// React Native
-/*
+// Semantic ui react
 import {
-  Text, //text
-  View, //div
-  Picker, //Renders the native picker component on iOS and Android
-  TouchableOpacity, //button
-  Modal, // The Modal component is a simple way to present content above an enclosing view.
-  TextInput, //form input
-  Keyboard // allows you to listen for native events and react to them, as well as make changes to the keyboard, like dismissing it.
-} from 'react-native';
-*/
+  Container,
+  Button,
+  Modal,
+  Menu,
+  Search,
+  Dropdown
+} from 'semantic-ui-react';
 
 // Constants
 import {Alphabet} from '../utils/Constants';
@@ -38,7 +35,8 @@ export default class DictionaryNavigation extends Component {
   constructor(props : Object) {
     super(props);
     (this : any).handleLetterChange = this.handleLetterChange.bind(this);
-    (this : any).handleModalToggle = this.handleModalToggle.bind(this);
+    (this : any).handleOnOpen = this.handleOnOpen.bind(this);
+    (this : any).handleOnClose = this.handleOnClose.bind(this);
     (this : any).handleRangeSelect = this.handleRangeSelect.bind(this);
     (this : any).handleSearchSubmit = this.handleSearchSubmit.bind(this);
     (this : any).handleSearchTextChange = this.handleSearchTextChange.bind(this);
@@ -74,7 +72,7 @@ export default class DictionaryNavigation extends Component {
     const {currentLetter, currentRange} = this.state;
     this.props.toggleSearchResultsDisplay(false);
     this.handleSearchFocus(false);
-    this.textInput.blur();
+    //this.textInput.blur();
     if (selectedRange !== currentRange || this.props.searchResults) {
       this.setState({
         currentRange: selectedRange,
@@ -92,14 +90,14 @@ export default class DictionaryNavigation extends Component {
     }, clearCache);
   }
 
-  handleModalToggle() {
+  handleOnOpen(){
     this.handleSearchFocus(false);
-    this.textInput.blur();
-    if (!this.state.displayModal) {
-      this.setState({displayModal: true});
-    } else {
-      this.setState({displayModal: false});
-    }
+    //this.textInput.blur();
+    this.setState({displayModal: true});
+  }
+
+  handleOnClose(){
+    this.setState({displayModal: false});
   }
 
   handleSearchFocus(focusState : boolean): void {
@@ -144,83 +142,62 @@ export default class DictionaryNavigation extends Component {
       return 'Search ...';
     }
 
-    return (<NavigationStyles variant={{
-        navContainer: true
-      }}>
-      <NavigationStyles variant={{
-          searchBar: true
-        }} placeholder={searchMessage()} placeholderColor='#000' onFocus={() => this.handleSearchFocus(true)} underlineColorAndroid='#4286f4' ref={(ref) => this.textInput = ref} onChangeText={this.handleSearchTextChange} onSubmitEditing={this.handleSearchSubmit}/>
-      <NavigationStyles variant={{
-          letterPicker: true
-        }}>
-        <ModalStyles animationType={"fade"} transparent={false} variant={{
-            letterPickerModal: true
-          }} visible={this.state.displayModal} onRequestClose={this.handleModalToggle}>
-          <ButtonStyles onPress={this.handleModalToggle} variant={{
-              backButton: true
-            }}>
-            <ButtonStyles variant={{
-                backButtonTextInverted: true
-              }}>
+    return (
+      <Container>
+        <Search
+          onFocus={() => this.handleSearchFocus(true)}
+          onSearchChange={this.handleSearchTextChange}
+          onResultSelect={this.handleSearchSubmit}/>
+        <Modal
+          trigger=
+          {
+            <Button
+              onClick={this.handleOnOpen}>
+              {title}
+            </Button>
+          }
+          open={this.state.displayModal}
+          onClose={this.handleOnClose}>
+
+          <Modal.Content>
+            <div style={{
+                marginTop: 20,
+                alignSelf: 'center',
+                flex: 0.15
+              }}>{promptMessage}</div>
+            <Dropdown
+              placeholder='Select Letter'
+              fluid
+              multiple 
+              search
+              selection
+              options={Alphabet} />
+)
+            <PickerStyles variant={{
+                languagePicker: true
+              }} selectedValue={currentLetter} onValueChange={(letter) => this.handleLetterChange(letter)}>
               {
-                language === 'en'
-                  ? 'back'
-                  : 'retour'
+                Alphabet.map((letter, index) => {
+                  return <div key={index} label={letter.toUpperCase()} value={letter}/>
+                })
               }
-            </ButtonStyles>
-          </ButtonStyles>
-          <p style={{
-              marginTop: 20,
-              alignSelf: 'center',
-              flex: 0.15
-            }}>{promptMessage}</p>
-          <PickerStyles variant={{
-              languagePicker: true
-            }} selectedValue={currentLetter} onValueChange={(letter) => this.handleLetterChange(letter)}>
-            {
-              Alphabet.map((letter, index) => {
-                return <div key={index} label={letter.toUpperCase()} value={letter}/>
-              })
-            }
-          </PickerStyles>
-        </ModalStyles>
-        <ButtonStyles onPress={this.handleModalToggle} variant={searchFocused || searchResults || isSearching
-            ? {
-              buttonBackgroundBlurred: true
-            }
-            : {
-              buttonBackground: true
-            }}>
-          <ButtonStyles variant={searchFocused || searchResults || isSearching
-              ? {
-                buttonText: true
-              }
-              : {
-                selectedRangeButtonText: true
-              }}>{title}</ButtonStyles>
-        </ButtonStyles>
-      </NavigationStyles>
-      <NavigationStyles variant={{
-          letterRange: true
-        }}>
-        {
-          this.letterRange.map((range, index) => <ButtonStyles key={index} variant={index !== currentIndex || searchFocused || searchResults || isSearching
-              ? {
-                letterRangeButton: true
-              }
-              : {
-                selectedRangeButton: true
-              }} onPress={() => this.handleRangeSelect(range, index)}>
-            <ButtonStyles variant={index !== currentIndex || searchFocused || searchResults || isSearching
-                ? {
-                  buttonText: true
-                }
-                : {
-                  selectedRangeButtonText: true
-                }}>{range}</ButtonStyles>
-          </ButtonStyles>)
-        }
-      </NavigationStyles>
-    </NavigationStyles>);
+            </PickerStyles>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button onClick={this.handleOnClose}>
+              {language === 'en' ? 'back' : 'retour'}
+            </Button>
+          </Modal.Actions>
+
+        </Modal>
+        <div>
+          {
+            this.letterRange.map((range, index) =>
+              <Button key={index} onClick={() => this.handleRangeSelect(range, index)}>
+                {range}
+              </Button>)
+          }
+        </div>
+      </Container>);
   }
 }
