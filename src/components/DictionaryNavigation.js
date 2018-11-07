@@ -10,11 +10,13 @@ import {
   Modal,
   Menu,
   Search,
-  Dropdown
+  Dropdown,
+  Segment,
+  Icon
 } from 'semantic-ui-react';
 
 // Constants
-import {Alphabet} from '../utils/Constants';
+import {Alphabet, AlphabetMap} from '../utils/Constants';
 
 // Stylesheets
 import {PickerStyles, NavigationStyles, ButtonStyles, ModalStyles} from '../styles/Styles';
@@ -47,15 +49,16 @@ export default class DictionaryNavigation extends Component {
     //(this : any).keyboardShowListener = Keyboard.addListener('keyboardDidShow', this.onKeyboardShow);
   }
 
-  handleLetterChange(selectedLetter : string) {
+  handleLetterChange(selectedLetter : string, {value}) {
+    console.log(value);
     const {currentLetter, currentRange} = this.state;
-    if (selectedLetter !== currentLetter || this.props.searchResults) {
+    if (value !== currentLetter || this.props.searchResults) {
       this.setState({
-        currentLetter: selectedLetter
+        currentLetter: value
       }, () => this.props.toggleSearchResultsDisplay(false));
-      this.loadNewDefinitions(selectedLetter, currentRange, true);
+      this.loadNewDefinitions(value, currentRange, true);
     }
-    this.handleModalToggle();
+    //this.handleModalToggle();
   }
 
   handleSearchSubmit() {
@@ -144,14 +147,20 @@ export default class DictionaryNavigation extends Component {
 
     return (
       <Container>
-        <Search
-          onFocus={() => this.handleSearchFocus(true)}
-          onSearchChange={this.handleSearchTextChange}
-          onResultSelect={this.handleSearchSubmit}/>
+        <Segment>
+          <Search
+            onFocus={() => this.handleSearchFocus(true)}
+            onSearchChange={this.handleSearchTextChange}
+            onResultSelect={this.handleSearchSubmit}/>
+        </Segment>
+        <Modal.Header>
+          {promptMessage}
+        </Modal.Header>
         <Modal
           trigger=
           {
             <Button
+              color='green'
               onClick={this.handleOnOpen}>
               {title}
             </Button>
@@ -160,44 +169,33 @@ export default class DictionaryNavigation extends Component {
           onClose={this.handleOnClose}>
 
           <Modal.Content>
-            <div style={{
-                marginTop: 20,
-                alignSelf: 'center',
-                flex: 0.15
-              }}>{promptMessage}</div>
+        
             <Dropdown
-              placeholder='Select Letter'
-              fluid
-              multiple 
+              button
+              className='icon'
+              floating
+              labeled
+              scrolling
+              onChange={this.handleLetterChange}
+              icon='world'
+              options={AlphabetMap}
               search
-              selection
-              options={Alphabet} />
-)
-            <PickerStyles variant={{
-                languagePicker: true
-              }} selectedValue={currentLetter} onValueChange={(letter) => this.handleLetterChange(letter)}>
-              {
-                Alphabet.map((letter, index) => {
-                  return <div key={index} label={letter.toUpperCase()} value={letter}/>
-                })
-              }
-            </PickerStyles>
+              text='Select Letter' />
           </Modal.Content>
           <Modal.Actions>
             <Button onClick={this.handleOnClose}>
               {language === 'en' ? 'back' : 'retour'}
             </Button>
           </Modal.Actions>
-
         </Modal>
-        <div>
+        <span>
           {
             this.letterRange.map((range, index) =>
               <Button key={index} onClick={() => this.handleRangeSelect(range, index)}>
                 {range}
               </Button>)
           }
-        </div>
+        </span>
       </Container>);
   }
 }
