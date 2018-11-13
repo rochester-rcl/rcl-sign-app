@@ -31,6 +31,7 @@ export const FETCHING = 'FETCHING';
 * @ return {Object}
 */
 export function loadDefinitionsAction(definitionQuery: Object): Object {
+  console.log(definitionQuery);
   return {
     type: LOAD_DEFINITIONS,
     definitionQuery: definitionQuery,

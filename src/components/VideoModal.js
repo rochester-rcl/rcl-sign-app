@@ -4,20 +4,12 @@
 import React, {Component} from 'react';
 
 // React Native
-/*
-import {
-  Text,
-  View,
-  Modal,
-  TouchableOpacity,
-  Image,
-  Animated,
-  StyleSheet
-} from 'react-native';
 
-// Video Component
-import Video from 'react-native-video';
-*/
+import {
+  Modal,
+  Button
+} from 'semantic-ui-react';
+
 // Stylesheets
 import {ModalStyles, VideoStyles, ButtonStyles} from '../styles/Styles';
 
@@ -102,36 +94,49 @@ export default class VideoModal extends Component {
     };
 
     return (
-      <div animationType={"fade"} transparent={false} visible={displayModal} onRequestClose={exitModal}>
-      <ModalStyles variant={layoutAspect === 'LAYOUT_PORTRAIT'
-          ? {videoModalPortrait: true}
-          : {videoModalLandscape: true}}
-      >
-        <ButtonStyles onPress={exitModal} variant={{backButton: true}}>
-          <p style={ButtonStyles.backButtonText}>
-            {
-              language === 'en'
-                ? 'back'
-                : 'retour'
-            }
-          </p>
-        </ButtonStyles>
+      <Modal
+        open={displayModal}
+        onClose={exitModal}>
+
+        <Button onClick={exitModal}>
+          {
+            language === 'en'
+            ? 'back'
+            : 'retour'
+          }
+        </Button>
         {
-          this.sortVideo().map((video, index) => <ButtonStyles key={index} style={VideoStyles.touchableVideo} onPress={() => this.handlePlayback(video.lang)}>
-            <video style={VideoStyles.videoPlayer} source={{
-                uri: video.url
-              }} ref={video.ref} onError={(error) => console.log(error)} resizeMode='contain' paused={video.lang === 'en'
-                ? enVideoPaused
-                : frVideoPaused} onTimedMetadata={(event) => console.log(event)} onLoad={() => this.handleOnLoad(video.lang)} onEnd={() => this.handleOnEnd(video.lang)}/>
-              <div style={VideoStyles.videoTitleContainer}>
-              <img resizeMode={'cover'} style={VideoStyles.videoImage} source={video.lang === 'en'
+          this.sortVideo().map( (video, index) =>
+          {
+            <div>
+              <Button
+                key={index}
+                onClick={() => this.handlePlayback(video.lang)}>
+              </Button>
+              <div>
+                <img
+                source={video.lang === 'en'
                   ? require('../images/us_flag.png')
                   : require('../images/fr_flag.png')}/>
-                <p style={VideoStyles.videoTitle}>{video.title}</p>
+                {video.title}
+              </div>
+              <video
+                source={{
+                  uri: video.url
+                }}
+                ref={video.ref}
+                onError={(error) => console.log(error)}
+                resizeMode='contain'
+                paused={video.lang === 'en'
+                  ? enVideoPaused
+                  : frVideoPaused}
+                  onTimedMetadata={(event) => console.log(event)}
+                  onLoad={() => this.handleOnLoad(video.lang)}
+                  onEnd={() => this.handleOnEnd(video.lang)}/>
             </div>
-          </ButtonStyles>)
+            }
+          )
         }
-      </ModalStyles>
-    </div>);
+    </Modal>);
   }
 }

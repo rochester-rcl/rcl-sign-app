@@ -49,6 +49,18 @@ export default class DictionaryNavigation extends Component {
     //(this : any).keyboardShowListener = Keyboard.addListener('keyboardDidShow', this.onKeyboardShow);
   }
 
+  componentDidMount(){
+    console.log(this.props.loadDefinitions);
+  }
+
+  componentDidUpdate(prevProps : Object, prevState : Object): void {
+    let {currentLetter, currentRange} = this.state;
+    if (prevProps.language !== this.props.language)
+      this.loadNewDefinitions(currentLetter, currentRange, true);
+    if (prevProps.searchResults !== this.props.searchResults) {
+      this.setState({isSearching: this.props.searchResults});
+    }
+  }
   handleLetterChange(selectedLetter : string, {value}) {
     console.log(value);
     const {currentLetter, currentRange} = this.state;
@@ -86,6 +98,7 @@ export default class DictionaryNavigation extends Component {
   }
 
   loadNewDefinitions(currentLetter : string, currentRange : string, clearCache : boolean): void {
+    console.log(currentLetter);
     this.props.loadDefinitions({
       language: this.props.language,
       letter: currentLetter,
@@ -169,7 +182,7 @@ export default class DictionaryNavigation extends Component {
           onClose={this.handleOnClose}>
 
           <Modal.Content>
-        
+
             <Dropdown
               button
               className='icon'

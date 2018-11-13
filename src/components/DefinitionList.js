@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 
 // React Native
-import {Container, Modal, Segment} from 'semantic-ui-react';
+import {Container, Modal, Segment, Button} from 'semantic-ui-react';
 
 // Styles
 import {DefinitionListStyles, DefinitionDisplayStyles} from '../styles/Styles';
@@ -64,9 +64,11 @@ export default class DefinitionList extends Component {
       } else {
         return (
           <div>
-            {definitions.map((data) =>
+            {definitions.map((data, index) =>
               <DefinitionDisplay
-                engDefinition={data.eng_definition} frDefinition={data.fr_definition}
+                key={index++}
+                engDefinition={data.eng_definition}
+                frDefinition={data.fr_definition}
                 currentLanguage={currentLanguage}
                 toggleModal={toggleModal}/>)
             }
@@ -85,10 +87,8 @@ export default class DefinitionList extends Component {
     } else {
       return (
         <div>
-          <button
-            animating={true} style={{
-              top: 100
-            }} size="large" color='#4286f4'/>
+          <Button
+            primary/>
         </div>
       );
     }

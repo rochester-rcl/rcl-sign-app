@@ -44,6 +44,7 @@ export function* loadNavSaga(loadNavigationAction: Object): Generator<Promise<Ob
  *
  */
 export function* loadDefinitionsSaga(loadDefinitionsAction: Object): Generator<Promise<Object>, any, any> {
+  console.log(loadDefinitionsAction);
   const { language, letter, range } = loadDefinitionsAction.definitionQuery;
   try {
     yield put({
@@ -61,6 +62,7 @@ export function* loadDefinitionsSaga(loadDefinitionsAction: Object): Generator<P
     } else {
       definitionResults.error = true;
     }
+    console.log(results);
     results.definitions = definitionResults;
     yield put({
       type: "DEFINITIONS_LOADED",
@@ -148,6 +150,7 @@ export function* loadDefinitionsFromCacheSaga(action: Object): Generator<Promise
 
 export function* flushDefinitionsCacheSaga(action: Object): Generator<Promise<Object>, any, any> {
   try {
+    /*
     const cacheCleared = yield localStorage.getAllKeys().then(keys => {
       if (keys) {
         return localStorage.multiRemove(keys).then(errors => {
@@ -161,6 +164,9 @@ export function* flushDefinitionsCacheSaga(action: Object): Generator<Promise<Ob
         return false;
       }
     });
+    */
+   localStorage.clear();
+   const cacheCleared = true;
     if (cacheCleared) {
       yield put({
         type: "DEFINITIONS_CACHE_CLEARED"
