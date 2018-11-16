@@ -45,21 +45,17 @@ export default class DefinitionList extends Component {
       console.log(definitions);
       if (searchResults) {
         return (
-          <DefinitionListStyles variant = {{ definitionListContainer: true }}>
-            <p style={{
-                alignSelf: 'center',
-                marginBottom: 5
-              }}>{searchResultMessage()}</p>
-            {definitions.map((data) =>
+          <div>
+            <span>{searchResultMessage()}</span>
+            {definitions.map((data, index) =>
               <DefinitionDisplay
-                engDefinition={data.eng_definition} frDefinition={data.fr_definition} currentLanguage={currentLanguage}
-                toggleModal={toggleModal}/>)}
-            {/*
-            <ListView dataSource={this.definitionData.cloneWithRows(definitions)}renderRow={(data) =>
-                <DefinitionDisplay
-                  engDefinition={data.eng_definition} frDefinition={data.fr_definition} currentLanguage={currentLanguage} toggleModal={toggleModal}/>}/>
-            */}
-          </DefinitionListStyles>
+                key={index++}
+                engDefinition={data.eng_definition}
+                frDefinition={data.fr_definition}
+                currentLanguage={currentLanguage}
+                toggleModal={toggleModal}/>)
+            }
+          </div>
         );
       } else {
         return (

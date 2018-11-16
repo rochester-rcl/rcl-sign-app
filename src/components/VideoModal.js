@@ -7,7 +7,12 @@ import React, {Component} from 'react';
 
 import {
   Modal,
-  Button
+  Button,
+  Container,
+  Header,
+  Segment,
+  Grid,
+  Image
 } from 'semantic-ui-react';
 
 // Stylesheets
@@ -28,8 +33,15 @@ export default class VideoModal extends Component {
     (this : any).handlePlayback = this.handlePlayback.bind(this);
     (this : any).handleOnEnd = this.handleOnEnd.bind(this);
   }
+  componentDidMount() {
+    console.log(this.props);
+  }
 
+  componentWillReceiveProps(nextProps) {
+    console.log(this.nextProps);
+  }
   sortVideo(): Array<Object> {
+    console.log(this.props);
     let {videoModalContent} = this.props;
     let {en, fr} = videoModalContent;
     let videos = [
@@ -95,48 +107,66 @@ export default class VideoModal extends Component {
 
     return (
       <Modal
+        closeIcon 
         open={displayModal}
         onClose={exitModal}>
-
-        <Button onClick={exitModal}>
-          {
-            language === 'en'
-            ? 'back'
-            : 'retour'
-          }
-        </Button>
-        {
-          this.sortVideo().map( (video, index) =>
-          {
-            <div>
-              <Button
-                key={index}
-                onClick={() => this.handlePlayback(video.lang)}>
-              </Button>
-              <div>
-                <img
-                source={video.lang === 'en'
-                  ? require('../images/us_flag.png')
-                  : require('../images/fr_flag.png')}/>
-                {video.title}
-              </div>
-              <video
-                source={{
-                  uri: video.url
-                }}
-                ref={video.ref}
-                onError={(error) => console.log(error)}
-                resizeMode='contain'
-                paused={video.lang === 'en'
-                  ? enVideoPaused
-                  : frVideoPaused}
-                  onTimedMetadata={(event) => console.log(event)}
-                  onLoad={() => this.handleOnLoad(video.lang)}
-                  onEnd={() => this.handleOnEnd(video.lang)}/>
-            </div>
+        <Header
+          content='FSL-ASL'/>
+        <Modal.Content>
+          <Grid
+            container
+            columns='equal'>
+            <Grid.Row>
+            {
+              this.sortVideo().map((video, index) =>
+                <Grid.Column
+                  width={8}
+                  key={index}>
+                  {/*<Button
+                    onClick={() => this.handlePlayback(video.lang)}>
+                    something
+                  </Button>*/}
+                  <Grid>
+                    <Grid.Row>
+                      <Grid.Column width={4}>
+                        <Image
+                          size='tiny'
+                          src={video.lang === 'en'
+                            ? require('../images/us_flag.png')
+                            : require('../images/fr_flag.png')}/>
+                      </Grid.Column>
+                      <Grid.Column width={8}>
+                        <Header
+                          size="medium"
+                          color="blue"
+                          content={video.title}/>
+                      </Grid.Column>
+                    </Grid.Row>
+                  </Grid>
+                  <video
+                    controls
+                    src={video.url}
+                    ref={video.ref}
+                    onError={(error) => console.log(error)}
+                    onLoad={() => this.handleOnLoad(video.lang)}/>
+                </Grid.Column>
+              )
             }
-          )
-        }
+            </Grid.Row>
+          </Grid>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button
+            primary
+            inverted
+            onClick={exitModal}>
+            {
+              language === 'en'
+              ? 'back'
+              : 'retour'
+            }
+          </Button>
+        </Modal.Actions>
     </Modal>);
   }
 }

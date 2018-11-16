@@ -22,7 +22,7 @@ import { DefinitionDisplayStyles } from '../styles/Styles';
     if (props.currentLanguage === 'en') {
       return(
         <div>
-          <button onPress={selectVideos}>
+          <button onClick={selectVideos}>
             <div>{engDefinition.title + ' / ' + frDefinition.title}</div>
           </button>
         </div>
@@ -30,7 +30,7 @@ import { DefinitionDisplayStyles } from '../styles/Styles';
     } else {
       return(
         <div>
-          <button onPress={selectVideos}>
+          <button onClick={selectVideos}>
             <div>{frDefinition.title + ' / ' + engDefinition.title}</div>
           </button>
         </div>
