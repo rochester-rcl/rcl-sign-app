@@ -35,9 +35,12 @@ export default class Navigation extends Component {
   render() {
     const { items, language } = this.props;
     const { activeItem } = this.state;
+
     if (items !== null) {
       return (
-        <Menu borderless className="lsf-nav-menu">
+        <Menu
+          borderless
+          className="lsf-nav-menu">
           {items.map((item, index) => (
             <Menu.Item
               key={index++}

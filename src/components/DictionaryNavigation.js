@@ -159,7 +159,9 @@ export default class DictionaryNavigation extends Component {
     }
 
     return (
-      <Container>
+      <Segment
+        attached="top"
+        inverted>
         <Segment>
           <Search
             onFocus={() => this.handleSearchFocus(true)}
@@ -209,6 +211,6 @@ export default class DictionaryNavigation extends Component {
               </Button>)
           }
         </span>
-      </Container>);
+      </Segment>);
   }
 }

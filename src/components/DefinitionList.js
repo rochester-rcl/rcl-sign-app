@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 
 // React Native
-import {Container, Modal, Segment, Button} from 'semantic-ui-react';
+import {Container, Modal, Segment, Button, Card} from 'semantic-ui-react';
 
 // Styles
 import {DefinitionListStyles, DefinitionDisplayStyles} from '../styles/Styles';
@@ -45,8 +45,10 @@ export default class DefinitionList extends Component {
       console.log(definitions);
       if (searchResults) {
         return (
-          <div>
-            <span>{searchResultMessage()}</span>
+          <Card.Group
+            centered
+            itemsPerRow={4}>
+            <span>{searchResultMessage}</span>
             {definitions.map((data, index) =>
               <DefinitionDisplay
                 key={index++}
@@ -55,11 +57,13 @@ export default class DefinitionList extends Component {
                 currentLanguage={currentLanguage}
                 toggleModal={toggleModal}/>)
             }
-          </div>
+          </Card.Group>
         );
       } else {
         return (
-          <div>
+          <Card.Group
+            centered
+            itemsPerRow={4}>
             {definitions.map((data, index) =>
               <DefinitionDisplay
                 key={index++}
@@ -69,7 +73,7 @@ export default class DefinitionList extends Component {
                 toggleModal={toggleModal}/>)
             }
 
-          </div>
+          </Card.Group>
         );
       }
     } else if (definitions.hasOwnProperty('error') && !fetchingDefinitions) {

@@ -4,15 +4,14 @@
 import React, { Component } from 'react';
 
 // React Native
-/*
+
 import {
-  Text,
-  View,
-  Image,
-  TouchableOpacity } from 'react-native';
-*/
-// Styles
-import { DefinitionDisplayStyles } from '../styles/Styles';
+  Card,
+  Button,
+  Icon,
+  Flag
+} from 'semantic-ui-react';
+
 
   const DefinitionDisplay = (props: Object) => {
     const { engDefinition, frDefinition, toggleModal } = props;
@@ -21,19 +20,30 @@ import { DefinitionDisplayStyles } from '../styles/Styles';
     }
     if (props.currentLanguage === 'en') {
       return(
-        <div>
-          <button onClick={selectVideos}>
-            <div>{engDefinition.title + ' / ' + frDefinition.title}</div>
-          </button>
-        </div>
+        <Card
+          onClick={selectVideos}
+          color='blue'>
+          <Card.Content>
+            <Card.Header>
+            {engDefinition.title + ' / ' + frDefinition.title}
+            </Card.Header>
+          </Card.Content>
+        </Card>
+
       );
     } else {
       return(
-        <div>
-          <button onClick={selectVideos}>
-            <div>{frDefinition.title + ' / ' + engDefinition.title}</div>
-          </button>
-        </div>
+
+        <Card
+          onClick={selectVideos}
+          color='violet'>
+          <Card.Content>
+            <Card.Header>
+            {frDefinition.title + ' / ' + engDefinition.title}
+            </Card.Header>
+          </Card.Content>
+        </Card>
+
       );
     }
   }
