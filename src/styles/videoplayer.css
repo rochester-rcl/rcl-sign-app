@@ -1,0 +1,26 @@
+.lsf-app-video-container {
+  position: relative;
+  background: #000;
+  display: flex;
+}
+
+.lsf-app-video-controls {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  margin: 20px;
+}
+
+.lsf-app-video {
+  z-index: 1;
+  width: 100%;
+  height: auto;
+}
+
+.lsf-app-video-button {
+  opacity: 0.8;
+  margin-bottom: 10px !important;
+}

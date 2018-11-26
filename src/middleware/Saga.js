@@ -32,6 +32,7 @@ export function* loadNavSaga(loadNavigationAction: Object): Generator<Promise<Ob
   try {
     const engNav = yield fetchNav("en");
     const frNav = yield fetchNav("fr");
+    console.log(engNav);
     yield put({ type: NAV_LOADED, nav: { en: engNav, fr: frNav } });
   } catch (error) {
     console.log(error);
@@ -44,7 +45,6 @@ export function* loadNavSaga(loadNavigationAction: Object): Generator<Promise<Ob
  *
  */
 export function* loadDefinitionsSaga(loadDefinitionsAction: Object): Generator<Promise<Object>, any, any> {
-  console.log(loadDefinitionsAction);
   const { language, letter, range } = loadDefinitionsAction.definitionQuery;
   try {
     yield put({

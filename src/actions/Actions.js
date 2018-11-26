@@ -88,7 +88,6 @@ export function setAppLanguageAction(language: string): Object {
 }
 
 export function toggleVideoModalAction(videos: Object, display: boolean): Object {
-  console.log('toggle video fired');
   return {
     type: TOGGLE_VIDEO_MODAL,
     videoModal: {

@@ -26,6 +26,8 @@ import Loading from "../components/Loader";
 
 import Timeline from "../components/Timeline";
 
+import Intro from "../components/Intro";
+
 export class AppRouter extends Component {
   _element = React.createElement;
 
@@ -73,7 +75,7 @@ export class AppRouter extends Component {
     });
     // set language based on URL
     const { pathname } = history.location;
-    const path = pathname.split('/')[1];
+    const path = pathname.split("/")[1];
     if (translationsEn[path] !== undefined) {
       this.props.setAppLanguageAction("fr");
     }
@@ -84,12 +86,12 @@ export class AppRouter extends Component {
     const { routeTranslations } = this.state;
     const { language } = this.props;
     // a bit of a kluge but allows for additional params to be translated
-    let paths = pathname.split('/');
+    let paths = pathname.split("/");
     const path = paths[1];
-    const params = paths.slice(2).join('/');
+    const params = paths.slice(2).join("/");
     let newPath = routeTranslations[language][path];
     if (newPath === undefined) newPath = path;
-    history.push( '/' + newPath + '/' + params);
+    history.push("/" + newPath + "/" + params);
   }
 
   renderStatic(ownProps: Object, route: Object) {
@@ -111,9 +113,15 @@ export class AppRouter extends Component {
     if (items == null) {
       return <Loading text="Loading ..." page={true} />;
     } else {
+
       const timelineShortcode = items.find(
         item => item.path === "history" || item.path === "histoire"
       ).content;
+
+      const intro = items.find(
+        item => item.path == "intro"
+      );
+
 
       return (
         <Router history={history}>
@@ -123,10 +131,17 @@ export class AppRouter extends Component {
               language={language}
               handleSelectLanguage={setAppLanguageAction}
             />
+            <Route path="/intro" render={props => <Intro shortcode={intro.content} title={intro.title} /> }/>
             <Route path="/dictionary" component={DictionaryContainer} />
             <Route path="/dictionnaire" component={DictionaryContainer} />
-            <Route path="/old-asl-lsf/:letter?" component={EtymologyContainer} />
-            <Route path="/ancienne-asl-lsf/:letter?" component={EtymologyContainer} />
+            <Route
+              path="/old-asl-lsf/:letter?"
+              component={EtymologyContainer}
+            />
+            <Route
+              path="/ancienne-asl-lsf/:letter?"
+              component={EtymologyContainer}
+            />
             <Route
               path="/history"
               render={props => <Timeline src={timelineShortcode} />}
@@ -135,7 +150,7 @@ export class AppRouter extends Component {
               path="/histoire"
               render={props => <Timeline src={timelineShortcode} />}
             />
-          {this.staticRoutes.map((route, index) => (
+            {this.staticRoutes.map((route, index) => (
               <Route
                 key={index++}
                 path={"/" + route.path}
