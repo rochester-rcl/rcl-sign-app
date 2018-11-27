@@ -119,9 +119,8 @@ export class AppRouter extends Component {
       ).content;
 
       const intro = items.find(
-        item => item.path == "intro"
+        item => item.path === "intro"
       );
-
 
       return (
         <Router history={history}>

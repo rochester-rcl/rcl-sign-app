@@ -21,6 +21,7 @@ export default class Intro extends Component {
     this.handleFullscreenChange = this.handleFullscreenChange.bind(this);
     this.pause = this.pause.bind(this);
     this.showCaptions = this.showCaptions.bind(this);
+    this.setSrc = this.setSrc.bind(this);
     this.fullscreen = this.fullscreen.bind(this);
     this.isFullscreen = this.isFullscreen.bind(this);
   }
@@ -42,6 +43,7 @@ export default class Intro extends Component {
 
   componentDidUpdate(prevProps: Object, prevState: Object) {
     const { paused, showCaptions, fullscreen } = this.state;
+    const { src } = this.props;
     if (paused !== prevState.paused) {
       this.pause(paused);
     }
@@ -49,6 +51,12 @@ export default class Intro extends Component {
     if (showCaptions !== prevState.showCaptions) {
       this.showCaptions(showCaptions);
     }
+
+    if (src !== prevProps.src) {
+      this.setSrc(src);
+    }
+
+
   }
 
   togglePause() {
@@ -160,8 +168,16 @@ export default class Intro extends Component {
 
   showCaptions() {}
 
+  setSrc(src) {
+    if (this.player !== undefined) {
+      this.player.setAttribute('src', src);
+      this.player.load();
+    }
+  }
+
   render() {
     const { src, captions, className, id } = this.props;
+    console.log(captions);
     const { paused, fullscreen } = this.state;
     let _className = "lsf-app-video ";
     _className += className !== undefined ? className : "";
@@ -172,6 +188,7 @@ export default class Intro extends Component {
       >
         <video id={id} ref={ref => (this.player = ref)} className={_className}>
           <source src={src} />
+          <track label="English" kind="captions" srcLang="en" src={captions} default />
         </video>
         <div className="lsf-app-video-controls">
           <Button

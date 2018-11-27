@@ -18,6 +18,14 @@ export default class Intro extends Component {
     const re = /mp4="(.*?)"/g;
     return re.exec(shortcode)[1];
   }
+
+  getCaptions(): Array<String> {
+    const { shortcode } = this.props;
+    const re = /href="(.*?)"/g;
+    const res = re.exec(shortcode);
+    if (res !== null) return res[1];
+  }
+
   render() {
     const { title } = this.props;
     return(
@@ -26,6 +34,7 @@ export default class Intro extends Component {
         <Divider horizontal/>
         <VideoPlayer
           className="intro-video"
+          captions={this.getCaptions()}
           src={this.getVideo()}
         />
       </Segment>
