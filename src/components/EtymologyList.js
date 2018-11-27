@@ -45,20 +45,32 @@ class EtymologyDisplay extends Component {
           <Modal.Content className="lsf-etymology-display">
             <Card.Group centered>
               <Card>
-                <Image src={mainEtymology.imageUrl} />
-                <Card.Content>
-                  <Card.Header className="etymology-term-display-header">
-                    <Flag name={mainFlag} />
-                    {mainEtymology.title}
-                  </Card.Header>
-                  {(language === 'en') ? <Card.Description>{mainDescription}</Card.Description> : null}
-                </Card.Content>
+                  <Image src={mainEtymology.imageUrl} />
+                    <Card.Content>
+                    <Card.Header className="lsf-app-card-header">
+                      <Image
+                        floated='left'
+                        size='mini'
+                        src={language !== 'en'
+                        ? require('../images/us_flag.png')
+                        : require('../images/fr_flag.png')}
+                      />
+                      {mainEtymology.title}
+                    </Card.Header>
+                    {(language === 'en') ? <Card.Description>{mainDescription}</Card.Description> : null}
+                  </Card.Content>
               </Card>
               <Card>
                 <Image src={secondaryEtymology.imageUrl} />
                 <Card.Content>
-                  <Card.Header className="etymology-term-display-header">
-                    <Flag name={secondaryFlag} />
+                  <Card.Header className="lsf-app-card-header">
+                    <Image
+                      floated='left'
+                      size='mini'
+                      src={language !== 'en'
+                      ? require('../images/fr_flag.png')
+                      : require('../images/us_flag.png')}
+                    />
                     {secondaryEtymology.title}
                   </Card.Header>
                   {(language === 'fr') ? <Card.Description>{mainDescription}</Card.Description> : null}

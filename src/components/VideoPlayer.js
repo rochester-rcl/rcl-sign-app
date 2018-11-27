@@ -177,18 +177,18 @@ export default class Intro extends Component {
 
   render() {
     const { src, captions, className, id } = this.props;
-    console.log(captions);
     const { paused, fullscreen } = this.state;
-    let _className = "lsf-app-video ";
+    let _className = "lsf-app-video-container ";
     _className += className !== undefined ? className : "";
+    _className += (fullscreen === true) ? " fullscreen" : "";
     return (
       <div
         ref={ref => (this.playerContainer = ref)}
-        className="lsf-app-video-container"
+        className={_className}
       >
-        <video id={id} ref={ref => (this.player = ref)} className={_className}>
+        <video id={id} ref={ref => (this.player = ref)} className="lsf-app-video">
           <source src={src} />
-          <track label="English" kind="captions" srcLang="en" src={captions} default />
+          {(captions !== undefined) ? <track label="English" kind="captions" srcLang="en" src={captions} default /> : null}
         </video>
         <div className="lsf-app-video-controls">
           <Button

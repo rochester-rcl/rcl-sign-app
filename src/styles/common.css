@@ -99,3 +99,13 @@
   font-size: 24px;
   font-weight: 300;
 }
+
+/*** FLAGS ***/
+.lsf-app-card-header {
+  display: flex !important;
+  justify-content: baseline;
+  align-items: center;
+  font-family: "Roboto Condensed", sans-serif !important;
+  font-weight: 400 !important;
+  color: #4e4e4e !important;
+}

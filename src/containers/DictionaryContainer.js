@@ -123,8 +123,7 @@ class DictionaryContainer extends Component {
       searchResults,
       layoutAspect,
     } = this.props;
-    console.log(this.props);
-    console.log(this.state);
+
     const { showIntroScreen } = this.state;
     // All of our 'dumb' components will be rendered as children here.
     return(

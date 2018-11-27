@@ -3,6 +3,7 @@
 @import url('styles/common.css');
 @import url('styles/timeline.css');
 @import url('styles/videoplayer.css');
+@import url('styles/dictionary.css');
 @import url('styles/etymology.css');
 body {
   margin: 0;
