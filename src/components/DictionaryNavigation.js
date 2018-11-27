@@ -61,6 +61,7 @@ export default class DictionaryNavigation extends Component {
       this.setState({isSearching: this.props.searchResults});
     }
   }
+
   handleLetterChange(selectedLetter : string, {value}) {
     console.log(value);
     const {currentLetter, currentRange} = this.state;

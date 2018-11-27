@@ -15,37 +15,18 @@ import {
 
   const DefinitionDisplay = (props: Object) => {
     const { engDefinition, frDefinition, toggleModal } = props;
+    const mainDefinition = (props.currentLanguage === 'en') ? engDefinition.title : frDefinition.title;
+    const secondaryDefinition = (props.currentLanguage === 'en') ? frDefinition.title : engDefinition.title;
     const selectVideos = () => {
       toggleModal({en: engDefinition, fr: frDefinition}, true);
     }
-    if (props.currentLanguage === 'en') {
-      return(
-        <Card
-          onClick={selectVideos}
-          color='blue'>
-          <Card.Content>
-            <Card.Header>
-            {engDefinition.title + ' / ' + frDefinition.title}
-            </Card.Header>
-          </Card.Content>
-        </Card>
-
-      );
-    } else {
-      return(
-
-        <Card
-          onClick={selectVideos}
-          color='violet'>
-          <Card.Content>
-            <Card.Header>
-            {frDefinition.title + ' / ' + engDefinition.title}
-            </Card.Header>
-          </Card.Content>
-        </Card>
-
-      );
-    }
+    return(
+      <div className="lsf-etymology-term" onClick={selectVideos}>
+        <h3 className="lsf-etymology-term-title">
+          {mainDefinition + ' / ' + secondaryDefinition}
+        </h3>
+      </div>
+    );
   }
 
   export default DefinitionDisplay;

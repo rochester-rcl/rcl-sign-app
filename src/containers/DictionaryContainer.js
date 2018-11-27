@@ -24,9 +24,14 @@ import {GlobalStyles} from '../styles/Styles';
 
 // Components
 import Banner from '../components/Banner';
+import Loading from "../components/Loader";
 import DictionaryNavigation from '../components/DictionaryNavigation';
+import LetterNavigation from '../components/LetterNavigation';
 import DefinitionList from '../components/DefinitionList';
 import VideoModal from '../components/VideoModal';
+
+// semantic ui react
+import { Segment, Message } from 'semantic-ui-react';
 
 /*
 if (Platform.OS === 'android') {
@@ -74,18 +79,8 @@ class DictionaryContainer extends Component {
     }
   }
 
-  loadDefinitions(definitionQuery: Object, clearCache: boolean) {
-    let { range } = definitionQuery;
-    let { definitionsCache } = this.props;
-    if (clearCache) {
-      this.flushDefinitionsCache(this.props.loadDefinitionsAction(definitionQuery));
-    } else {
-      if (this.props.definitionsCache.hasOwnProperty(range)) {
-        this.props.loadDefinitionsFromCacheAction(definitionsCache[range]);
-      } else {
-        this.props.loadDefinitionsAction(definitionQuery);
-      }
-    }
+  loadDefinitions(definitionQuery: Object) {
+    this.props.loadDefinitionsAction(definitionQuery);
   }
 
   flushDefinitionsCache(callbackAction: Object): void {
@@ -98,7 +93,6 @@ class DictionaryContainer extends Component {
   }
 
   toggleIntroScreen(): void {
-    console.log("this event fired");
     this.setState({ showIntroScreen: !this.state.showIntroScreen });
   }
 
@@ -123,34 +117,48 @@ class DictionaryContainer extends Component {
       searchResults,
       layoutAspect,
     } = this.props;
-
     const { showIntroScreen } = this.state;
+    const title = (language === "en") ? "Dictionary" : "Dictionnaire";
     // All of our 'dumb' components will be rendered as children here.
     return(
-      <div>
-        <DictionaryNavigation
+      <Segment className="lsf-app-dictionary-container">
+        <h1 className="lsf-static-page-title">{title}</h1>
+        <LetterNavigation
           language={language}
-          loadDefinitions={this.loadDefinitions}
-          searchDefinitions={searchDefinitionsAction}
-          flushDefinitionsCache={this.flushDefinitionsCache}
-          searchResults={searchResults}
-          toggleSearchResultsDisplay={toggleSearchResultsDisplayAction}
+          placeholder="A"
+          onSelectLetter={loadDefinitionsAction}
+          onSelectRange={loadDefinitionsAction}
+          onSearch={searchDefinitionsAction}
         />
-        <DefinitionList
-          currentLanguage={language}
-          definitions={definitions}
-          fetchingDefinitions={fetchingDefinitions}
-          toggleModal={toggleVideoModalAction}
-          searchResults={searchResults}
-        />
-        <VideoModal
-          videoModalContent={videoModal}
-          language={language}
-          displayModal={videoModal.display}
-          toggleModal={toggleVideoModalAction}
-          layoutAspect={layoutAspect}
-        />
-    </div>
+        {fetchingDefinitions === true ? (
+          <Segment>
+            <Loading text="loading definitions" page={false} />
+          </Segment>
+        ) : null}
+
+        {definitions.length > 0 && fetchingDefinitions === false ? (
+          <div className="lsf-definitions-display-container">
+            <DefinitionList
+              currentLanguage={language}
+              definitions={definitions}
+              fetchingDefinitions={fetchingDefinitions}
+              toggleModal={toggleVideoModalAction}
+              searchResults={searchResults}
+            />
+            <VideoModal
+              videoModalContent={videoModal}
+              language={language}
+              displayModal={videoModal.display}
+              toggleModal={toggleVideoModalAction}
+              layoutAspect={layoutAspect}
+            />
+          </div>
+        ) : null}
+
+        {definitions.error === true ? (
+          <Message className="lsf-info-message">{definitions.message}</Message>
+        ) : null}
+    </Segment>
     );
   }
 }

@@ -17,3 +17,14 @@
 .dict-video.fullscreen .lsf-app-video-controls {
   margin: 20px !important;
 }
+
+.lsf-app-dictionary-container {
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+}
+
+.lsf-definitions-display-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+}

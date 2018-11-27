@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 
 // React Native
-import {Container, Modal, Segment, Button, Card} from 'semantic-ui-react';
+import {Container, Modal, Segment, Button, List, Grid} from 'semantic-ui-react';
 
 // Styles
 import {DefinitionListStyles, DefinitionDisplayStyles} from '../styles/Styles';
@@ -13,84 +13,58 @@ import {DefinitionListStyles, DefinitionDisplayStyles} from '../styles/Styles';
 import DefinitionDisplay from './DefinitionDisplay';
 
 export default class DefinitionList extends Component {
+  columns = 3;
   constructor(props : Object) {
     super(props);
-    /*
-    (this : any).definitionData = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2
-    });
-    */
+    (this: any).sliceDefinitions = this.sliceDefinitions.bind(this);
   }
-/*
-  listView = (row1, row2) =>{
-    row1 !== row2;
-    const items = definitions.map((data) =>
-      <DefinitionDisplay
-        engDefinition={data.eng_definition} frDefinition={data.fr_definition} currentLanguage={currentLanguage}
-        toggleModal={toggleModal}/>
-    );};
-    */
+
+  sliceDefinitions() {
+    const { definitions } = this.props;
+    const step = Math.floor(definitions.length / this.columns);
+    let chunk = 0;
+    const cols = [];
+    for (let i = 0; i < this.columns; i++, chunk += step) {
+      let col;
+      if (i === this.columns-1) {
+        col = definitions.slice(chunk, definitions.length);
+      } else {
+        col = definitions.slice(chunk, chunk+step);
+      }
+      cols.push(col);
+    }
+    return cols;
+  }
 
   render() {
-    console.log(this.props);
     const {definitions, currentLanguage, fetchingDefinitions, searchResults, toggleModal} = this.props;
-
-    const searchResultMessage = () => {
-      if (currentLanguage === 'en')
-        return (definitions.length + ' Results');
-      return (definitions.length + ' Résultat')
-    };
-
-    if (definitions.length > 0 && !fetchingDefinitions) {
-      console.log(definitions);
-      if (searchResults) {
-        return (
-          <Card.Group
-            centered
-            itemsPerRow={4}>
-            <span>{searchResultMessage}</span>
-            {definitions.map((data, index) =>
-              <DefinitionDisplay
-                key={index++}
-                engDefinition={data.eng_definition}
-                frDefinition={data.fr_definition}
-                currentLanguage={currentLanguage}
-                toggleModal={toggleModal}/>)
-            }
-          </Card.Group>
-        );
-      } else {
-        return (
-          <Card.Group
-            centered
-            itemsPerRow={4}>
-            {definitions.map((data, index) =>
-              <DefinitionDisplay
-                key={index++}
-                engDefinition={data.eng_definition}
-                frDefinition={data.fr_definition}
-                currentLanguage={currentLanguage}
-                toggleModal={toggleModal}/>)
-            }
-
-          </Card.Group>
-        );
-      }
-    } else if (definitions.hasOwnProperty('error') && !fetchingDefinitions) {
-      return (
-        <div >
-          <div>
-            {definitions.message}
-          </div>
-        </div>
-      );
+    let cols;
+    if (definitions.length > this.columns) {
+      cols = this.sliceDefinitions();
     } else {
-      return (
-        <div>
-          <Button
-            primary/>
-        </div>
-      );
+      cols = [definitions];
     }
+    return(
+      <Segment className="lsf-definitions-list-container">
+        <Grid className="lsf-definitions-list" columns={cols.length} divided>
+            {this.sliceDefinitions().map((col, index) => (
+              <Grid.Column>
+                  <List divided verticalAlign="middle">
+                  {col.map((definition, index) =>
+                    <List.Item className="lsf-definition-list-item">
+                      <DefinitionDisplay
+                        key={index++}
+                        engDefinition={definition.eng_definition}
+                        frDefinition={definition.fr_definition}
+                        currentLanguage={currentLanguage}
+                        toggleModal={toggleModal}/>
+                      </List.Item>
+                  )}
+                  </List>
+                </Grid.Column>
+            ))}
+        </Grid>
+      </Segment>
+    )
   }
 }
