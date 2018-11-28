@@ -120,3 +120,8 @@
 .lsf-letter-range-buttons-header {
   font-weight: normal !important;
 }
+
+/*** Video Modal ***/
+.lsf-video-modal-card {
+  min-width: 22vw !important;
+}

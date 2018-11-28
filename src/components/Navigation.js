@@ -39,7 +39,6 @@ export default class Navigation extends Component {
     if (items !== null) {
       return (
         <Menu
-          stackable
           borderless
           className="lsf-nav-menu">
           {items.map((item, index) => (

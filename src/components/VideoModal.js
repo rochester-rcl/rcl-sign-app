@@ -75,7 +75,7 @@ export default class VideoModal extends Component {
         <Modal.Content>
           <Card.Group centered>
             {this.sortVideo().map((video, index) => (
-              <Card key={index}>
+              <Card className="lsf-video-modal-card" key={index}>
                 <Card.Content>
                   <Card.Header className="lsf-app-card-header">
                     <Image
