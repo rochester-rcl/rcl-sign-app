@@ -61,6 +61,7 @@ class DictionaryContainer extends Component {
     (this: any).loadDefinitions = this.loadDefinitions.bind(this);
     (this: any).flushDefinitionsCache = this.flushDefinitionsCache.bind(this);
     (this: any).handleLayoutChange = this.handleLayoutChange.bind(this);
+    (this: any).checkVideoModalData = this.checkVideoModalData.bind(this);
   }
 
   componentWillMount() {
@@ -73,9 +74,16 @@ class DictionaryContainer extends Component {
     this.props.loadDefinitionsAction(definitionQuery);
   }
 
-  componentWillReceiveProps(nextProps: Object): void {
-    if (nextProps.layoutAspect !== this.props.layoutAspect) {
-      //LayoutAnimation.configureNext(fadeInOut);
+  componentDidUpdate(prevProps: Object, prevState: Object) {
+    const { language, videoModal, loadDefinitionsAction } = this.props;
+    if (language !== prevProps.language) {
+      if (videoModal.display === true) {
+        const needsUpdate = this.checkVideoModalData(videoModal);
+        if (needsUpdate) {
+          // this.props.loadDefinitionsAction
+          // fetch based on first letter of opposite language 
+        }
+      }
     }
   }
 
@@ -102,6 +110,11 @@ class DictionaryContainer extends Component {
     if (aspect !== this.props.layoutAspect) this.props.updateLayoutAspectAction(aspect);
   }
 
+  checkVideoModalData(modalData: Object) {
+    const { en, fr } = modalData;
+    return (en['definition_id'] !== null && fr['definition_id'] !== null);
+  }
+
   render() {
     const {
       definitions,
@@ -117,11 +130,12 @@ class DictionaryContainer extends Component {
       searchResults,
       layoutAspect,
     } = this.props;
+
     const { showIntroScreen } = this.state;
     const title = (language === "en") ? "Dictionary" : "Dictionnaire";
     // All of our 'dumb' components will be rendered as children here.
     return(
-      <Segment className="lsf-app-dictionary-container">
+      <Segment className="lsf-app-dictionary-container lsf-app-body">
         <h1 className="lsf-static-page-title">{title}</h1>
         <LetterNavigation
           language={language}

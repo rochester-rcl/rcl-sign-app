@@ -20,11 +20,14 @@ export default class Navigation extends Component {
   }
 
   handleClick(event: SyntheticEvent, { name }: string): void {
-    this.setState({
-      activeItem: name
-    }, () => {
-      history.push('/' + name.toLowerCase() + '/');
-    });
+    this.setState(
+      {
+        activeItem: name
+      },
+      () => {
+        history.push("/" + name.toLowerCase() + "/");
+      }
+    );
   }
 
   handleSelectLanguage(language: string): void {
@@ -34,14 +37,28 @@ export default class Navigation extends Component {
   // TODO pass active down through props
   render() {
     const { items, language } = this.props;
+    const _items = [...items];
     const { activeItem } = this.state;
-
+    const introIndex = items.findIndex(item => item.path === "intro");
+    let intro;
+    if (introIndex > -1) {
+      intro = { ..._items[introIndex] };
+      _items.splice(introIndex, 1);
+    }
     if (items !== null) {
       return (
-        <Menu
-          borderless
-          className="lsf-nav-menu">
-          {items.map((item, index) => (
+        <Menu borderless className="lsf-nav-menu">
+          {intro !== undefined ? (
+            <Menu.Item
+              key="intro"
+              name={intro.path}
+              active={activeItem === intro.path}
+              onClick={this.handleClick}
+            >
+              <Image src="/lsf-logo.svg" size="tiny" />
+            </Menu.Item>
+          ) : null}
+          {_items.map((item, index) => (
             <Menu.Item
               key={index++}
               name={item.path}

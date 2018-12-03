@@ -55,14 +55,13 @@ export function* loadDefinitionsSaga(loadDefinitionsAction: Object): Generator<P
     let results = {};
     results.searchResults = false;
     if (!definitionResults.hasOwnProperty("message")) {
-      let uuid = uuidv4();
+      /*let uuid = uuidv4();
       results.cacheInfo = {};
       results.cacheInfo[range] = uuid;
-      localStorage.setItem(uuid, JSON.stringify(definitionResults));
+      localStorage.setItem(uuid, JSON.stringify(definitionResults));*/
     } else {
       definitionResults.error = true;
     }
-    console.log(results);
     results.definitions = definitionResults;
     yield put({
       type: "DEFINITIONS_LOADED",

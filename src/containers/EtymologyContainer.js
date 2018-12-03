@@ -66,7 +66,7 @@ class EtymologyContainer extends Component {
     const title = language === "en" ? "Old ASL/LSF" : "Ancienne ASL/LSF";
     return (
       // etymology component goes here
-      <Segment className="lsf-etymology-container">
+      <Segment className="lsf-etymology-container lsf-app-body">
         <h1 className="lsf-static-page-title">{title}</h1>
         <LetterNavigation
           language={language}

@@ -28,7 +28,7 @@ export default class Timeline extends Component {
 
   render() {
     return (
-      <Segment className="lsf-timeline-container">
+      <Segment className="lsf-timeline-container lsf-app-body">
         <div ref={ ref => this.timelineDOM = ref } className="lsf-timeline-embed"></div>
       </Segment>
     );

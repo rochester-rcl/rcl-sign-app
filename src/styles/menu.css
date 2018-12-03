@@ -1,11 +1,12 @@
 .lsf-nav-menu {
-  margin: 0rem 0rem;
+  margin: 0 !important;
   font-family: 'Roboto Condensed', sans-serif !important;
   position: relative;
   font-size: 20px !important;
-  background-color: #6ea5fa !important;
+  background-color: #4e58d5 !important;
   border-radius: 0 !important;
   box-shadow: 2px 2px 20px !important;
+  flex: 0.1;
   z-index: 5000 !important;
 }
 

@@ -22,6 +22,8 @@ import StaticPage from "../components/StaticPage";
 
 import Navigation from "../components/Navigation";
 
+import Footer from "../components/Footer";
+
 import Loading from "../components/Loader";
 
 import Timeline from "../components/Timeline";
@@ -156,6 +158,7 @@ export class AppRouter extends Component {
                 render={props => this.renderStatic(props, route)}
               />
             ))}
+            <Footer />
           </div>
         </Router>
       );
