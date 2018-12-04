@@ -51,14 +51,11 @@ import image from '../images/image.jpg';
 import Loading from "../components/Loader";
 import Banner from '../components/Banner';
 import Sidebar from '../components/Sidebar';
-import Loading from "../components/Loader";
 import DictionaryNavigation from '../components/DictionaryNavigation';
 import LetterNavigation from '../components/LetterNavigation';
 import DefinitionList from '../components/DefinitionList';
 import VideoModal from '../components/VideoModal';
 
-<<<<<<< HEAD
-import { Segment, Message } from 'semantic-ui-react';
 
 /*
 if (Platform.OS === 'android') {
@@ -70,6 +67,7 @@ const fadeInOut = {
     create: {
       //type: LayoutAnimation.Types.linear,
       //property: LayoutAnimation.Properties.opacity,
+    }
 }
 
 const drawerWidth = 240;
@@ -140,14 +138,11 @@ class DictionaryContainer extends Component {
     (this: any).loadDefinitions = this.loadDefinitions.bind(this);
     (this: any).flushDefinitionsCache = this.flushDefinitionsCache.bind(this);
     (this: any).handleLayoutChange = this.handleLayoutChange.bind(this);
-<<<<<<< HEAD
     (this : any).handleHideClick = this.handleHideClick.bind(this);
     (this : any).handleShowClick = this.handleShowClick.bind(this);
     (this : any).handleSidebarHide = this.handleSidebarHide.bind(this);
     (this : any).handleContextRef = this.handleContextRef.bind(this);
-=======
     (this: any).checkVideoModalData = this.checkVideoModalData.bind(this);
->>>>>>> 15f7ead8a32b2399d3ee1eda7770f5f71b4c4155
   }
   */
 
@@ -163,7 +158,20 @@ class DictionaryContainer extends Component {
   }
 
   componentDidUpdate(prevProps: Object, prevState: Object) {
-<<<<<<< HEAD
+
+  /*
+    const { language, videoModal, loadDefinitionsAction } = this.props;
+    if (language !== prevProps.language) {
+      if (videoModal.display === true) {
+        const needsUpdate = this.checkVideoModalData(videoModal);
+        if (needsUpdate) {
+          // this.props.loadDefinitionsAction
+          // fetch based on first letter of opposite language
+        }
+      }
+    }
+  }*/
+
     const { language, loadEtymologyAction, letter } = this.props;
     if (prevProps.language !== language) {
       this.props.loadEtymologyAction({
@@ -227,22 +235,11 @@ class DictionaryContainer extends Component {
         this.props.loadDefinitionsAction(definitionQuery);
       }
     }
-=======
-    const { language, videoModal, loadDefinitionsAction } = this.props;
-    if (language !== prevProps.language) {
-      if (videoModal.display === true) {
-        const needsUpdate = this.checkVideoModalData(videoModal);
-        if (needsUpdate) {
-          // this.props.loadDefinitionsAction
-          // fetch based on first letter of opposite language
-        }
-      }
-    }
-  }
 
-  loadDefinitions(definitionQuery: Object) {
-    this.props.loadDefinitionsAction(definitionQuery);
->>>>>>> 15f7ead8a32b2399d3ee1eda7770f5f71b4c4155
+    /*
+    loadDefinitions(definitionQuery: Object) {
+      this.props.loadDefinitionsAction(definitionQuery);
+    }*/
   }
 
   flushDefinitionsCache(callbackAction: Object): void {
@@ -254,13 +251,6 @@ class DictionaryContainer extends Component {
     this.props.setAppLanguageAction(language);
   }
 
-<<<<<<< HEAD
-=======
-  toggleIntroScreen(): void {
-    this.setState({ showIntroScreen: !this.state.showIntroScreen });
-  }
-
->>>>>>> 15f7ead8a32b2399d3ee1eda7770f5f71b4c4155
   handleLayoutChange({nativeEvent}): void {
     let { width, height } = nativeEvent.layout;
     let aspect = height > width ? this.LAYOUT_PORTRAIT : this.LAYOUT_LANDSCAPE;
@@ -273,12 +263,30 @@ class DictionaryContainer extends Component {
   }
 
   render() {
-<<<<<<< HEAD
     const { language, etymology, fetchingEtymology, letter } = this.props;
     const { visible, contextRef } = this.state;
 
     //const { classes, theme } = this.props;
     const {classes, ...rest} = this.props;
+
+    /*const {
+      definitions,
+      language,
+      introText,
+      loadDefinitionsAction,
+      searchDefinitionsAction,
+      definitionsCache,
+      fetchingDefinitions,
+      videoModal,
+      toggleVideoModalAction,
+      toggleSearchResultsDisplayAction,
+      searchResults,
+      layoutAspect,
+    } = this.props;
+
+    const { showIntroScreen } = this.state;
+    const title = (language === "en") ? "Dictionary" : "Dictionnaire";
+    // All of our 'dumb' components will be rendered as children here.*/
 
     const drawer = (
       <div>
@@ -332,7 +340,46 @@ class DictionaryContainer extends Component {
                 <Message className="lsf-info-message">{etymology.message}</Message> : null}
             </div>
           </div>
+          {/*
+            <Segment className="lsf-app-dictionary-container lsf-app-body">
+              <h1 className="lsf-static-page-title">{title}</h1>
+              <LetterNavigation
+                language={language}
+                placeholder="A"
+                onSelectLetter={loadDefinitionsAction}
+                onSelectRange={loadDefinitionsAction}
+                onSearch={searchDefinitionsAction}
+              />
+              {fetchingDefinitions === true ? (
+                <Segment>
+                  <Loading text="loading definitions" page={false} />
+                </Segment>
+              ) : null}
 
+              {definitions.length > 0 && fetchingDefinitions === false ? (
+                <div className="lsf-definitions-display-container">
+                  <DefinitionList
+                    currentLanguage={language}
+                    definitions={definitions}
+                    fetchingDefinitions={fetchingDefinitions}
+                    toggleModal={toggleVideoModalAction}
+                    searchResults={searchResults}
+                  />
+                  <VideoModal
+                    videoModalContent={videoModal}
+                    language={language}
+                    displayModal={videoModal.display}
+                    toggleModal={toggleVideoModalAction}
+                    layoutAspect={layoutAspect}
+                  />
+                </div>
+              ) : null}
+
+              {definitions.error === true ? (
+                <Message className="lsf-info-message">{definitions.message}</Message>
+              ) : null}
+          </Segment>
+            */}
 
         </div>
       {/*<div className={classes.root}>
@@ -393,65 +440,6 @@ class DictionaryContainer extends Component {
           </AppBar>
         </div>*/}
         </div>
-=======
-    const {
-      definitions,
-      language,
-      introText,
-      loadDefinitionsAction,
-      searchDefinitionsAction,
-      definitionsCache,
-      fetchingDefinitions,
-      videoModal,
-      toggleVideoModalAction,
-      toggleSearchResultsDisplayAction,
-      searchResults,
-      layoutAspect,
-    } = this.props;
-
-    const { showIntroScreen } = this.state;
-    const title = (language === "en") ? "Dictionary" : "Dictionnaire";
-    // All of our 'dumb' components will be rendered as children here.
-    return(
-      <Segment className="lsf-app-dictionary-container lsf-app-body">
-        <h1 className="lsf-static-page-title">{title}</h1>
-        <LetterNavigation
-          language={language}
-          placeholder="A"
-          onSelectLetter={loadDefinitionsAction}
-          onSelectRange={loadDefinitionsAction}
-          onSearch={searchDefinitionsAction}
-        />
-        {fetchingDefinitions === true ? (
-          <Segment>
-            <Loading text="loading definitions" page={false} />
-          </Segment>
-        ) : null}
-
-        {definitions.length > 0 && fetchingDefinitions === false ? (
-          <div className="lsf-definitions-display-container">
-            <DefinitionList
-              currentLanguage={language}
-              definitions={definitions}
-              fetchingDefinitions={fetchingDefinitions}
-              toggleModal={toggleVideoModalAction}
-              searchResults={searchResults}
-            />
-            <VideoModal
-              videoModalContent={videoModal}
-              language={language}
-              displayModal={videoModal.display}
-              toggleModal={toggleVideoModalAction}
-              layoutAspect={layoutAspect}
-            />
-          </div>
-        ) : null}
-
-        {definitions.error === true ? (
-          <Message className="lsf-info-message">{definitions.message}</Message>
-        ) : null}
-    </Segment>
->>>>>>> 15f7ead8a32b2399d3ee1eda7770f5f71b4c4155
     );
   }
 }

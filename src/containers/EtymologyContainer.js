@@ -70,7 +70,6 @@ class EtymologyContainer extends Component {
         <h1 className="lsf-static-page-title">{title}</h1>
         <LetterNavigation
           language={language}
-<<<<<<< HEAD
           placeholder={(letter !== undefined) ? letter : 'A'} onSelectLetter={this.handleSelectLetter}
           onSearch={this.handleSearch} />
       {(fetchingEtymology === true) ?
@@ -84,23 +83,6 @@ class EtymologyContainer extends Component {
           language={language} /> : null}
       {(etymology.error === true) ?
         <Message className="lsf-info-message">{etymology.message}</Message> : null}
-=======
-          placeholder={letter !== undefined ? letter : "A"}
-          onSelectLetter={this.handleSelectLetter}
-          onSearch={searchEtymologyAction}
-        />
-        {fetchingEtymology === true ? (
-          <Segment>
-            <Loading text="loading etymology" page={false} />
-          </Segment>
-        ) : null}
-        {etymology.length > 0 && fetchingEtymology === false ? (
-          <EtymologyList etymology={etymology} language={language} />
-        ) : null}
-        {etymology.error === true ? (
-          <Message className="lsf-info-message">{etymology.message}</Message>
-        ) : null}
->>>>>>> 15f7ead8a32b2399d3ee1eda7770f5f71b4c4155
       </Segment>
     );
   }

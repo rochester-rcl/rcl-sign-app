@@ -66,9 +66,10 @@ class DefinitionDisplay extends Component {
   }
 
   render(){
+    /*
     const selectVideos = () => {
       toggleModal({en: engDefinition, fr: frDefinition}, true);
-    }
+    }*/
     const { engEtymology, frEtymology } = this.props.etymology;
     const { language } = this.props;
     const { active } = this.state;
