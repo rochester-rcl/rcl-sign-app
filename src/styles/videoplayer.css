@@ -1,0 +1,33 @@
+.lsf-app-video-container {
+  position: relative;
+  display: flex;
+}
+
+.lsf-app-video-controls {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  margin: 20px;
+}
+
+.lsf-app-video {
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.lsf-app-video-button {
+  opacity: 0.8;
+  margin-bottom: 10px !important;
+  font-size: 1vw !important;
+}
+
+/** fullscreen **/
+.lsf-app-video-container.fullscreen {
+  width: 100%;
+  height: 100%;
+  background: #000;
+}

@@ -1,0 +1,29 @@
+.dict-video .lsf-app-video-button {
+  opacity: 0.8;
+  margin-bottom: 10px !important;
+  font-size: 0.7vw !important;
+}
+
+.dict-video .lsf-app-video-controls {
+  margin: 10px !important;
+}
+
+.dict-video.fullscreen .lsf-app-video-button {
+  opacity: 0.8;
+  margin-bottom: 10px !important;
+  font-size: 1vw !important;
+}
+
+.dict-video.fullscreen .lsf-app-video-controls {
+  margin: 20px !important;
+}
+
+.lsf-app-dictionary-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.lsf-definitions-display-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+}

@@ -32,6 +32,7 @@ export function* loadNavSaga(loadNavigationAction: Object): Generator<Promise<Ob
   try {
     const engNav = yield fetchNav("en");
     const frNav = yield fetchNav("fr");
+    console.log(engNav);
     yield put({ type: NAV_LOADED, nav: { en: engNav, fr: frNav } });
   } catch (error) {
     console.log(error);
@@ -44,7 +45,6 @@ export function* loadNavSaga(loadNavigationAction: Object): Generator<Promise<Ob
  *
  */
 export function* loadDefinitionsSaga(loadDefinitionsAction: Object): Generator<Promise<Object>, any, any> {
-  console.log(loadDefinitionsAction);
   const { language, letter, range } = loadDefinitionsAction.definitionQuery;
   try {
     yield put({
@@ -55,14 +55,13 @@ export function* loadDefinitionsSaga(loadDefinitionsAction: Object): Generator<P
     let results = {};
     results.searchResults = false;
     if (!definitionResults.hasOwnProperty("message")) {
-      let uuid = uuidv4();
+      /*let uuid = uuidv4();
       results.cacheInfo = {};
       results.cacheInfo[range] = uuid;
-      localStorage.setItem(uuid, JSON.stringify(definitionResults));
+      localStorage.setItem(uuid, JSON.stringify(definitionResults));*/
     } else {
       definitionResults.error = true;
     }
-    console.log(results);
     results.definitions = definitionResults;
     yield put({
       type: "DEFINITIONS_LOADED",

@@ -31,7 +31,6 @@ export const FETCHING = 'FETCHING';
 * @ return {Object}
 */
 export function loadDefinitionsAction(definitionQuery: Object): Object {
-  console.log(definitionQuery);
   return {
     type: LOAD_DEFINITIONS,
     definitionQuery: definitionQuery,
@@ -88,7 +87,6 @@ export function setAppLanguageAction(language: string): Object {
 }
 
 export function toggleVideoModalAction(videos: Object, display: boolean): Object {
-  console.log('toggle video fired');
   return {
     type: TOGGLE_VIDEO_MODAL,
     videoModal: {

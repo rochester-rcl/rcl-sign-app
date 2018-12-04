@@ -61,6 +61,18 @@ export default class DictionaryNavigation extends Component {
     }
   }
 
+  handleLetterChange(selectedLetter : string, {value}) {
+    console.log(value);
+    const {currentLetter, currentRange} = this.state;
+    if (value !== currentLetter || this.props.searchResults) {
+      this.setState({
+        currentLetter: value
+      }, () => this.props.toggleSearchResultsDisplay(false));
+      this.loadNewDefinitions(value, currentRange, true);
+    }
+    //this.handleModalToggle();
+  }
+
   onSearchChange(event: SyntheticEvent, { value }): void {
     this.setState({
       search: value,

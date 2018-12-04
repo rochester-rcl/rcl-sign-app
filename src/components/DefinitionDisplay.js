@@ -66,7 +66,9 @@ class DefinitionDisplay extends Component {
   }
 
   render(){
-
+    const selectVideos = () => {
+      toggleModal({en: engDefinition, fr: frDefinition}, true);
+    }
     const { engEtymology, frEtymology } = this.props.etymology;
     const { language } = this.props;
     const { active } = this.state;
@@ -82,7 +84,7 @@ class DefinitionDisplay extends Component {
     const {classes} = this.props;
       return(
         <Card plain>
-          <CardHeader plain color="primary"> 
+          <CardHeader plain color="primary">
             <h4 className={classes.cardTitleWhite}>
               {mainEtymology.title + " / " + secondaryEtymology.title}
             </h4>
