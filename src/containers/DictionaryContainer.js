@@ -2,16 +2,39 @@
 
 // React
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-// React Native
-/*
+// Semantic-ui-react
+
 import {
-  Text,
-  View,
-  Platform,
-  UIManager,
-  LayoutAnimation } from 'react-native';
-*/
+  Button,
+  Menu,
+  Icon,
+  Segment,
+  Sticky,
+  Message,
+  Grid
+} from 'semantic-ui-react';
+
+// Material-ui
+import AppBar from '@material-ui/core/AppBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import Hidden from '@material-ui/core/Hidden';
+import IconButton from '@material-ui/core/IconButton';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import MailIcon from '@material-ui/icons/Mail';
+import MenuIcon from '@material-ui/icons/Menu';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+
+
 // Redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -20,58 +43,154 @@ import { bindActionCreators } from 'redux';
 import * as AppActions from '../actions/Actions';
 
 // Styles
-import {GlobalStyles} from '../styles/Styles';
+import dashboardStyle from '../assets/jss/layouts/dashboardStyle.jsx';
+
+import image from '../images/image.jpg';
 
 // Components
+import Loading from "../components/Loader";
 import Banner from '../components/Banner';
+import Sidebar from '../components/Sidebar';
 import DictionaryNavigation from '../components/DictionaryNavigation';
 import DefinitionList from '../components/DefinitionList';
 import VideoModal from '../components/VideoModal';
 
-/*
-if (Platform.OS === 'android') {
-  UIManager.setLayoutAnimationEnabledExperimental(true)
-}
-*/
-const fadeInOut = {
-  duration: 300,
-    create: {
-      //type: LayoutAnimation.Types.linear,
-      //property: LayoutAnimation.Properties.opacity,
+const drawerWidth = 240;
+
+const styles = theme => ({
+  root: {
+    display: 'flex',
+  },
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
     },
-    update: {
-      //type: LayoutAnimation.Types.easeInEaseOut,
+  },
+  appBar: {
+    top: 'auto',
+    bottom: 0,
+    marginLeft: drawerWidth,
+    [theme.breakpoints.up('sm')]: {
+      width: `calc(100% - ${drawerWidth}px)`,
     },
-};
+  },
+  menuButton: {
+    marginRight: 20,
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
+  },
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  content: {
+    flexGrow: 1,
+    paddingTop: theme.spacing.unit * 1,
+    paddingBottom: theme.spacing.unit * 8
+  }
+});
 
 class DictionaryContainer extends Component {
-  LAYOUT_PORTRAIT = 'LAYOUT_PORTRAIT';
-  LAYOUT_LANDSCAPE = 'LAYOUT_LANDSCAPE';
-  state = { showIntroScreen: false }
+
+  state = {
+    visible: false,
+    mobileOpen: false,
+  };
+
+  constructor(props: Object) {
+    super(props);
+    (this: any).handleSelectLetter = this.handleSelectLetter.bind(this);
+    (this: any).handleSearch = this.handleSearch.bind(this);
+    this.resizeFunction = this.resizeFunction.bind(this);
+  }
+
+  handleDrawerToggle = () => {
+    this.setState(state => ({ mobileOpen: !state.mobileOpen }));
+  };
+
+  resizeFunction() {
+    if (window.innerWidth >= 960) {
+      this.setState({ mobileOpen: false });
+    }
+  }
+  /*
   constructor(props: Object) {
     super(props);
     // Bind all methods to 'this' context here
     (this: any).setAppLanguage = this.setAppLanguage.bind(this);
-    (this: any).toggleIntroScreen = this.toggleIntroScreen.bind(this);
     (this: any).loadDefinitions = this.loadDefinitions.bind(this);
     (this: any).flushDefinitionsCache = this.flushDefinitionsCache.bind(this);
     (this: any).handleLayoutChange = this.handleLayoutChange.bind(this);
+    (this : any).handleHideClick = this.handleHideClick.bind(this);
+    (this : any).handleShowClick = this.handleShowClick.bind(this);
+    (this : any).handleSidebarHide = this.handleSidebarHide.bind(this);
+    (this : any).handleContextRef = this.handleContextRef.bind(this);
+  }
+  */
+
+  componentDidMount() {
+    const { language, letter } = this.props;
+    // kluge to load english letters at the first go because a state change won't be trigger if language === 'en'
+    if (language === 'en') {
+      this.props.loadEtymologyAction({
+        language: language,
+        letter: (letter !== undefined) ? letter : 'a'
+      });
+    }
   }
 
-  componentWillMount() {
-    // Get our first batch of definitions - we can load this with a default value
-    let definitionQuery = {
-      language: this.props.language, // defaults to English
-      letter: 'a',
-      range: 'a-g',
+  componentDidUpdate(prevProps: Object, prevState: Object) {
+    const { language, loadEtymologyAction, letter } = this.props;
+    if (prevProps.language !== language) {
+      this.props.loadEtymologyAction({
+        language: language,
+        letter: (letter !== undefined) ? letter : 'a'
+      });
     }
-    this.props.loadDefinitionsAction(definitionQuery);
   }
 
-  componentWillReceiveProps(nextProps: Object): void {
-    if (nextProps.layoutAspect !== this.props.layoutAspect) {
-      //LayoutAnimation.configureNext(fadeInOut);
+  handleSelectLetter(event: SyntheticEvent, { value }) {
+    const { language, loadEtymologyAction } = this.props;
+    loadEtymologyAction(
+      {
+        language: language,
+        letter: value,
+      }
+    );
+    this.props.history.push(value);
+  }
+
+  handleSearch(term: string) {
+    const { language, searchEtymologyAction } = this.props;
+    searchEtymologyAction(language, term);
+  }
+
+  handleHideClick = () => this.setState({ visible: false })
+
+  handleShowClick = () => {
+    const {visible} = this.state;
+    if (visible) {
+      this.setState({ visible: false });
+    }else{
+      this.setState({ visible: true });
     }
+  }
+
+  handleSidebarHide = () => this.setState({ visible: false })
+
+  handleContextRef = contextRef => this.setState({ contextRef })
+
+  handleSelectLetter(event: SyntheticEvent, { value }) {
+    const { language, loadEtymologyAction } = this.props;
+    loadEtymologyAction(
+      {
+        language: language,
+        letter: value,
+      }
+    );
+    this.props.history.push(value);
   }
 
   loadDefinitions(definitionQuery: Object, clearCache: boolean) {
@@ -97,11 +216,6 @@ class DictionaryContainer extends Component {
     this.props.setAppLanguageAction(language);
   }
 
-  toggleIntroScreen(): void {
-    console.log("this event fired");
-    this.setState({ showIntroScreen: !this.state.showIntroScreen });
-  }
-
   handleLayoutChange({nativeEvent}): void {
     let { width, height } = nativeEvent.layout;
     let aspect = height > width ? this.LAYOUT_PORTRAIT : this.LAYOUT_LANDSCAPE;
@@ -109,49 +223,125 @@ class DictionaryContainer extends Component {
   }
 
   render() {
-    const {
-      definitions,
-      language,
-      introText,
-      loadDefinitionsAction,
-      searchDefinitionsAction,
-      definitionsCache,
-      fetchingDefinitions,
-      videoModal,
-      toggleVideoModalAction,
-      toggleSearchResultsDisplayAction,
-      searchResults,
-      layoutAspect,
-    } = this.props;
-    console.log(this.props);
-    console.log(this.state);
-    const { showIntroScreen } = this.state;
-    // All of our 'dumb' components will be rendered as children here.
-    return(
+    const { language, etymology, fetchingEtymology, letter } = this.props;
+    const { visible, contextRef } = this.state;
+
+    //const { classes, theme } = this.props;
+    const {classes, ...rest} = this.props;
+
+    const drawer = (
       <div>
+        <div className={classes.toolbar} />
+        <Divider />
         <DictionaryNavigation
           language={language}
-          loadDefinitions={this.loadDefinitions}
-          searchDefinitions={searchDefinitionsAction}
-          flushDefinitionsCache={this.flushDefinitionsCache}
-          searchResults={searchResults}
-          toggleSearchResultsDisplay={toggleSearchResultsDisplayAction}
+          placeholder={(letter !== undefined) ? letter : 'A'}
+          onSelectLetter={this.handleSelectLetter}
+          onSearch={this.handleSearch}
         />
-        <DefinitionList
-          currentLanguage={language}
-          definitions={definitions}
-          fetchingDefinitions={fetchingDefinitions}
-          toggleModal={toggleVideoModalAction}
-          searchResults={searchResults}
-        />
-        <VideoModal
-          videoModalContent={videoModal}
+        {(fetchingEtymology === true) ?
+          <Segment>
+            <Loading text="loading etymology" page={false} />
+          </Segment> : null}
+        <Divider />
+        <List>
+          {['All mail', 'Trash', 'Spam'].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+      </div>
+    );
+
+
+    // All of our 'dumb' components will be rendered as children here.
+    return(
+      <div className={classes.wrapper}>
+        <Sidebar
+          image={image}
+          handleDrawerToggle={this.handleDrawerToggle}
+          open={this.state.mobileOpen}
+          color="blue"
           language={language}
-          displayModal={videoModal.display}
-          toggleModal={toggleVideoModalAction}
-          layoutAspect={layoutAspect}
+          placeholder={(letter !== undefined) ? letter : 'A'}
+          onSelectLetter={this.handleSelectLetter}
+          onSearch={this.handleSearch}
+          {...rest}
         />
-    </div>
+        <div className={classes.mainPanel} ref="mainPanel">
+          <div className={classes.content}>
+            <div className={classes.container}>
+              {(etymology.length > 0 && fetchingEtymology === false) ?
+                <DefinitionList
+                  etymology={etymology}
+                  language={language} /> : null}
+              {(etymology.error === true) ?
+                <Message className="lsf-info-message">{etymology.message}</Message> : null}
+            </div>
+          </div>
+
+
+        </div>
+      {/*<div className={classes.root}>
+          <CssBaseline />
+
+            <Hidden smUp implementation="css">
+              <Drawer
+                container={this.props.container}
+                variant="temporary"
+                anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                open={this.state.mobileOpen}
+                onClose={this.handleDrawerToggle}
+                classes={{
+                  paper: classes.drawerPaper,
+                }}
+                ModalProps={{
+                  keepMounted: true
+                }}
+              >
+                {drawer}
+              </Drawer>
+            </Hidden>
+            <Hidden xsDown implementation="css">
+              <Drawer
+                classes={{
+                  paper: classes.drawerPaper,
+                }}
+                variant="permanent"
+                open
+              >
+                {drawer}
+              </Drawer>
+            </Hidden>
+          </nav>
+          <main className={classes.content}>
+
+            {(etymology.length > 0 && fetchingEtymology === false) ?
+              <DefinitionList
+                etymology={etymology}
+                language={language} /> : null}
+            {(etymology.error === true) ?
+              <Message className="lsf-info-message">{etymology.message}</Message> : null}
+          </main>
+          <AppBar position="fixed" className={classes.appBar}>
+            <Toolbar>
+              <IconButton
+                color="inherit"
+                aria-label="Open drawer"
+                onClick={this.handleDrawerToggle}
+                className={classes.menuButton}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" color="inherit" noWrap>
+                Responsive drawer
+              </Typography>
+            </Toolbar>
+          </AppBar>
+        </div>*/}
+        </div>
     );
   }
 }
@@ -164,16 +354,21 @@ class DictionaryContainer extends Component {
 *@param {Object} state - the Redux state set up in Reducer.js
 *@return {Object}
 */
-function mapStateToProps(state): Object {
+DictionaryContainer.propTypes = {
+  classes: PropTypes.object.isRequired,
+  // Injected by the documentation to work in an iframe.
+  // You won't need it on your project.
+  container: PropTypes.object,
+  theme: PropTypes.object.isRequired,
+};
+
+function mapStateToProps(state, ownProps): Object {
   return {
-    definitions: state.definitions,
+    etymology: state.etymology,
     language: state.language,
-    definitionsCache: state.definitionsCache,
-    fetchingDefinitions: state.fetching,
-    videoModal: state.videoModal,
-    layoutAspect: state.layoutAspect,
-    searchResults: state.searchResults,
-    introText: state.introText,
+    fetchingEtymology: state.fetching,
+    letter: ownProps.match.params.letter,
+    history: ownProps.history
   }
 }
 
@@ -191,4 +386,4 @@ function mapActionCreatorsToProps(dispatch) {
   return bindActionCreators(AppActions, dispatch);
 }
 
-export default connect(mapStateToProps, mapActionCreatorsToProps)(DictionaryContainer);
+export default connect(mapStateToProps, mapActionCreatorsToProps)(withStyles(dashboardStyle)(DictionaryContainer));

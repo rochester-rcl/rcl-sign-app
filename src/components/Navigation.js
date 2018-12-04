@@ -40,7 +40,8 @@ export default class Navigation extends Component {
       return (
         <Menu
           borderless
-          className="lsf-nav-menu">
+          className="lsf-nav-menu"
+          style={{"margin": "0rem 0rem"}}>
           {items.map((item, index) => (
             <Menu.Item
               key={index++}

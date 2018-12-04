@@ -69,10 +69,21 @@ class EtymologyContainer extends Component {
       // etymology component goes here
       <Segment className="lsf-etymology-container">
         <h1 className="lsf-static-page-title">{title}</h1>
-        <LetterNavigation language={language} placeholder={(letter !== undefined) ? letter : 'A'} onSelectLetter={this.handleSelectLetter} onSearch={this.handleSearch} />
-        {(fetchingEtymology === true) ? <Segment><Loading text="loading etymology" page={false} /></Segment> : null}
-        {(etymology.length > 0 && fetchingEtymology === false) ? <EtymologyList etymology={etymology} language={language} /> : null}
-        {(etymology.error === true) ? <Message className="lsf-info-message">{etymology.message}</Message> : null}
+        <LetterNavigation
+          language={language}
+          placeholder={(letter !== undefined) ? letter : 'A'} onSelectLetter={this.handleSelectLetter}
+          onSearch={this.handleSearch} />
+      {(fetchingEtymology === true) ?
+        <Segment>
+          <Loading text="loading etymology" page={false} />
+        </Segment> : null}
+
+      {(etymology.length > 0 && fetchingEtymology === false) ?
+        <EtymologyList
+          etymology={etymology}
+          language={language} /> : null}
+      {(etymology.error === true) ?
+        <Message className="lsf-info-message">{etymology.message}</Message> : null}
       </Segment>
     )
   }

@@ -12,7 +12,9 @@ import {
   Search,
   Dropdown,
   Segment,
-  Icon
+  Icon,
+  Input,
+  Sidebar
 } from 'semantic-ui-react';
 
 // Constants
@@ -20,6 +22,9 @@ import {Alphabet, AlphabetMap} from '../utils/Constants';
 
 // Stylesheets
 import {PickerStyles, NavigationStyles, ButtonStyles, ModalStyles} from '../styles/Styles';
+
+
+const formattedAlphabet = Alphabet.map((letter) => { return { key: letter, value: letter, text: letter.toUpperCase()} });
 
 //const Item = Picker.Item;
 
@@ -30,23 +35,17 @@ export default class DictionaryNavigation extends Component {
     currentRange: 'a-g',
     currentIndex: 0,
     searchFocused: false,
-    searchTerm: null,
+    search: '',
     isSearching: false
   };
   letterRange: Array<string> = ['a-g', 'h-m', 'n-r', 's-z'];
   constructor(props : Object) {
     super(props);
-    (this : any).handleLetterChange = this.handleLetterChange.bind(this);
-    (this : any).handleOnOpen = this.handleOnOpen.bind(this);
-    (this : any).handleOnClose = this.handleOnClose.bind(this);
+
     (this : any).handleRangeSelect = this.handleRangeSelect.bind(this);
-    (this : any).handleSearchSubmit = this.handleSearchSubmit.bind(this);
-    (this : any).handleSearchTextChange = this.handleSearchTextChange.bind(this);
     (this : any).loadNewDefinitions = this.loadNewDefinitions.bind(this);
-    (this : any).onKeyboardHide = this.onKeyboardHide.bind(this);
-    (this : any).onKeyboardShow = this.onKeyboardShow.bind(this);
-    //(this : any).keyboardHideListener = Keyboard.addListener('keyboardDidHide', this.onKeyboardHide);
-    //(this : any).keyboardShowListener = Keyboard.addListener('keyboardDidShow', this.onKeyboardShow);
+    (this: any).onSearchChange = this.onSearchChange.bind(this);
+    (this: any).submitSearch = this.submitSearch.bind(this);
   }
 
   componentDidMount(){
@@ -61,26 +60,17 @@ export default class DictionaryNavigation extends Component {
       this.setState({isSearching: this.props.searchResults});
     }
   }
-  handleLetterChange(selectedLetter : string, {value}) {
-    console.log(value);
-    const {currentLetter, currentRange} = this.state;
-    if (value !== currentLetter || this.props.searchResults) {
-      this.setState({
-        currentLetter: value
-      }, () => this.props.toggleSearchResultsDisplay(false));
-      this.loadNewDefinitions(value, currentRange, true);
-    }
-    //this.handleModalToggle();
-  }
 
-  handleSearchSubmit() {
+  onSearchChange(event: SyntheticEvent, { value }): void {
     this.setState({
-      isSearching: true
-    }, () => this.props.searchDefinitions(this.props.language, this.state.searchTerm));
+      search: value,
+    });
   }
 
-  handleSearchTextChange(text : string) {
-    this.setState({searchTerm: text});
+  submitSearch(event: SyntheticEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.props.onSearch(this.state.search);
   }
 
   handleRangeSelect(selectedRange : string, index : number) {
@@ -106,29 +96,6 @@ export default class DictionaryNavigation extends Component {
     }, clearCache);
   }
 
-  handleOnOpen(){
-    this.handleSearchFocus(false);
-    //this.textInput.blur();
-    this.setState({displayModal: true});
-  }
-
-  handleOnClose(){
-    this.setState({displayModal: false});
-  }
-
-  handleSearchFocus(focusState : boolean): void {
-    this.setState({searchFocused: focusState});
-  }
-
-  onKeyboardHide(): void {
-    this.handleSearchFocus(false);
-    this.textInput.blur();
-  }
-
-  onKeyboardShow(): void {
-    // Don't know if I really need this yet
-  }
-
   componentDidUpdate(prevProps : Object, prevState : Object): void {
     let {currentLetter, currentRange} = this.state;
     if (prevProps.language !== this.props.language)
@@ -147,70 +114,34 @@ export default class DictionaryNavigation extends Component {
       searchFocused,
       isSearching
     } = this.state;
-    const {searchResults, language} = this.props;
-    let title: string = currentLetter.toUpperCase();
-    let promptMessage = language === 'en'
-      ? 'Choose a letter'
-      : 'Choisissez une lettre';
-    const searchMessage = () => {
-      if (language === 'fr')
-        return 'Chercher ...';
-      return 'Search ...';
-    }
+    const { language, placeholder, onSelectLetter } = this.props;
+    const prompt = (language === 'en')
+      ? 'Choose a Letter'
+      : 'Choisissez une Lettre';
+    const searchPrompt = (language === 'en') ? 'Search' : 'Cherche';
 
     return (
-      <Segment
-        attached="top"
-        inverted>
-        <Segment>
-          <Search
-            onFocus={() => this.handleSearchFocus(true)}
-            onSearchChange={this.handleSearchTextChange}
-            onResultSelect={this.handleSearchSubmit}/>
-        </Segment>
-        <Modal.Header>
-          {promptMessage}
-        </Modal.Header>
-        <Modal
-          trigger=
-          {
-            <Button
-              color='green'
-              onClick={this.handleOnOpen}>
-              {title}
-            </Button>
-          }
-          open={this.state.displayModal}
-          onClose={this.handleOnClose}>
+      <div style={{paddingTop: '7rem'}}>
+        <Menu.Item >
+          <Input
+            onChange={this.onSearchChange}
+            onKeyDown={this.handleKeyDown}
+            placeholder="..."
+            action={<Button icon="search" onClick={this.submitSearch}/>}>
+          </Input>
+        </Menu.Item>
 
-          <Modal.Content>
-
-            <Dropdown
-              button
-              className='icon'
-              floating
-              labeled
-              scrolling
-              onChange={this.handleLetterChange}
-              icon='world'
-              options={AlphabetMap}
-              search
-              text='Select Letter' />
-          </Modal.Content>
-          <Modal.Actions>
-            <Button onClick={this.handleOnClose}>
-              {language === 'en' ? 'back' : 'retour'}
-            </Button>
-          </Modal.Actions>
-        </Modal>
-        <span>
-          {
-            this.letterRange.map((range, index) =>
-              <Button key={index} onClick={() => this.handleRangeSelect(range, index)}>
-                {range}
-              </Button>)
-          }
-        </span>
-      </Segment>);
+        <Menu.Item>
+          <Dropdown
+            button
+            className='icon'
+            fluid
+            placeholder={placeholder.toUpperCase()}
+            selection
+            options={formattedAlphabet}
+            onChange={onSelectLetter} />
+        </Menu.Item>
+      </div>
+    );
   }
 }
