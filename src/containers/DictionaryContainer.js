@@ -57,6 +57,7 @@ import DefinitionList from '../components/DefinitionList';
 import VideoModal from '../components/VideoModal';
 
 
+
 /*
 if (Platform.OS === 'android') {
   UIManager.setLayoutAnimationEnabledExperimental(true)
@@ -323,7 +324,8 @@ class DictionaryContainer extends Component {
           handleDrawerToggle={this.handleDrawerToggle}
           open={this.state.mobileOpen}
           color="blue"
-          language={language}
+          language={this.props.language}
+
           placeholder={(letter !== undefined) ? letter : 'A'}
           onSelectLetter={this.handleSelectLetter}
           onSearch={this.handleSearch}

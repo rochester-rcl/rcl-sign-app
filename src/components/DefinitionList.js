@@ -14,6 +14,9 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import DefinitionDisplay from './DefinitionDisplay';
 import GridItem from '../components/GridItem';
 import GridContainer from '../components/GridContainer';
+import Card from '../components/Card';
+import CardHeader from '../components/CardHeader';
+import CardBody from '../components/CardBody';
 
 const styles = {
   cardCategoryWhite: {
@@ -45,7 +48,7 @@ const styles = {
   }
 };
 
-export default class DefinitionList extends Component {
+class DefinitionList extends Component {
 
   state = { active: false };
 
@@ -102,12 +105,21 @@ export default class DefinitionList extends Component {
     return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          {etymology.map((etymo, index) =>
-            <DefinitionDisplay
-              key={index}
-              etymology={etymo}
-              language={language}
-              />)}
+          <Card plain>
+            <CardHeader plain color="primary">
+              <h4 className={classes.cardTitleWhite}>
+                taco
+              </h4>
+            </CardHeader>
+            <CardBody>
+            {etymology.map((etymo, index) =>
+              <DefinitionDisplay
+                key={index}
+                etymology={etymo}
+                language={language}
+                />)}
+            </CardBody>
+          </Card>
         </GridItem>
 
         {/*
@@ -137,3 +149,5 @@ export default class DefinitionList extends Component {
     );
   }
 }
+
+export default withStyles(styles)(DefinitionList);

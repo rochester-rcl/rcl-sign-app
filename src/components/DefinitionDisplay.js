@@ -19,6 +19,10 @@ import Table from '../components/Table';
 import Card from '../components/Card';
 import CardHeader from '../components/CardHeader';
 import CardBody from '../components/CardBody';
+import GridItem from '../components/GridItem';
+import GridContainer from '../components/GridContainer';
+import Snackbar from '../components/Snackbar';
+import SnackbarContent from '../components/SnackbarContent';
 
 const styles = {
   cardCategoryWhite: {
@@ -84,17 +88,7 @@ class DefinitionDisplay extends Component {
     const { etymology } = this.props;
     const {classes} = this.props;
       return(
-        <Card plain>
-          <CardHeader plain color="primary">
-            <h4 className={classes.cardTitleWhite}>
-              {mainEtymology.title + " / " + secondaryEtymology.title}
-            </h4>
-          </CardHeader>
-          <CardBody>
-          </CardBody>
-
-        </Card>
-
+        <SnackbarContent message={mainEtymology.title + " / " + secondaryEtymology.title} />
       );
   }
 }

@@ -78,6 +78,17 @@ class Sidebar extends Component {
   );
   */
 
+  handleSelectLetter(event: SyntheticEvent, { value }) {
+    const { language, loadEtymologyAction } = this.props;
+    loadEtymologyAction(
+      {
+        language: language,
+        letter: value,
+      }
+    );
+    this.props.history.push(value);
+  }
+
   render() {
     const {classes, color, image} = this.props;
     return (<div>
@@ -108,11 +119,11 @@ class Sidebar extends Component {
           <div className={classes.sidebarWrapper}>
             {/*links*/}
             <DictionaryNavigation
-              
+
               language={this.props.language}
               placeholder={(this.props.letter !== undefined) ? this.props.letter : 'A'}
-              onSelectLetter={this.props.handleSelectLetter}
-              onSearch={this.props.handleSearch}
+              onSelectLetter={this.props.onSelectLetter}
+              onSearch={this.props.onSearch}
             />
           </div>
           {
