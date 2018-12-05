@@ -90,7 +90,7 @@ const EtymologyList = (props: Object) => {
     <Segment className="lsf-etymology-list-container">
       <List className="lsf-etymology-list" divided verticalAlign="middle">
         {etymology.map((etymo, index) => (
-          <List.Item className="lsf-etymology-list-item">
+          <List.Item key={index} className="lsf-etymology-list-item">
             <EtymologyDisplay
               index={index}
               etymology={etymo}

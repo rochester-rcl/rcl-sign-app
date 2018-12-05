@@ -1,10 +1,10 @@
 /* @flow */
 
 export const LSFBaseEndpoint: string =
-  "https://projects.lib.rochester.edu/lsf-asl/wp-json/lsf-rest/v1/definitions/";
+  "https://projects.lib.rochester.edu/lsf-asl_dev/wp-json/lsf-rest/v1/definitions/";
 
 export const LSFSearchEndpoint: string =
-  "https://projects.lib.rochester.edu/lsf-asl/wp-json/lsf-rest/v1/search/";
+  "https://projects.lib.rochester.edu/lsf-asl_dev/wp-json/lsf-rest/v1/search/";
 
 // TODO CHANGE THIS TO PROD ON PROD
 export const LSF_NAV_ENDPOINT: string =

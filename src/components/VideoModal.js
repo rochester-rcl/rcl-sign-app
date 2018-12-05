@@ -43,12 +43,14 @@ export default class VideoModal extends Component {
       {
         url: fr.video_url,
         lang: "fr",
-        title: fr.title
+        title: fr.title,
+        sentence: fr.sentence,
       },
       {
         url: en.video_url,
         lang: "en",
-        title: en.title
+        title: en.title,
+        sentence: en.sentence,
       }
     ];
     if (this.props.language === "fr") return videos.reverse();
@@ -95,6 +97,8 @@ export default class VideoModal extends Component {
                     className="dict-video"
                     ref={video.ref}
                     src={video.url}
+                    language={language}
+                    alternateSrc={video.sentence}
                   />
                 </Card.Content>
               </Card>

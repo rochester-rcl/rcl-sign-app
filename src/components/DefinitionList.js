@@ -48,10 +48,10 @@ export default class DefinitionList extends Component {
       <Segment className="lsf-definitions-list-container">
         <Grid className="lsf-definitions-list" columns={cols.length} divided>
             {this.sliceDefinitions().map((col, index) => (
-              <Grid.Column>
+              <Grid.Column key={index}>
                   <List divided verticalAlign="middle">
                   {col.map((definition, index) =>
-                    <List.Item className="lsf-definition-list-item">
+                    <List.Item key={index} className="lsf-definition-list-item">
                       <DefinitionDisplay
                         key={index++}
                         engDefinition={definition.eng_definition}

@@ -96,6 +96,7 @@ export default class LetterNavigation extends Component {
           <Menu.Item className="lsf-letter-range-buttons-header" header>{rangeText}</Menu.Item>
           {this.letterRange.map((letterRange, index) => (
             <Menu.Item
+              key={index}
               onClick={() => this.handleSelectRange(index)}
               active={index === rangeIndex}
             >
