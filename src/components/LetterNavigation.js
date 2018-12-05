@@ -14,7 +14,7 @@ import {
 } from "semantic-ui-react";
 
 // constants
-import { Alphabet } from "../utils/Constants";
+import { Alphabet, LETTER_RANGES, Range, A_TO_G } from "../utils/Constants";
 
 const formattedAlphabet = Alphabet.map(letter => {
   return { key: letter, value: letter, text: letter.toUpperCase() };
@@ -22,7 +22,7 @@ const formattedAlphabet = Alphabet.map(letter => {
 
 export default class LetterNavigation extends Component {
   state = { search: "", rangeIndex: 0, letter: "a" };
-  letterRange: Array<string> = ["a-g", "h-m", "n-r", "s-z"];
+  letterRange = LETTER_RANGES;
   constructor(props: Object) {
     super(props);
     (this: any).onSearchChange = this.onSearchChange.bind(this);
@@ -32,6 +32,12 @@ export default class LetterNavigation extends Component {
     (this: any).handleKeyDown = this.handleKeyDown.bind(this);
     (this: any).handleSelectLetter = this.handleSelectLetter.bind(this);
     (this: any).handleSelectRange = this.handleSelectRange.bind(this);
+    (this: any).update = this.update.bind(this);
+  }
+
+  componentDidMount() {
+    const { letter, range } = this.props;
+    this.update(letter, range);
   }
 
   onSearchChange(event: SyntheticEvent, { value }): void {
@@ -101,8 +107,33 @@ export default class LetterNavigation extends Component {
     );
   }
 
+  update(letter: string, range: string) {
+    const { onSelectLetter, onSelectRange } = this.props;
+    if (range !== undefined) {
+      this.setState({
+        letter: letter,
+        rangeIndex: this.letterRange.indexOf(range),
+      });
+    } else {
+      this.setState({
+        letter: letter,
+      });
+    }
+  }
+  // TODO need to take special characters into consideration
+  static getRange(word: string) {
+    const letter = word.charAt(1);
+    for (let key in Range) {
+      let subRange = Range[key];
+      let range = subRange.letters.includes(letter);
+      if (range === true) return subRange.string;
+    }
+    return A_TO_G;
+  }
+
   render() {
-    const { language, placeholder, onSelectLetter, onSelectRange } = this.props;
+    const { language, onSelectLetter, onSelectRange } = this.props;
+    const { letter } = this.state;
     const prompt =
       language === "en" ? "Choose a Letter" : "Choisissez une Lettre";
     const searchPrompt = language === "en" ? "Search" : "Cherche";
@@ -113,7 +144,7 @@ export default class LetterNavigation extends Component {
             <h3 className="lsf-letter-select-prompt">{prompt}</h3>
             <Dropdown
               fluid
-              placeholder={placeholder.toUpperCase()}
+              placeholder={letter.toUpperCase()}
               selection
               options={formattedAlphabet}
               onChange={this.handleSelectLetter}

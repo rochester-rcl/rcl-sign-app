@@ -1,0 +1,20 @@
+.lsf-app-footer-container {
+  background: #133c55;
+  position: relative;
+  width: 100vw;
+  padding: 20px;
+  display: flex;
+  flex: 0.1;
+  justify-content: center;
+  align-items: baseline;
+  z-index: 5000;
+}
+
+.lsf-app-footer-link {
+  color: #fff;
+  margin: 10px;
+}
+
+.lsf-app-footer-link:hover {
+  color: #59a5d8;
+}

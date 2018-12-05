@@ -80,6 +80,8 @@ export class AppRouter extends Component {
     const path = pathname.split("/")[1];
     if (translationsEn[path] !== undefined) {
       this.props.setAppLanguageAction("fr");
+    } else {
+      this.props.setAppLanguageAction("en");
     }
   }
 
@@ -128,13 +130,14 @@ export class AppRouter extends Component {
         <Router history={history}>
           <div className="lsf-app-root-container">
             <Navigation
+              location={history.location.pathname}
               items={items}
               language={language}
               handleSelectLanguage={setAppLanguageAction}
             />
             <Route path="/intro" render={props => <Intro shortcode={intro.content} title={intro.title} /> }/>
-            <Route path="/dictionary" component={DictionaryContainer} />
-            <Route path="/dictionnaire" component={DictionaryContainer} />
+            <Route path="/dictionary/:letter?/:range?" component={DictionaryContainer} />
+            <Route path="/dictionnaire/:letter?/:range?" component={DictionaryContainer} />
             <Route
               path="/old-asl-lsf/:letter?"
               component={EtymologyContainer}

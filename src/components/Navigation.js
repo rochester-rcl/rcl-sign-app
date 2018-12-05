@@ -9,7 +9,7 @@ import * as usFlag from "../images/us_flag.png";
 import * as frFlag from "../images/fr_flag.png";
 
 // history
-import history from "../utils/history";
+import history, { basename } from "../utils/history";
 
 export default class Navigation extends Component {
   state = { activeItem: null };
@@ -17,6 +17,22 @@ export default class Navigation extends Component {
     super(props);
     (this: any).handleClick = this.handleClick.bind(this);
     (this: any).handleSelectLanguage = this.handleSelectLanguage.bind(this);
+  }
+
+  componentDidMount() {
+    const { location } = this.props;
+    this.setState({
+      activeItem: basename(location),
+    });
+  }
+
+  componentDidUpdate(prevProps: Object, prevState: Object) {
+    const { language, location } = this.props;
+    if (location !== prevProps.location) {
+      this.setState({
+        activeItem: basename(location),
+      });
+    }
   }
 
   handleClick(event: SyntheticEvent, { name }: string): void {
@@ -52,7 +68,7 @@ export default class Navigation extends Component {
             <Menu.Item
               key="intro"
               name={intro.path}
-              active={activeItem === intro.path}
+              active={activeItem === basename(intro.path)}
               onClick={this.handleClick}
             >
               <Image src="/lsf-logo.svg" size="tiny" />
@@ -62,7 +78,7 @@ export default class Navigation extends Component {
             <Menu.Item
               key={index++}
               name={item.path}
-              active={activeItem === item.path}
+              active={activeItem === basename(item.path)}
               onClick={this.handleClick}
             >
               {item.title}

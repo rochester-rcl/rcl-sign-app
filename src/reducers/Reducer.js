@@ -2,11 +2,14 @@
 
 import * as Actions from '../actions/Actions';
 
+// constants
+import { A_TO_G } from '../utils/Constants';
+
 const defaultState: Object = {
   nav: null,
   definitions: [],
   etymology: [],
-  language: 'en', // defaults to English, for now
+  language: null, // defaults to English, for now
    /* an array of uuids that gets flushed every time we change a letter. Each uuid
    corresponds to a range in the current range, stored in AsyncStorage. The saga
    checks AsyncStorage storage for the definitions before it sends a request */

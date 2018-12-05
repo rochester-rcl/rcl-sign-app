@@ -26,14 +26,13 @@ class EtymologyContainer extends Component {
   }
 
   componentDidMount() {
-    const { language, letter } = this.props;
+    const { language, letter, query } = this.props;
+    // TODO there's a race condition here
     // kluge to load english letters at the first go because a state change won't be trigger if language === 'en'
-    if (language === "en") {
-      this.props.loadEtymologyAction({
-        language: language,
-        letter: letter !== undefined ? letter : "a"
-      });
-    }
+    this.props.loadEtymologyAction({
+      language: language,
+      letter: letter !== undefined ? letter : "a"
+    });
   }
 
   componentDidUpdate(prevProps: Object, prevState: Object) {
@@ -62,15 +61,23 @@ class EtymologyContainer extends Component {
   }
 
   render() {
-    const { language, etymology, fetchingEtymology, letter, searchEtymologyAction } = this.props;
+    const {
+      language,
+      etymology,
+      fetchingEtymology,
+      letter,
+      searchEtymologyAction,
+      query
+    } = this.props;
     const title = language === "en" ? "Old ASL/LSF" : "Ancienne ASL/LSF";
+    const _letter = letter !== undefined ? letter : "a";
     return (
       // etymology component goes here
       <Segment className="lsf-etymology-container lsf-app-body">
         <h1 className="lsf-static-page-title">{title}</h1>
         <LetterNavigation
           language={language}
-          placeholder={letter !== undefined ? letter : "A"}
+          letter={_letter}
           onSelectLetter={this.handleSelectLetter}
           onSearch={searchEtymologyAction}
         />
@@ -95,6 +102,7 @@ function mapStateToProps(state, ownProps: Object): Object {
     etymology: state.etymology,
     language: state.language,
     fetchingEtymology: state.fetching,
+    query: state.query,
     letter: ownProps.match.params.letter,
     history: ownProps.history
   };

@@ -17,6 +17,7 @@ export const ETYMOLOGY_LOADED = 'ETYMOLOGY_LOADED';
 export const SEARCH_DEFINITIONS = 'SEARCH_DEFINITIONS';
 export const SEARCH_ETYMOLOGY = 'SEARCH_ETYMOLOGY';
 export const SET_LANGUAGE = 'SET_LANGUAGE';
+export const CHANGE_QUERY = 'CHANGE_QUERY';
 export const LOAD_DEFINITIONS_FROM_CACHE = 'LOAD_DEFINITIONS_FROM_CACHE';
 export const FLUSH_DEFINITIONS_CACHE = 'FLUSH_DEFINITIONS_CACHE';
 export const TOGGLE_VIDEO_MODAL = 'TOGGLE_VIDEO_MODAL';
@@ -83,6 +84,13 @@ export function setAppLanguageAction(language: string): Object {
   return {
     type: SET_LANGUAGE,
     language: language,
+  }
+}
+
+export function changeQueryAction(query: Object): Object {
+  return {
+    type: CHANGE_QUERY,
+    query: query,
   }
 }
 
