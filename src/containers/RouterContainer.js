@@ -132,9 +132,13 @@ export class AppRouter extends Component {
               language={language}
               handleSelectLanguage={setAppLanguageAction}
             />
-            <Route path="/intro" render={props => <Intro shortcode={intro.content} title={intro.title} /> }/>
-            <Route path="/dictionary" component={DictionaryContainer} />
-            <Route path="/dictionnaire" component={DictionaryContainer} />
+            <Route
+              path="/intro"
+              render={props => <Intro shortcode={intro.content} title={intro.title} /> }/>
+            <Route
+              path="/dictionary" component={DictionaryContainer} />
+            <Route
+              path="/dictionnaire" component={DictionaryContainer} />
             <Route
               path="/old-asl-lsf/:letter?"
               component={EtymologyContainer}

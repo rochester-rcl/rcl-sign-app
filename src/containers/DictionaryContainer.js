@@ -73,41 +73,6 @@ const fadeInOut = {
 
 const drawerWidth = 240;
 
-const styles = theme => ({
-  root: {
-    display: 'flex',
-  },
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
-  appBar: {
-    top: 'auto',
-    bottom: 0,
-    marginLeft: drawerWidth,
-    [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-    },
-  },
-  menuButton: {
-    marginRight: 20,
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',
-    },
-  },
-  toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  content: {
-    flexGrow: 1,
-    paddingTop: theme.spacing.unit * 1,
-    paddingBottom: theme.spacing.unit * 8
-  }
-});
-
 class DictionaryContainer extends Component {
 
   state = {
@@ -213,7 +178,7 @@ class DictionaryContainer extends Component {
 
   handleContextRef = contextRef => this.setState({ contextRef })
 
-  handleSelectLetter(event: SyntheticEvent, { value }) {
+  handleSelectLetter(value) {
     const { language, loadEtymologyAction } = this.props;
     loadEtymologyAction(
       {
@@ -325,7 +290,7 @@ class DictionaryContainer extends Component {
           open={this.state.mobileOpen}
           color="blue"
           language={this.props.language}
-
+          loadDefinitions={this.loadDefinitions}
           placeholder={(letter !== undefined) ? letter : 'A'}
           onSelectLetter={this.handleSelectLetter}
           onSearch={this.handleSearch}
@@ -342,106 +307,8 @@ class DictionaryContainer extends Component {
                 <Message className="lsf-info-message">{etymology.message}</Message> : null}
             </div>
           </div>
-          {/*
-            <Segment className="lsf-app-dictionary-container lsf-app-body">
-              <h1 className="lsf-static-page-title">{title}</h1>
-              <LetterNavigation
-                language={language}
-                placeholder="A"
-                onSelectLetter={loadDefinitionsAction}
-                onSelectRange={loadDefinitionsAction}
-                onSearch={searchDefinitionsAction}
-              />
-              {fetchingDefinitions === true ? (
-                <Segment>
-                  <Loading text="loading definitions" page={false} />
-                </Segment>
-              ) : null}
-
-              {definitions.length > 0 && fetchingDefinitions === false ? (
-                <div className="lsf-definitions-display-container">
-                  <DefinitionList
-                    currentLanguage={language}
-                    definitions={definitions}
-                    fetchingDefinitions={fetchingDefinitions}
-                    toggleModal={toggleVideoModalAction}
-                    searchResults={searchResults}
-                  />
-                  <VideoModal
-                    videoModalContent={videoModal}
-                    language={language}
-                    displayModal={videoModal.display}
-                    toggleModal={toggleVideoModalAction}
-                    layoutAspect={layoutAspect}
-                  />
-                </div>
-              ) : null}
-
-              {definitions.error === true ? (
-                <Message className="lsf-info-message">{definitions.message}</Message>
-              ) : null}
-          </Segment>
-            */}
-
         </div>
-      {/*<div className={classes.root}>
-          <CssBaseline />
-
-            <Hidden smUp implementation="css">
-              <Drawer
-                container={this.props.container}
-                variant="temporary"
-                anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-                open={this.state.mobileOpen}
-                onClose={this.handleDrawerToggle}
-                classes={{
-                  paper: classes.drawerPaper,
-                }}
-                ModalProps={{
-                  keepMounted: true
-                }}
-              >
-                {drawer}
-              </Drawer>
-            </Hidden>
-            <Hidden xsDown implementation="css">
-              <Drawer
-                classes={{
-                  paper: classes.drawerPaper,
-                }}
-                variant="permanent"
-                open
-              >
-                {drawer}
-              </Drawer>
-            </Hidden>
-          </nav>
-          <main className={classes.content}>
-
-            {(etymology.length > 0 && fetchingEtymology === false) ?
-              <DefinitionList
-                etymology={etymology}
-                language={language} /> : null}
-            {(etymology.error === true) ?
-              <Message className="lsf-info-message">{etymology.message}</Message> : null}
-          </main>
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="Open drawer"
-                onClick={this.handleDrawerToggle}
-                className={classes.menuButton}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" color="inherit" noWrap>
-                Responsive drawer
-              </Typography>
-            </Toolbar>
-          </AppBar>
-        </div>*/}
-        </div>
+      </div>
     );
   }
 }
@@ -459,13 +326,13 @@ DictionaryContainer.propTypes = {
   // Injected by the documentation to work in an iframe.
   // You won't need it on your project.
   container: PropTypes.object,
-  theme: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state, ownProps): Object {
   return {
     etymology: state.etymology,
     language: state.language,
+    definitionsCache: state.definitionsCache,
     fetchingEtymology: state.fetching,
     letter: ownProps.match.params.letter,
     history: ownProps.history
@@ -486,4 +353,8 @@ function mapActionCreatorsToProps(dispatch) {
   return bindActionCreators(AppActions, dispatch);
 }
 
-export default connect(mapStateToProps, mapActionCreatorsToProps)(withStyles(dashboardStyle)(DictionaryContainer));
+export default connect(
+  mapStateToProps,
+  mapActionCreatorsToProps
+)
+(withStyles(dashboardStyle)(DictionaryContainer));

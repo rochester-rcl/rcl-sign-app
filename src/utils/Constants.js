@@ -18,5 +18,17 @@ export const Alphabet: Array<string> = [
 ];
 
 export const AlphabetMap: List<string> = [
-  {key: 'A', value:'a', text: 'A'},{key: 'B', value:'b', text: 'B'},{key: 'C', value:'c', text: 'C'},{key: 'D', value:'d', text: 'D'},{key: 'E', value:'e', text: 'E'},{key: 'F', value:'f', text: 'F'},{key: 'G', value:'g', text: 'G'},{key: 'H', value:'h', text: 'H'},{key: 'I', value:'i', text: 'I'},{key: 'J', value:'j', text: 'J'},{key: 'K', value:'k', text: 'K'},{key: 'L', value:'l', text: 'L'},{key: 'M', value:'m', text: 'M'},{key: 'N', value:'n', text: 'N'},{key: 'O', value:'o', text: 'O'},{key: 'P', value:'p', text: 'P'},{key: 'Q', value:'q', text: 'Q'},{key: 'R', value:'r', text: 'R'},{key: 'S', value:'s', text: 'S'},{key: 'T', value:'t', text: 'T'},{key: 'U', value:'u', text: 'U'},{key: 'V', value:'v', text: 'V'},{key: 'W', value:'w', text: 'W'},{key: 'X', value:'x', text: 'X'},{key: 'Y', value:'y', text: 'Y'},{key: 'Z', value:'z', text: 'Z'}
+  {label: 'A', value:'A'},{label: 'B', value:'B'},
+  {label: 'C', value:'C'},{label: 'D', value:'D'},
+  {label: 'E', value:'E'},{label: 'F', value:'F'},
+  {label: 'G', value:'G'},{label: 'H', value:'H'},
+  {label: 'I', value:'I'},{label: 'J', value:'J'},
+  {label: 'K', value:'K'},{label: 'L', value:'L'},
+  {label: 'M', value:'M'},{label: 'N', value:'N'},
+  {label: 'O', value:'O'},{label: 'P', value:'P'},
+  {label: 'Q', value:'Q'},{label: 'R', value:'R'},
+  {label: 'S', value:'S'},{label: 'T', value:'T'},
+  {label: 'U', value:'U'},{label: 'V', value:'V'},
+  {label: 'W', value:'W'},{label: 'X', value:'X'},
+  {label: 'Y', value:'Y'},{label: 'Z', value:'Z'}
 ];

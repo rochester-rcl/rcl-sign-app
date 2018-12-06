@@ -92,10 +92,15 @@ class Sidebar extends Component {
   render() {
     const {classes, color, image} = this.props;
     return (<div>
-      <Hidden mdUp="mdUp" implementation="css">
-        <Drawer variant="temporary" anchor="right" open={this.props.open} classes={{
+      <Hidden mdUp={true} implementation="css">
+        <Drawer
+          variant="temporary"
+           anchor="right"
+           open={this.props.open}
+           classes={{
             paper: classes.drawerPaper
-          }} onClose={this.props.handleDrawerToggle} ModalProps={{
+          }}
+          onClose={this.props.handleDrawerToggle} ModalProps={{
             keepMounted: true // Better open performance on mobile.
           }}>
           {/* brand */}
@@ -111,16 +116,22 @@ class Sidebar extends Component {
           }
         </Drawer>
       </Hidden>
-      <Hidden smDown="smDown" implementation="css">
-        <Drawer anchor="left" variant="permanent" open="open" classes={{
+      <Hidden smDown={true} implementation="css">
+        <Drawer
+          anchor="left"
+          variant="permanent"
+          open={true}
+          classes={{
             paper: classes.drawerPaper
           }}>
           {/* brand */}
           <div className={classes.sidebarWrapper}>
             {/*links*/}
             <DictionaryNavigation
-
+              classes={classes}
+              color={color}
               language={this.props.language}
+              loadDefinitions={this.props.loadDefinitions}
               placeholder={(this.props.letter !== undefined) ? this.props.letter : 'A'}
               onSelectLetter={this.props.onSelectLetter}
               onSearch={this.props.onSearch}

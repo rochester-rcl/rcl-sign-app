@@ -13,22 +13,34 @@ import {
   Dropdown,
   Segment,
   Icon,
-  Input,
   Sidebar
 } from 'semantic-ui-react';
+
+// Material
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Input from '@material-ui/core/Input';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import SearchIcon from '@material-ui/icons/Search';
+import IconButton from '@material-ui/core/IconButton';
+
+import withStyles from "@material-ui/core/styles/withStyles";
 
 // Constants
 import {Alphabet, AlphabetMap} from '../utils/Constants';
 
-// Stylesheets
-import {PickerStyles, NavigationStyles, ButtonStyles, ModalStyles} from '../styles/Styles';
+import sidebarStyle from "../assets/jss/components/sidebarStyle";
 
-
-const formattedAlphabet = Alphabet.map((letter) => { return { key: letter, value: letter, text: letter.toUpperCase()} });
+const formattedAlphabet = Alphabet.map((letter) => {
+  return {key: letter, value: letter, text: letter.toUpperCase()}
+});
 
 //const Item = Picker.Item;
 
-export default class DictionaryNavigation extends Component {
+class DictionaryNavigation extends Component {
   state: Object = {
     currentLetter: 'a',
     displayModal: false,
@@ -36,7 +48,8 @@ export default class DictionaryNavigation extends Component {
     currentIndex: 0,
     searchFocused: false,
     search: '',
-    isSearching: false
+    isSearching: false,
+    currency: 'EUR'
   };
   letterRange: Array<string> = ['a-g', 'h-m', 'n-r', 's-z'];
   constructor(props : Object) {
@@ -44,12 +57,17 @@ export default class DictionaryNavigation extends Component {
 
     (this : any).handleRangeSelect = this.handleRangeSelect.bind(this);
     (this : any).loadNewDefinitions = this.loadNewDefinitions.bind(this);
-    (this: any).onSearchChange = this.onSearchChange.bind(this);
-    (this: any).submitSearch = this.submitSearch.bind(this);
+    (this : any).onSearchChange = this.onSearchChange.bind(this);
+    (this : any).submitSearch = this.submitSearch.bind(this);
   }
 
-  componentDidMount(){
-    console.log(this.props.loadDefinitions);
+  handleChange = name => event => {
+    this.setState({[name]: event.target.value});
+    this.props.onSelectLetter(event.target.value);
+  };
+
+  componentDidMount() {
+    console.log(this.props);
   }
 
   componentDidUpdate(prevProps : Object, prevState : Object): void {
@@ -73,15 +91,14 @@ export default class DictionaryNavigation extends Component {
     //this.handleModalToggle();
   }
 
-  onSearchChange(event: SyntheticEvent, { value }): void {
-    this.setState({
-      search: value,
-    });
+  onSearchChange(event : SyntheticEvent): void {
+    this.setState({search: event.target.value});
   }
 
-  submitSearch(event: SyntheticEvent): void {
+  submitSearch(event : SyntheticEvent): void {
     event.preventDefault();
     event.stopPropagation();
+    console.log(this.state.search);
     this.props.onSearch(this.state.search);
   }
 
@@ -118,6 +135,9 @@ export default class DictionaryNavigation extends Component {
   }
 
   render() {
+    const {language, placeholder, onSelectLetter} = this.props;
+    const {classes, color} = this.props;
+
     const {
       displayModal,
       currentLetter,
@@ -126,34 +146,78 @@ export default class DictionaryNavigation extends Component {
       searchFocused,
       isSearching
     } = this.state;
-    const { language, placeholder, onSelectLetter } = this.props;
+
     const prompt = (language === 'en')
       ? 'Choose a Letter'
       : 'Choisissez une Lettre';
-    const searchPrompt = (language === 'en') ? 'Search' : 'Cherche';
+    const searchPrompt = (language === 'en')
+      ? 'Search'
+      : 'Cherche';
 
     return (
-      <div style={{paddingTop: '7rem'}}>
-        <Menu.Item >
-          <Input
+      <div style={{
+        paddingTop: '7rem'
+      }}>
+      <List className={classes.list}>
+        <ListItem
+          className={classes.itemLink + classes.whiteFont}>
+          <TextField
+            className={classes.itemText}
+            id="standard-name"
+            InputLabelProps={{
+              className: classes.whiteFont
+            }}
+            label="Search term"
+            InputProps={{
+              className: classes.whiteFont
+            }}
             onChange={this.onSearchChange}
-            onKeyDown={this.handleKeyDown}
-            placeholder="..."
-            action={<Button icon="search" onClick={this.submitSearch}/>}>
-          </Input>
-        </Menu.Item>
+            margin="normal">
+          </TextField>
+          <IconButton
+            onClick={this.submitSearch}
+            className={classes.itemIcon}>
+            <SearchIcon/>
+          </IconButton>
+        </ListItem>
 
-        <Menu.Item>
-          <Dropdown
-            button
-            className='icon'
-            fluid
-            placeholder={placeholder.toUpperCase()}
-            selection
-            options={formattedAlphabet}
-            onChange={onSelectLetter} />
-        </Menu.Item>
-      </div>
-    );
+        <ListItem
+          className={classes.itemLink + classes.whiteFont}>
+          <TextField
+            className={classes.itemText}
+            id="filled-select-currency"
+            select
+            SelectProps={{
+              MenuProps:
+              {
+                className: classes.menu,
+              },
+            }}
+            InputLabelProps={{
+              className: classes.whiteFont
+            }}
+            InputProps={{
+              className: classes.whiteFont
+            }}
+            label="Select Letter"
+            value={this.state.currentLetter}
+            onChange={this.handleChange('currentLetter')}
+            helperText="Please select a letter"
+            margin="normal">
+            {
+              AlphabetMap.map(option =>
+                (<MenuItem
+                  key={option.value}
+                  value={option.value}
+                  onChange={onSelectLetter}>
+                {option.label}
+              </MenuItem>))
+            }
+          </TextField>
+        </ListItem>
+      </List>
+    </div>);
   }
 }
+
+export default withStyles(sidebarStyle)(DictionaryNavigation);
