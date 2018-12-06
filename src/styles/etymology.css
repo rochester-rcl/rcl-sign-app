@@ -31,3 +31,25 @@
   font-family: "Roboto Condensed", sans-serif;
   color: #4e4e4e;
 }
+
+/*** Cards ***/
+.lsf-etymology-secondary-card.video-active, .lsf-etymology-main-card.video-active {
+  justify-content: center !important;
+}
+
+
+.lsf-etymology-secondary-card.video-active .content, .lsf-etymology-main-card.video-active .content {
+  flex-grow: 0 !important;
+}
+
+.lsf-etymology-image, .lsf-etymology-video {
+  margin: 10px !important;
+}
+
+.lsf-etymology-video-toggle-button {
+  cursor: pointer;
+}
+
+.lsf-etymology-video-toggle-button:hover {
+  opacity: 0.8;
+}

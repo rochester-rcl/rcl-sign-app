@@ -55,11 +55,7 @@ export default class IntroScreen extends Component {
               <p class="ui header">{intro.intro}</p>
             </IntroStyles>
             <IntroStyles variant={{ contactView: true }}>
-            {(intro.instructions).map((data) => {
-              <div style={IntroStyles.instructions}>
-                something is here
-              </div>
-            })}
+            
             </IntroStyles>
             {/*
             <ListView

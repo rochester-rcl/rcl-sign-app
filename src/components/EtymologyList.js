@@ -61,81 +61,104 @@ class EtymologyDisplay extends Component {
         : engEtymology.descriptionFr;
     const mainFlag = language === "en" ? "us" : "fr";
     const secondaryFlag = language === "en" ? "fr" : "us";
-    return (
-      <div className="lsf-etymology-term" onClick={this.handleClick}>
+    const mainCardClass =
+      mainVideoActive === true
+        ? "lsf-etymology-main-card video-active"
+        : "lsf-etymology-main-card";
+    const secondaryCardClass =
+      secondaryVideoActive === true
+        ? "lsf-etymology-secondary-card video-active"
+        : "lsf-etymology-secondary-card";
+    const trigger = (
+      <div className="lsf-etymology-term">
         <h3 className="lsf-etymology-term-title">
           {secondaryEtymology.title + " / " + mainEtymology.title}
         </h3>
-        <Modal
-          className="lsf-etymology-term-modal"
-          open={active}
-          closeIcon="close"
-          onClose={this.handleClick}
-          closeOnDimmerClick={false}
-          closeOnDocumentClick={false}
-        >
-          <Modal.Content className="lsf-etymology-display">
-            <Card.Group centered>
-              <Card>
-                {mainVideoActive === true ? (
-                  <VideoPlayer src={mainEtymology.video_url} />
-                ) : (
-                  <Image src={mainEtymology.imageUrl} />
-                )}
-                <Card.Content>
-                  <Card.Header className="lsf-app-card-header">
-                    {!mainEtymology.video_url ? null : (
-                      <Button icon onClick={this.toggleMainVideo}>
-                        <Icon
-                          size="large"
-                          name="film"
-                          onClick={this.toggleMainVideo}
-                        />
-                      </Button>
-                    )}
-                    <Image
-                      floated="left"
-                      size="mini"
-                      src={
-                        language === "en"
-                          ? require("../images/fr_flag.png")
-                          : require("../images/us_flag.png")
-                      }
-                    />
-                    {mainEtymology.title}
-                  </Card.Header>
-                  {language === "en" ? (
-                    <Card.Description>{mainDescription}</Card.Description>
-                  ) : null}
-                </Card.Content>
-              </Card>
-              <Card>
-                <Image src={secondaryEtymology.imageUrl} />
-                <Card.Content>
-                  <Card.Header className="lsf-app-card-header">
-                    {!secondaryEtymology.video_url ? null : (
-                      <Icon size="large" name="film" />
-                    )}
-                    <Image
-                      floated="left"
-                      size="mini"
-                      src={
-                        language === "en"
-                          ? require("../images/us_flag.png")
-                          : require("../images/fr_flag.png")
-                      }
-                    />
-                    {secondaryEtymology.title}
-                  </Card.Header>
-                  {language === "fr" ? (
-                    <Card.Description>{mainDescription}</Card.Description>
-                  ) : null}
-                </Card.Content>
-              </Card>
-            </Card.Group>
-          </Modal.Content>
-        </Modal>
       </div>
+    );
+    return (
+      <Modal className="lsf-etymology-term-modal" closeIcon trigger={trigger}>
+        <Modal.Content className="lsf-etymology-display">
+          <Card.Group centered>
+            <Card className={mainCardClass}>
+              {mainVideoActive === true ? (
+                <VideoPlayer
+                  className="lsf-etymology-video"
+                  src={mainEtymology.video_url}
+                />
+              ) : (
+                <Image
+                  className="lsf-etymology-image"
+                  src={mainEtymology.imageUrl}
+                />
+              )}
+              <Card.Content>
+                <Card.Header className="lsf-app-card-header">
+                  {!mainEtymology.video_url ? null : (
+                    <Icon
+                      className="lsf-etymology-video-toggle-button"
+                      size="large"
+                      name="film"
+                      onClick={this.toggleMainVideo}
+                    />
+                  )}
+                  <Image
+                    floated="left"
+                    size="mini"
+                    src={
+                      language === "en"
+                        ? require("../images/fr_flag.png")
+                        : require("../images/us_flag.png")
+                    }
+                  />
+                  {mainEtymology.title}
+                </Card.Header>
+                {language === "en" ? (
+                  <Card.Description>{mainDescription}</Card.Description>
+                ) : null}
+              </Card.Content>
+            </Card>
+            <Card className={secondaryCardClass}>
+              {secondaryVideoActive === true ? (
+                <VideoPlayer
+                  className="lsf-etymology-video"
+                  src={secondaryEtymology.video_url}
+                />
+              ) : (
+                <Image
+                  className="lsf-etymology-image"
+                  src={secondaryEtymology.imageUrl}
+                />
+              )}
+              <Card.Content>
+                <Card.Header className="lsf-app-card-header">
+                  {!secondaryEtymology.video_url ? null : (
+                    <Icon
+                      className="lsf-etymology-video-toggle-button"
+                      onClick={this.toggleSecondaryVideo}
+                      size="large"
+                      name="film"
+                    />
+                  )}
+                  <Image
+                    floated="left"
+                    size="mini"
+                    src={
+                      language === "en"
+                        ? require("../images/us_flag.png")
+                        : require("../images/fr_flag.png")
+                    }
+                  />
+                  {secondaryEtymology.title}
+                </Card.Header>
+                {language === "fr" ? (
+                  <Card.Description>{mainDescription}</Card.Description>
+                ) : null}
+              </Card.Content>
+            </Card>
+          </Card.Group>
+        </Modal.Content>
+      </Modal>
     );
   }
 }
