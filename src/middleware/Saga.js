@@ -1,7 +1,7 @@
 /* @flow */
 
 // Fetch
-import { fetchDefinitions, searchDefinitions, fetchEtymology, searchEtymology, fetchNav } from "./LSFetch";
+import { fetchDefinitions, searchDefinitions, fetchEtymology, searchEtymology, fetchNav, fetchNumbers } from "./LSFetch";
 
 // Redux Saga
 import { put } from "redux-saga/effects";
@@ -46,19 +46,19 @@ export function* loadNavSaga(loadNavigationAction: Object): Generator<Promise<Ob
  */
 export function* loadDefinitionsSaga(loadDefinitionsAction: Object): Generator<Promise<Object>, any, any> {
   const { language, letter, range } = loadDefinitionsAction.definitionQuery;
+  yield loadDefinitions(language, letter, range);
+}
+
+export function* loadDefinitions(language: string, letter: string, range: string): Generator <any, any, any> {
   try {
     yield put({
       type: "FETCHING",
       fetching: true
     });
-    let definitionResults = yield fetchDefinitions(language, letter, range);
+    const definitionResults = (letter !== '0-9') ? yield fetchDefinitions(language, letter, range) : yield fetchNumbers(language);
     let results = {};
     results.searchResults = false;
     if (!definitionResults.hasOwnProperty("message")) {
-      /*let uuid = uuidv4();
-      results.cacheInfo = {};
-      results.cacheInfo[range] = uuid;
-      localStorage.setItem(uuid, JSON.stringify(definitionResults));*/
     } else {
       definitionResults.error = true;
     }

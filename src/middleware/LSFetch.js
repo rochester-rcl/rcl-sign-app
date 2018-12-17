@@ -12,6 +12,11 @@ export function fetchDefinitions(language: string, letter: string, range: string
   });
 }
 
+export function fetchNumbers(language: string): Promise {
+  const endpoint: string = LSFBaseEndpoint + language + '/' + 'num';
+  return fetch(endpoint).then((response) => response.json());
+}
+
 export function fetchEtymology(language: string, letter: string): Promise {
   const endpoint: string = LSF_ETYMO_ENDPOINT + language + '/' + letter;
   return fetch(endpoint).then((response) => response.json().then((etymo) => etymo));

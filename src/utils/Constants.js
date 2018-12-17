@@ -19,6 +19,7 @@ export const LSF_ETYMO_SEARCH_ENDPOINT: string =
   "https://projects.lib.rochester.edu/lsf-asl_dev/wp-json/lsf-rest/v1/search-etymo/";
 
 export const Alphabet: Array<string> = [
+  "0-9",
   "a",
   "b",
   "c",

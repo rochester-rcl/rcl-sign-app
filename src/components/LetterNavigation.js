@@ -135,9 +135,17 @@ export default class LetterNavigation extends Component {
   render() {
     const { language, onSelectLetter, onSelectRange } = this.props;
     const { letter } = this.state;
+    console.log(letter !== '0-9');
     const prompt =
       language === "en" ? "Choose a Letter" : "Choisissez une Lettre";
     const searchPrompt = language === "en" ? "Search" : "Cherche";
+    let showRange = false;
+    if (onSelectRange !== undefined) {
+      showRange = true
+    }
+    if (letter === '0-9') {
+      showRange = false;
+    }
     return (
       <Segment className="lsf-letter-select-container">
         <Grid columns={3} divided>
@@ -150,7 +158,7 @@ export default class LetterNavigation extends Component {
               options={formattedAlphabet}
               onChange={this.handleSelectLetter}
             />
-            {onSelectRange !== undefined ? this.formatRangeButtons() : null}
+            {(showRange === true) ? this.formatRangeButtons() : null}
           </Grid.Column>
           <Grid.Column className="lsf-letter-select-column">
             <Divider vertical> {language === "en" ? "OR" : "OU"} </Divider>
