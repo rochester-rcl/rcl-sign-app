@@ -1,7 +1,9 @@
 // borg style history singleton
 import { createBrowserHistory } from 'history';
 
-export default createBrowserHistory();
+import { BASENAME } from "./Constants";
+
+export default createBrowserHistory({ basename: BASENAME });
 
 export function basename(path: string) {
   if (path.charAt(0) === '/') {

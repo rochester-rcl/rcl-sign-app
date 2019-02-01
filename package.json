@@ -2,6 +2,7 @@
   "name": "LSFWeb",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://localhost/lsf-static",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

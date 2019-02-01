@@ -1,5 +1,5 @@
 /* @flow */
-
+export const BASENAME: string = 'lsf-asl-app';
 export const LSFBaseEndpoint: string =
   "https://projects.lib.rochester.edu/lsf-asl_dev/wp-json/lsf-rest/v1/definitions/";
 

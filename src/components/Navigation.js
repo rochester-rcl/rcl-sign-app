@@ -11,6 +11,9 @@ import * as frFlag from "../images/fr_flag.png";
 // history
 import history, { basename } from "../utils/history";
 
+// constants
+import { BASENAME } from "../utils/Constants";
+
 export default class Navigation extends Component {
   state = { activeItem: null };
   constructor(props: Object) {
@@ -41,6 +44,7 @@ export default class Navigation extends Component {
         activeItem: name
       },
       () => {
+        // history.push(`/${BASENAME}/${name.toLowerCase()}/`);
         history.push("/" + name.toLowerCase() + "/");
       }
     );

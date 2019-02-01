@@ -12,6 +12,9 @@ import history from "../utils/history";
 // Actions
 import * as AppActions from "../actions/Actions";
 
+// Constants
+import { BASENAME } from "../utils/Constants";
+
 // Containers
 
 import DictionaryContainer from "./DictionaryContainer";
@@ -127,7 +130,7 @@ export class AppRouter extends Component {
       );
 
       return (
-        <Router history={history}>
+        <Router basename={BASENAME} history={history}>
           <div className="lsf-app-root-container">
             <Navigation
               location={history.location.pathname}
