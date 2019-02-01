@@ -5,8 +5,9 @@ import React, { Component } from "react";
 import { Menu, Image } from "semantic-ui-react";
 
 // images
-import * as usFlag from "../images/us_flag.png";
-import * as frFlag from "../images/fr_flag.png";
+import usFlag from "../images/us_flag.png";
+import frFlag from "../images/fr_flag.png";
+import logo from "../images/lsf-logo.svg";
 
 // history
 import history, { basename } from "../utils/history";
@@ -75,7 +76,7 @@ export default class Navigation extends Component {
               active={activeItem === basename(intro.path)}
               onClick={this.handleClick}
             >
-              <Image src="/lsf-logo.svg" size="tiny" />
+              <Image src={logo} size="tiny" />
             </Menu.Item>
           ) : null}
           {_items.map((item, index) => (

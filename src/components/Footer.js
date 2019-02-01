@@ -5,6 +5,9 @@ import React, { Component } from 'react';
 // semantic-ui
 import { Image, Icon } from 'semantic-ui-react';
 
+// images
+import urLogo from "../images/ur-logo.png";
+
 const LinkIcon = (props: Object) => {
   const { icon, href, alt } = props;
   return (
@@ -31,7 +34,7 @@ const Footer = (props: Object) => {
       <footer className="lsf-app-footer">
         <Image
           className='lsf-app-footer-link lsf-app-footer-image'
-          src='/ur-logo.png'
+          src={urLogo}
           alt='University of Rochester Link'
           size='medium'
           href='https://rochester.edu'
