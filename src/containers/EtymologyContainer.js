@@ -23,6 +23,8 @@ class EtymologyContainer extends Component {
     super(props);
     (this: any).handleSelectLetter = this.handleSelectLetter.bind(this);
     (this: any).handleSearch = this.handleSearch.bind(this);
+    (this: any).updateURL = this.updateURL.bind(this);
+    (this: any).etymoList = null;
   }
 
   componentDidMount() {
@@ -38,10 +40,23 @@ class EtymologyContainer extends Component {
   componentDidUpdate(prevProps: Object, prevState: Object) {
     const { language, loadEtymologyAction, letter } = this.props;
     if (prevProps.language !== language) {
-      this.props.loadEtymologyAction({
-        language: language,
-        letter: letter !== undefined ? letter : "a"
-      });
+      let _letter = letter;
+      if (this.etymoList !== null) {
+        if (this.etymoList.state.current !== null) {
+          const { engEtymology, frEtymology } = this.etymoList.state.current;
+          if (language === 'fr') {
+            _letter = (frEtymology.letter !== null ? frEtymology.letter : frEtymology.title.charAt(0));
+          } else {
+            _letter = (engEtymology.letter !== null ? engEtymology.letter : engEtymology.title.charAt(0));
+          }
+        }
+        _letter = _letter.toLowerCase();
+        this.props.loadEtymologyAction({
+          language: language,
+          letter: _letter !== undefined ? _letter : "a"
+        });
+        this.updateURL(_letter);
+      }
     }
   }
 
@@ -58,6 +73,12 @@ class EtymologyContainer extends Component {
   handleSearch(term: string) {
     const { language, searchEtymologyAction } = this.props;
     searchEtymologyAction(language, term);
+  }
+
+  updateURL(letter: string) {
+    const { history } = this.props;
+    const basename = history.location.pathname.split('/')[1];
+    this.props.history.push(`/${basename}/${letter}`);
   }
 
   render() {
@@ -87,7 +108,7 @@ class EtymologyContainer extends Component {
           </Segment>
         ) : null}
         {etymology.length > 0 && fetchingEtymology === false ? (
-          <EtymologyList etymology={etymology} language={language} />
+          <EtymologyList ref={(ref) => this.etymoList = ref} etymology={etymology} language={language} />
         ) : null}
         {etymology.error === true ? (
           <Message className="lsf-info-message">{etymology.message}</Message>

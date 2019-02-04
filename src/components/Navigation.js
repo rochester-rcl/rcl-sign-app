@@ -68,7 +68,7 @@ export default class Navigation extends Component {
     }
     if (items !== null) {
       return (
-        <Menu borderless className="lsf-nav-menu">
+        <Menu stackable borderless className="lsf-nav-menu">
           {intro !== undefined ? (
             <Menu.Item
               key="intro"

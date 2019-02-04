@@ -56,6 +56,13 @@ export const S_TO_Z: string = "s-z";
 
 export const LETTER_RANGES: Array<string> = [A_TO_G, H_TO_M, N_TO_R, S_TO_Z];
 
+export const LETTER_RANGE_MAP = {
+  A_TO_G: A_TO_G,
+  H_TO_M: H_TO_M,
+  N_TO_R: N_TO_R,
+  S_TO_Z: S_TO_Z,
+}
+
 export const Range: Object = {
   aToG: {
     letters: ["a", "b", "c", "d", "e", "f", "g"],

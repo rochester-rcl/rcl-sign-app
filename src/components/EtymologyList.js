@@ -20,7 +20,7 @@ class EtymologyDisplay extends Component {
   state = {
     active: false,
     mainVideoActive: false,
-    secondaryVideoActive: false
+    secondaryVideoActive: false,
   };
 
   constructor(props: Object) {
@@ -31,9 +31,10 @@ class EtymologyDisplay extends Component {
   }
 
   handleClick() {
-    this.setState({
-      active: !this.state.active
-    });
+    const { onClickCallback, etymology } = this.props;
+    if (onClickCallback !== undefined) {
+      onClickCallback(etymology);
+    }
   }
 
   toggleMainVideo() {
@@ -50,7 +51,7 @@ class EtymologyDisplay extends Component {
 
   render() {
     const { engEtymology, frEtymology } = this.props.etymology;
-    const { language } = this.props;
+    const { language, onClickCallback } = this.props;
     const { active, secondaryVideoActive, mainVideoActive } = this.state;
     const mainEtymology = language === "en" ? frEtymology : engEtymology;
     const secondaryEtymology = language === "en" ? engEtymology : frEtymology;
@@ -71,7 +72,7 @@ class EtymologyDisplay extends Component {
         : "lsf-etymology-secondary-card";
     const trigger = (
       <div className="lsf-etymology-term">
-        <h3 className="lsf-etymology-term-title">
+        <h3 className="lsf-etymology-term-title" onClick={this.handleClick}>
           {secondaryEtymology.title + " / " + mainEtymology.title}
         </h3>
       </div>
@@ -113,7 +114,7 @@ class EtymologyDisplay extends Component {
                   />
                   {mainEtymology.title}
                 </Card.Header>
-                {language === "en" ? (
+                {language === "fr" ? (
                   <Card.Description>{mainDescription}</Card.Description>
                 ) : null}
               </Card.Content>
@@ -151,7 +152,7 @@ class EtymologyDisplay extends Component {
                   />
                   {secondaryEtymology.title}
                 </Card.Header>
-                {language === "fr" ? (
+                {language === "en" ? (
                   <Card.Description>{mainDescription}</Card.Description>
                 ) : null}
               </Card.Content>
@@ -163,23 +164,41 @@ class EtymologyDisplay extends Component {
   }
 }
 
-const EtymologyList = (props: Object) => {
-  const { etymology, language } = props;
-  return (
-    <Segment className="lsf-etymology-list-container">
-      <List className="lsf-etymology-list" divided verticalAlign="middle">
-        {etymology.map((etymo, index) => (
-          <List.Item key={index} className="lsf-etymology-list-item">
-            <EtymologyDisplay
-              index={index}
-              etymology={etymo}
-              language={language}
-            />
-          </List.Item>
-        ))}
-      </List>
-    </Segment>
-  );
-};
+export default class EtymologyList extends Component {
 
-export default EtymologyList;
+  state = {
+    current: null
+  };
+
+  constructor(props: Object) {
+    super(props);
+    (this: any).setCurrent = this.setCurrent.bind(this);
+  }
+
+  setCurrent(etymo: Object): void {
+    this.setState({
+      current: etymo
+    });
+  }
+
+  render() {
+    const { etymology, language } = this.props;
+    const mountNode = document.getElementsByClassName('lsf-etymology-container')[0];
+    return (
+      <Segment className="lsf-etymology-list-container">
+        <List className="lsf-etymology-list" divided verticalAlign="middle">
+          {etymology.map((etymo, index) => (
+            <List.Item key={index} className="lsf-etymology-list-item">
+              <EtymologyDisplay
+                index={index}
+                etymology={etymo}
+                language={language}
+                onClickCallback={this.setCurrent}
+              />
+            </List.Item>
+          ))}
+        </List>
+      </Segment>
+    );
+  }
+};

@@ -14,7 +14,7 @@ import {
 } from "semantic-ui-react";
 
 // constants
-import { Alphabet, LETTER_RANGES, Range, A_TO_G } from "../utils/Constants";
+import { Alphabet, LETTER_RANGES, LETTER_RANGE_MAP, Range, A_TO_G } from "../utils/Constants";
 
 const formattedAlphabet = Alphabet.map(letter => {
   return { key: letter, value: letter, text: letter.toUpperCase() };
@@ -121,21 +121,17 @@ export default class LetterNavigation extends Component {
       });
     }
   }
-  // TODO need to take special characters into consideration
-  static getRange(word: string) {
-    const letter = word.charAt(1);
-    for (let key in Range) {
-      let subRange = Range[key];
-      let range = subRange.letters.includes(letter);
-      if (range === true) return subRange.string;
-    }
+
+  static formatRange(range: string) {
+    const formatted = range.toUpperCase().split(/(TO)/g).join('_');
+    const formatted_range = LETTER_RANGE_MAP[formatted];
+    if (formatted_range !== undefined) return formatted_range;
     return A_TO_G;
   }
 
   render() {
     const { language, onSelectLetter, onSelectRange } = this.props;
     const { letter } = this.state;
-    console.log(letter !== '0-9');
     const prompt =
       language === "en" ? "Choose a Letter" : "Choisissez une Lettre";
     const searchPrompt = language === "en" ? "Search" : "Cherche";

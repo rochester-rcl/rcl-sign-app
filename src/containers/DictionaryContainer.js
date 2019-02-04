@@ -87,9 +87,10 @@ class DictionaryContainer extends Component {
       if (videoModal.display === true) {
         const needsUpdate = this.checkVideoModalData(videoModal);
         if (needsUpdate) {
-          const title = videoModal[language].title;
-          const letter = title.charAt(0);
-          const range = LetterNavigation.getRange(title);
+          const definition = videoModal[language];
+          const range = LetterNavigation.formatRange(definition.letter_range);
+          console.log(definition.letter);
+          const letter = definition.letter.toLowerCase();
           const query = {
             language: language,
             letter: letter,

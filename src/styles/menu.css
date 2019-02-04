@@ -6,7 +6,7 @@
   background-color: #4e58d5 !important;
   border-radius: 0 !important;
   box-shadow: 2px 2px 20px !important;
-  flex: 0.1;
+  /*flex: 0.1;*/
   z-index: 5000 !important;
 }
 
@@ -14,8 +14,27 @@
   color: #fff !important;
   font-weight: 400 !important;
   padding: 10px !important;
+  font-size: 1.5vw;
 }
 
 .lsf-nav-menu .item.active {
   background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.lsf-nav-menu .item img {
+  width: 5vw !important;
+}
+
+.language-menu .item img {
+  width: 3vw !important;
+}
+
+.language-menu {
+  
+}
+
+.language-menu .item {
+  display: flex;
+  justify-content: center;
+  flex: 1 !important;
 }
