@@ -51,7 +51,7 @@ class EtymologyDisplay extends Component {
 
   render() {
     const { engEtymology, frEtymology } = this.props.etymology;
-    const { language, onClickCallback } = this.props;
+    const { language, onClickCallback, mountNode } = this.props;
     const { active, secondaryVideoActive, mainVideoActive } = this.state;
     const mainEtymology = language === "en" ? frEtymology : engEtymology;
     const secondaryEtymology = language === "en" ? engEtymology : frEtymology;
@@ -78,7 +78,7 @@ class EtymologyDisplay extends Component {
       </div>
     );
     return (
-      <Modal className="lsf-etymology-term-modal" closeIcon trigger={trigger}>
+      <Modal mountNode={mountNode} className="lsf-etymology-term-modal" closeIcon trigger={trigger}>
         <Modal.Content className="lsf-etymology-display">
           <Card.Group centered>
             <Card className={mainCardClass}>
@@ -182,8 +182,7 @@ export default class EtymologyList extends Component {
   }
 
   render() {
-    const { etymology, language } = this.props;
-    const mountNode = document.getElementsByClassName('lsf-etymology-container')[0];
+    const { etymology, language, mountNode } = this.props;
     return (
       <Segment className="lsf-etymology-list-container">
         <List className="lsf-etymology-list" divided verticalAlign="middle">
@@ -194,6 +193,7 @@ export default class EtymologyList extends Component {
                 etymology={etymo}
                 language={language}
                 onClickCallback={this.setCurrent}
+                mountNode={mountNode}
               />
             </List.Item>
           ))}

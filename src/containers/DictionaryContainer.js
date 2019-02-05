@@ -177,8 +177,7 @@ class DictionaryContainer extends Component {
     // All of our 'dumb' components will be rendered as children here.
     const query = this.getQuery(letter, range);
     return (
-      <Segment className="lsf-app-dictionary-container lsf-app-body">
-        <h1 className="lsf-static-page-title">{title}</h1>
+      <Segment id="lsf-app-modal-container" className="lsf-app-dictionary-container lsf-app-body">
         <LetterNavigation
           ref={(ref) => this.letterNavigation = ref}
           range={query.range}
@@ -209,6 +208,7 @@ class DictionaryContainer extends Component {
               displayModal={videoModal.display}
               toggleModal={toggleVideoModalAction}
               layoutAspect={layoutAspect}
+              mountNode={document.getElementById('lsf-app-modal-container')}
             />
           </div>
         ) : null}

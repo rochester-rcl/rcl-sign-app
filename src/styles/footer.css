@@ -18,3 +18,17 @@
 .lsf-app-footer-link:hover {
   color: #59a5d8;
 }
+
+.lsf-app-footer-image {
+  width: 25vw !important;
+}
+
+.lsf-app-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lsf-app-footer a {
+  font-size: 1.4vw;
+}

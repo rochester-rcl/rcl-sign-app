@@ -44,10 +44,16 @@ class EtymologyContainer extends Component {
       if (this.etymoList !== null) {
         if (this.etymoList.state.current !== null) {
           const { engEtymology, frEtymology } = this.etymoList.state.current;
-          if (language === 'fr') {
-            _letter = (frEtymology.letter !== null ? frEtymology.letter : frEtymology.title.charAt(0));
+          if (language === "fr") {
+            _letter =
+              frEtymology.letter !== null
+                ? frEtymology.letter
+                : frEtymology.title.charAt(0);
           } else {
-            _letter = (engEtymology.letter !== null ? engEtymology.letter : engEtymology.title.charAt(0));
+            _letter =
+              engEtymology.letter !== null
+                ? engEtymology.letter
+                : engEtymology.title.charAt(0);
           }
         }
         _letter = _letter.toLowerCase();
@@ -77,7 +83,7 @@ class EtymologyContainer extends Component {
 
   updateURL(letter: string) {
     const { history } = this.props;
-    const basename = history.location.pathname.split('/')[1];
+    const basename = history.location.pathname.split("/")[1];
     this.props.history.push(`/${basename}/${letter}`);
   }
 
@@ -94,8 +100,10 @@ class EtymologyContainer extends Component {
     const _letter = letter !== undefined ? letter : "a";
     return (
       // etymology component goes here
-      <Segment className="lsf-etymology-container lsf-app-body">
-        <h1 className="lsf-static-page-title">{title}</h1>
+      <Segment
+        id="lsf-app-modal-container"
+        className="lsf-etymology-container lsf-app-body"
+      >
         <LetterNavigation
           language={language}
           letter={_letter}
@@ -108,7 +116,12 @@ class EtymologyContainer extends Component {
           </Segment>
         ) : null}
         {etymology.length > 0 && fetchingEtymology === false ? (
-          <EtymologyList ref={(ref) => this.etymoList = ref} etymology={etymology} language={language} />
+          <EtymologyList
+            ref={ref => (this.etymoList = ref)}
+            etymology={etymology}
+            language={language}
+            mountNode={document.getElementById('lsf-app-modal-container')}
+          />
         ) : null}
         {etymology.error === true ? (
           <Message className="lsf-info-message">{etymology.message}</Message>

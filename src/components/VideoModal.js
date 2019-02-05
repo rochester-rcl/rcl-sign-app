@@ -68,12 +68,13 @@ export default class VideoModal extends Component {
       displayModal,
       toggleModal,
       layoutAspect,
-      language
+      language,
+      mountNode
     } = this.props;
     const { enVideoPaused, frVideoPaused /*layoutAnimation*/ } = this.state;
 
     return (
-      <Modal closeIcon open={displayModal} onClose={this.exitModal}>
+      <Modal className="video-modal" mountNode={mountNode} closeIcon open={displayModal} onClose={this.exitModal}>
         <Modal.Content>
           <Card.Group centered>
             {this.sortVideo().map((video, index) => (

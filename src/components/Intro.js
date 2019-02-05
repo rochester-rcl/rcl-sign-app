@@ -30,7 +30,6 @@ export default class Intro extends Component {
     const { title } = this.props;
     return(
       <Segment className="lsf-app-intro-container lsf-app-body">
-        <h1 className="lsf-static-page-title">{title}</h1>
         <Divider horizontal/>
         <VideoPlayer
           className="intro-video"

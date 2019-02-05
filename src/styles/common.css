@@ -133,3 +133,23 @@
 .lsf-video-modal-card {
   min-width: 22vw !important;
 }
+
+#lsf-app-modal-container .dimmer {
+  position: absolute !important;
+  width: 100%;
+  height: 100%;
+}
+
+#lsf-app-modal-container {
+  border: 0;
+  border-radius: 0;
+}
+
+@media only screen and (max-width: 767px) {
+  .video-modal {
+    width: 75% !important;
+  }
+  .lsf-etymology-term-modal {
+    width: 75% !important;
+  }
+}

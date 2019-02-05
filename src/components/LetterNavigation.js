@@ -20,9 +20,13 @@ const formattedAlphabet = Alphabet.map(letter => {
   return { key: letter, value: letter, text: letter.toUpperCase() };
 });
 
+// TODO need to update the range selection menu to a dropdown when window is smaller than a certain size
+
 export default class LetterNavigation extends Component {
-  state = { search: "", rangeIndex: 0, letter: "a" };
+  state = { search: "", rangeIndex: 0, letter: "a", isMobile: false };
+  MOBILE_WIDTH: Number = 767;
   letterRange = LETTER_RANGES;
+  letterRangeDropdown = this.letterRange.map((value, index) => { return { value: index, key: value, text: value } });
   constructor(props: Object) {
     super(props);
     (this: any).onSearchChange = this.onSearchChange.bind(this);
@@ -32,12 +36,18 @@ export default class LetterNavigation extends Component {
     (this: any).handleKeyDown = this.handleKeyDown.bind(this);
     (this: any).handleSelectLetter = this.handleSelectLetter.bind(this);
     (this: any).handleSelectRange = this.handleSelectRange.bind(this);
+    (this: any).handleWindowResize = this.handleWindowResize.bind(this);
     (this: any).update = this.update.bind(this);
   }
 
   componentDidMount() {
     const { letter, range } = this.props;
     this.update(letter, range);
+    window.addEventListener('resize', this.handleWindowResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowResize);
   }
 
   onSearchChange(event: SyntheticEvent, { value }): void {
@@ -76,6 +86,19 @@ export default class LetterNavigation extends Component {
     );
   }
 
+  handleWindowResize(event: Event): void {
+    const { innerWidth } = event.target;
+    if (innerWidth < this.MOBILE_WIDTH) {
+      this.setState({
+        isMobile: true,
+      });
+    } else {
+      this.setState({
+        isMobile: false
+      });
+    }
+  }
+
   prepareCallback(callback: ?(letterInfo: Object) => void): void {
     if (callback !== undefined) {
       const { rangeIndex, letter } = this.state;
@@ -87,25 +110,39 @@ export default class LetterNavigation extends Component {
   }
 
   formatRangeButtons(): void {
-    const { letter, rangeIndex } = this.state;
+    const { letter, rangeIndex, isMobile } = this.state;
     const { language } = this.props;
     const rangeText = (language === 'en') ? 'Range' : 'Intervalle'
-    return (
-      <div className="lsf-app-letter-range-container">
-        <Menu stackable className="lsf-letter-range-buttons">
-          <Menu.Item className="lsf-letter-range-buttons-header" header>{rangeText}</Menu.Item>
-          {this.letterRange.map((letterRange, index) => (
-            <Menu.Item
-              key={index}
-              onClick={() => this.handleSelectRange(index)}
-              active={index === rangeIndex}
-            >
-              {`${letter.toUpperCase()} | ${letterRange}`}
-            </Menu.Item>
-          ))}
-        </Menu>
-      </div>
-    );
+    if (isMobile) {
+      return (
+        <div className="lsf-app-letter-range-container">
+          <Dropdown
+            fluid
+            placeholder="Range"
+            selection
+            options={this.letterRangeDropdown}
+            onChange={(event, { value }) => this.handleSelectRange(value)}
+          />
+        </div>
+      );
+    } else {
+      return (
+        <div className="lsf-app-letter-range-container">
+          <Menu className="lsf-letter-range-buttons">
+            <Menu.Item className="lsf-letter-range-buttons-header" header>{rangeText}</Menu.Item>
+            {this.letterRange.map((letterRange, index) => (
+              <Menu.Item
+                key={index}
+                onClick={() => this.handleSelectRange(index)}
+                active={index === rangeIndex}
+              >
+                {`${letter.toUpperCase()} | ${letterRange}`}
+              </Menu.Item>
+            ))}
+          </Menu>
+        </div>
+      );
+    }
   }
 
   update(letter: string, range: string) {
@@ -131,9 +168,9 @@ export default class LetterNavigation extends Component {
 
   render() {
     const { language, onSelectLetter, onSelectRange } = this.props;
-    const { letter } = this.state;
+    const { letter, isMobile } = this.state;
     const prompt =
-      language === "en" ? "Choose a Letter" : "Choisissez une Lettre";
+      language === "en" ? "Letter" : "Lettre";
     const searchPrompt = language === "en" ? "Search" : "Cherche";
     let showRange = false;
     if (onSelectRange !== undefined) {
@@ -144,7 +181,7 @@ export default class LetterNavigation extends Component {
     }
     return (
       <Segment className="lsf-letter-select-container">
-        <Grid columns={3} divided>
+        <Grid columns={(isMobile === false) ? 3 : 2} divided>
           <Grid.Column className="lsf-letter-select-column">
             <h3 className="lsf-letter-select-prompt">{prompt}</h3>
             <Dropdown
@@ -156,9 +193,12 @@ export default class LetterNavigation extends Component {
             />
             {(showRange === true) ? this.formatRangeButtons() : null}
           </Grid.Column>
-          <Grid.Column className="lsf-letter-select-column">
-            <Divider vertical> {language === "en" ? "OR" : "OU"} </Divider>
-          </Grid.Column>
+          {(isMobile === false)
+            ? <Grid.Column className="lsf-letter-select-column">
+              <Divider vertical> {language === "en" ? "OR" : "OU"} </Divider>
+            </Grid.Column>
+            : null
+          }
           <Grid.Column className="lsf-letter-select-column">
             <h3 className="lsf-letter-select-prompt">{searchPrompt}</h3>
             <Input

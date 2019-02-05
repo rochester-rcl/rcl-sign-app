@@ -26,7 +26,6 @@ const LinkIcon = (props: Object) => {
   );
 }
 
-// TODO set up basename etc to handle the UR logo
 // TODO make copyright a static page
 const Footer = (props: Object) => {
   return (
