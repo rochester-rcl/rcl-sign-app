@@ -129,6 +129,10 @@
   font-weight: normal !important;
 }
 
+.lsf-app-letter-range-container .dropdown {
+  margin-top: 10px;
+}
+
 /*** Video Modal ***/
 .lsf-video-modal-card {
   min-width: 22vw !important;

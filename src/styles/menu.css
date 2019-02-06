@@ -17,6 +17,10 @@
   font-size: 2vw;
 }
 
+.lsf-nav-menu-item {
+  border-left: 3px solid #133c55;
+}
+
 .lsf-nav-menu .item.active {
   background-color: rgba(0, 0, 0, 0.15) !important;
 }

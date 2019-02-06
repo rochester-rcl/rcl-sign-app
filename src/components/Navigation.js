@@ -45,7 +45,6 @@ export default class Navigation extends Component {
         activeItem: name
       },
       () => {
-        // history.push(`/${BASENAME}/${name.toLowerCase()}/`);
         history.push("/" + name.toLowerCase() + "/");
       }
     );
@@ -81,6 +80,7 @@ export default class Navigation extends Component {
           ) : null}
           {_items.map((item, index) => (
             <Menu.Item
+              className="lsf-nav-menu-item"
               key={index++}
               name={item.path}
               active={activeItem === basename(item.path)}
