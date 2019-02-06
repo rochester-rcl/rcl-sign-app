@@ -14,6 +14,7 @@ import DefinitionDisplay from './DefinitionDisplay';
 
 export default class DefinitionList extends Component {
   columns = 3;
+  columnSize = 10
   constructor(props : Object) {
     super(props);
     (this: any).sliceDefinitions = this.sliceDefinitions.bind(this);
@@ -21,9 +22,10 @@ export default class DefinitionList extends Component {
 
   sliceDefinitions() {
     const { definitions } = this.props;
-    const step = Math.floor(definitions.length / this.columns);
+    const step = Math.floor((definitions.length / this.columns) + (definitions.length % this.columns));
     let chunk = 0;
     const cols = [];
+    const remainder = definitions.length % this.columns;
     for (let i = 0; i < this.columns; i++, chunk += step) {
       let col;
       if (i === this.columns-1) {
@@ -39,7 +41,7 @@ export default class DefinitionList extends Component {
   render() {
     const {definitions, currentLanguage, fetchingDefinitions, searchResults, toggleModal} = this.props;
     let cols;
-    if (definitions.length > this.columns) {
+    if (definitions.length > this.columnSize) {
       cols = this.sliceDefinitions();
     } else {
       cols = [definitions];
