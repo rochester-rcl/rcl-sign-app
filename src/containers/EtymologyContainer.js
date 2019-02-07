@@ -38,23 +38,20 @@ class EtymologyContainer extends Component {
   }
 
   componentDidUpdate(prevProps: Object, prevState: Object) {
-    const { language, loadEtymologyAction, letter } = this.props;
-    if (prevProps.language !== language) {
-      let _letter = letter;
-      if (this.etymoList !== null) {
-        if (this.etymoList.state.current !== null) {
-          const { engEtymology, frEtymology } = this.etymoList.state.current;
-          if (language === "fr") {
-            _letter =
-              frEtymology.letter !== null
-                ? frEtymology.letter
-                : frEtymology.title.charAt(0);
-          } else {
-            _letter =
-              engEtymology.letter !== null
-                ? engEtymology.letter
-                : engEtymology.title.charAt(0);
-          }
+    const {
+      language,
+      loadEtymologyAction,
+      letter,
+      currentEtymology
+    } = this.props;
+    let _letter = letter !== undefined ? letter : "a";
+    const { engEtymology, frEtymology } = currentEtymology;
+    if (prevProps.language !== this.props.language) {
+      if (engEtymology !== null && frEtymology !== null) {
+        if (language === "fr") {
+          _letter = frEtymology.letter !== null ? frEtymology.letter : frEtymology.title.charAt(0);
+        } else {
+          _letter = engEtymology.letter !== null ? engEtymology.letter : engEtymology.title.charAt(0);
         }
         _letter = _letter.toLowerCase();
         this.props.loadEtymologyAction({
@@ -94,6 +91,8 @@ class EtymologyContainer extends Component {
       fetchingEtymology,
       letter,
       searchEtymologyAction,
+      toggleEtymoModalAction,
+      currentEtymology,
       query
     } = this.props;
     const title = language === "en" ? "Old ASL/LSF" : "Ancienne ASL/LSF";
@@ -120,7 +119,9 @@ class EtymologyContainer extends Component {
             ref={ref => (this.etymoList = ref)}
             etymology={etymology}
             language={language}
-            mountNode={document.getElementById('lsf-app-modal-container')}
+            mountNode={document.getElementById("lsf-app-modal-container")}
+            setEtymology={toggleEtymoModalAction}
+            currentEtymology={currentEtymology}
           />
         ) : null}
         {etymology.error === true ? (
@@ -138,7 +139,8 @@ function mapStateToProps(state, ownProps: Object): Object {
     fetchingEtymology: state.fetching,
     query: state.query,
     letter: ownProps.match.params.letter,
-    history: ownProps.history
+    history: ownProps.history,
+    currentEtymology: state.etymoModal
   };
 }
 

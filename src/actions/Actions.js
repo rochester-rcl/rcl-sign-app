@@ -21,6 +21,7 @@ export const CHANGE_QUERY = 'CHANGE_QUERY';
 export const LOAD_DEFINITIONS_FROM_CACHE = 'LOAD_DEFINITIONS_FROM_CACHE';
 export const FLUSH_DEFINITIONS_CACHE = 'FLUSH_DEFINITIONS_CACHE';
 export const TOGGLE_VIDEO_MODAL = 'TOGGLE_VIDEO_MODAL';
+export const TOGGLE_ETYMO_MODAL = 'TOGGLE_ETYMO_MODAL';
 export const TOGGLE_SEARCH_RESULT_DISPLAY = 'TOGGLE_SEARCH_RESULT_DISPLAY';
 export const LAYOUT_CHANGED = 'LAYOUT_CHANGED';
 export const FETCHING = 'FETCHING';
@@ -100,6 +101,17 @@ export function toggleVideoModalAction(videos: Object, display: boolean): Object
     videoModal: {
       en: videos.en,
       fr: videos.fr,
+      display: display,
+    }
+  }
+}
+
+export function toggleEtymoModalAction(etymo: Object, display: boolean): Object {
+  return {
+    type: TOGGLE_ETYMO_MODAL,
+    etymoModal: {
+      engEtymology: etymo.engEtymology,
+      frEtymology: etymo.frEtymology,
       display: display,
     }
   }

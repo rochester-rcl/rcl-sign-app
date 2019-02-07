@@ -26,6 +26,11 @@ const defaultState: Object = {
     },
     display: false
   },
+  etymoModal: {
+    engEtymology: null,
+    frEtymology: null,
+    display: false
+  },
   videoLoaded: false,
   searchResults: false,
   introText: {
@@ -119,6 +124,12 @@ export default function lsfReducer(state: Object = defaultState, action: Object)
       return {
         ...state,
         videoModal: action.videoModal,
+      }
+
+    case Actions.TOGGLE_ETYMO_MODAL:
+      return {
+        ...state,
+        etymoModal: action.etymoModal,
       }
 
     case Actions.TOGGLE_SEARCH_RESULT_DISPLAY:

@@ -138,6 +138,7 @@ export class AppRouter extends Component {
               language={language}
               handleSelectLanguage={setAppLanguageAction}
             />
+            <Route exact path="/" render={() => <Redirect to="/intro" />}/>
             <Route path="/intro" render={props => <Intro shortcode={intro.content} title={intro.title} /> }/>
             <Route path="/dictionary/:letter?/:range?" component={DictionaryContainer} />
             <Route path="/dictionnaire/:letter?/:range?" component={DictionaryContainer} />
