@@ -74,7 +74,9 @@ class EtymologyDisplay extends Component {
       const mainEtymology = language === "en" ? frEtymology : engEtymology;
       const secondaryEtymology = language === "en" ? engEtymology : frEtymology;
       const mainDescription =
-        language === "en" ? engEtymology.descriptionEn : frEtymology.descriptionFr;
+      (language === "en")
+       ? engEtymology.descriptionEn
+       : engEtymology.descriptionFr;
       const mainFlag = language === "en" ? "us" : "fr";
       const secondaryFlag = language === "en" ? "fr" : "us";
       const mainCardClass =
@@ -207,7 +209,6 @@ export default class EtymologyList extends Component {
       setEtymology,
       currentEtymology
     } = this.props;
-    console.log(currentEtymology)
     return (
       <Segment className="lsf-etymology-list-container">
         <List className="lsf-etymology-list" divided verticalAlign="middle">
