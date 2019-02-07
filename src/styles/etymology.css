@@ -43,6 +43,13 @@
   flex-grow: 0 !important;
 }
 
+.lsf-etymology-image {
+  justify-self: center;
+  align-self: center;
+  padding: 10px !important;
+  background: #fff !important;
+}
+
 .lsf-etymology-image, .lsf-etymology-video {
   margin: 10px !important;
 }
