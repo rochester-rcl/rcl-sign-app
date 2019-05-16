@@ -75,15 +75,19 @@
 
 /*** EXTRA CONTENT ***/
 .old-lsf-asl-links-container {
-  display: flex;
+  width: 50% !important;
+  border-radius: 5px;
 }
 
 .old-asl-lsf-external-link {
-  margin-right: 5px;
-  padding-right: 5px;
-  border-right: 1px solid #ccc;
+  padding: 5px;
+  font-size: 1.5vw;
 }
 
 .lsf-asl-secondary-title {
   font-style: italic;
+}
+
+.old-lsf-asl-links-column {
+  text-align: center;
 }

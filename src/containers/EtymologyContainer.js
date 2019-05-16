@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 // Semantic UI
-import { Segment, Header, Message } from "semantic-ui-react";
+import { Segment, Header, Message, Divider, Grid } from "semantic-ui-react";
 // Actions
 import * as AppActions from "../actions/Actions";
 
@@ -49,9 +49,15 @@ class EtymologyContainer extends Component {
     if (prevProps.language !== this.props.language) {
       if (engEtymology !== null && frEtymology !== null) {
         if (language === "fr") {
-          _letter = frEtymology.letter !== null ? frEtymology.letter : frEtymology.title.charAt(0);
+          _letter =
+            frEtymology.letter !== null
+              ? frEtymology.letter
+              : frEtymology.title.charAt(0);
         } else {
-          _letter = engEtymology.letter !== null ? engEtymology.letter : engEtymology.title.charAt(0);
+          _letter =
+            engEtymology.letter !== null
+              ? engEtymology.letter
+              : engEtymology.title.charAt(0);
         }
         _letter = _letter.toLowerCase();
         this.props.loadEtymologyAction({
@@ -109,14 +115,32 @@ class EtymologyContainer extends Component {
           onSelectLetter={this.handleSelectLetter}
           onSearch={searchEtymologyAction}
           showNumbers={false}
-          extraContent={<div className="old-lsf-asl-links-container">
-            <a className="old-asl-lsf-external-link" target="_blank" href="http://hsldb.georgetown.edu/books/">
-              {language === "en" ? "Old ASL Resources" : "Ressources anciennes en ASL"}
-            </a>
-            <a className="old-asl-lsf-external-link" target="_blank" href="http://hsldb.georgetown.edu/projects/sl-france/">
-              {language === "en" ? "Old LSF Resources" : "Ressources anciennes en LSF"}
-            </a>
-          </div>}
+          extraContent={
+            <Grid celled columns="equal" className="old-lsf-asl-links-container">
+              <Grid.Column className="old-lsf-asl-links-column">
+                <a
+                  className="old-asl-lsf-external-link"
+                  target="_blank"
+                  href="http://hsldb.georgetown.edu/books/"
+                >
+                  {language === "en"
+                    ? "Old ASL Resources"
+                    : "Ressources anciennes en ASL"}
+                </a>
+              </Grid.Column>
+              <Grid.Column className="old-lsf-asl-links-column">
+                <a
+                  className="old-asl-lsf-external-link"
+                  target="_blank"
+                  href="http://hsldb.georgetown.edu/projects/sl-france/"
+                >
+                  {language === "en"
+                    ? "Old LSF Resources"
+                    : "Ressources anciennes en LSF"}
+                </a>
+              </Grid.Column>
+            </Grid>
+          }
         />
         {fetchingEtymology === true ? (
           <Segment>
