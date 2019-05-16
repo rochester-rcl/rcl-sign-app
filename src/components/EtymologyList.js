@@ -188,13 +188,14 @@ const EtymologyTrigger = (props: Object) => {
   const { language, setEtymology } = props;
   const mainEtymology = language === "en" ? frEtymology : engEtymology;
   const secondaryEtymology = language === "en" ? engEtymology : frEtymology;
+  const { tags } = mainEtymology;
   return (
     <div className="lsf-etymology-term">
       <h3
         className="lsf-etymology-term-title"
         onClick={() => setEtymology(props.etymology, true)}
       >
-        {secondaryEtymology.title + " / " + mainEtymology.title}
+        {secondaryEtymology.title + " / " + mainEtymology.title} {tags.includes('Brouland') ? <span className="lsf-asl-secondary-title"> (Brouland)</span> : ""}
       </h3>
     </div>
   );

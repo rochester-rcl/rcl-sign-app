@@ -89,7 +89,6 @@ class DictionaryContainer extends Component {
         if (needsUpdate) {
           const definition = videoModal[language];
           const range = LetterNavigation.formatRange(definition.letter_range);
-          console.log(definition.letter);
           const letter = definition.letter.toLowerCase();
           const query = {
             language: language,
@@ -186,6 +185,7 @@ class DictionaryContainer extends Component {
           onSelectLetter={this.loadDefinitions}
           onSelectRange={this.loadDefinitions}
           onSearch={searchDefinitionsAction}
+          showNumbers={true}
         />
         {fetchingDefinitions === true ? (
           <Segment>

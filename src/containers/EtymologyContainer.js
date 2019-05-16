@@ -108,6 +108,15 @@ class EtymologyContainer extends Component {
           letter={_letter}
           onSelectLetter={this.handleSelectLetter}
           onSearch={searchEtymologyAction}
+          showNumbers={false}
+          extraContent={<div className="old-lsf-asl-links-container">
+            <a className="old-asl-lsf-external-link" target="_blank" href="http://hsldb.georgetown.edu/books/">
+              {language === "en" ? "Old ASL Resources" : "Ressources anciennes en ASL"}
+            </a>
+            <a className="old-asl-lsf-external-link" target="_blank" href="http://hsldb.georgetown.edu/projects/sl-france/">
+              {language === "en" ? "Old LSF Resources" : "Ressources anciennes en LSF"}
+            </a>
+          </div>}
         />
         {fetchingEtymology === true ? (
           <Segment>

@@ -5,6 +5,8 @@ import React, { Component } from 'react';
 // semantic ui
 import { Segment, Divider } from 'semantic-ui-react';
 
+import posterLogo from "../images/main_logo.png";
+
 // Components
 import VideoPlayer from './VideoPlayer';
 export default class Intro extends Component {
@@ -35,6 +37,7 @@ export default class Intro extends Component {
           className="intro-video"
           captions={this.getCaptions()}
           src={this.getVideo()}
+          poster={posterLogo}
         />
       </Segment>
     );

@@ -90,6 +90,10 @@
   font-family: "Roboto Condensed", sans-sans-serif !important;
 }
 
+.lsf-letter-select-extra-content {
+  justify-content: center !important;
+}
+
 /* INFO MESSAGES */
 .lsf-info-message {
   font-family: "Roboto Condensed", sans-sans-serif !important;
@@ -106,6 +110,14 @@
   font-family: "Roboto Condensed", sans-serif;
   font-size: 24px;
   font-weight: 300;
+}
+
+.lsf-app-video[poster] {
+  background-color: transparent;
+}
+
+.intro-video .lsf-app-video {
+  box-shadow: 2px 2px 20px #ccc !important;
 }
 
 /*** FLAGS ***/

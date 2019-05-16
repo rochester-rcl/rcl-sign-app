@@ -256,7 +256,7 @@ export default class Intro extends Component {
   }
 
   render() {
-    const { src, captions, className, id, alternateSrc } = this.props;
+    const { src, captions, className, id, alternateSrc, poster } = this.props;
     const { paused, fullscreen, alternateSrcSelected } = this.state;
     let _className = "lsf-app-video-container ";
     _className += className !== undefined ? className : "";
@@ -266,7 +266,7 @@ export default class Intro extends Component {
         ref={ref => (this.playerContainer = ref)}
         className={_className}
       >
-        <video id={id} ref={ref => (this.player = ref)} className="lsf-app-video">
+        <video id={id} ref={ref => (this.player = ref)} className="lsf-app-video" poster={poster}>
           <source src={src} />
           {(captions !== undefined) ? <track label="English" kind="captions" srcLang="en" src={captions} default /> : null}
         </video>
