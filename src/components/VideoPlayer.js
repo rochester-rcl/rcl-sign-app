@@ -28,6 +28,7 @@ export default class Intro extends Component {
     this.fullscreen = this.fullscreen.bind(this);
     this.isFullscreen = this.isFullscreen.bind(this);
     this.hasCaptions = this.hasCaptions.bind(this);
+    this.resetPlayer = this.resetPlayer.bind(this);
   }
 
   componentDidMount() {
@@ -43,6 +44,7 @@ export default class Intro extends Component {
       "mozfullscreenchange",
       this.handleFullscreenChange
     );
+    this.player.addEventListener("ended", this.resetPlayer);
   }
 
   componentDidUpdate(prevProps: Object, prevState: Object) {
@@ -67,6 +69,12 @@ export default class Intro extends Component {
     this.setState({
       paused: !this.state.paused
     });
+  }
+
+  resetPlayer() {
+    this.setState({
+      paused: true
+    }, () => this.player.currentTime = 0);
   }
 
   toggleCaptions() {
@@ -122,7 +130,7 @@ export default class Intro extends Component {
 
   pause(val: boolean) {
     if (this.player !== undefined) {
-      if (!this.player.paused) {
+      if (val) {
         this.player.pause();
       } else {
         this.player.play();
