@@ -33,6 +33,8 @@ import Timeline from "../components/Timeline";
 
 import Intro from "../components/Intro";
 
+import { COPYRIGHT_INFO } from "../utils/Constants";
+
 export class AppRouter extends Component {
   _element = React.createElement;
 
@@ -120,14 +122,11 @@ export class AppRouter extends Component {
     if (items == null) {
       return <Loading text="Loading ..." page={true} />;
     } else {
-
       const timelineShortcode = items.find(
         item => item.path === "history" || item.path === "histoire"
       ).content;
 
-      const intro = items.find(
-        item => item.path === "intro"
-      );
+      const intro = items.find(item => item.path === "intro");
 
       return (
         <Router basename={BASENAME} history={history}>
@@ -138,10 +137,21 @@ export class AppRouter extends Component {
               language={language}
               handleSelectLanguage={setAppLanguageAction}
             />
-            <Route exact path="/" render={() => <Redirect to="/intro" />}/>
-            <Route path="/intro" render={props => <Intro shortcode={intro.content} title={intro.title} /> }/>
-            <Route path="/dictionary/:letter?/:range?" component={DictionaryContainer} />
-            <Route path="/dictionnaire/:letter?/:range?" component={DictionaryContainer} />
+            <Route exact path="/" render={() => <Redirect to="/intro" />} />
+            <Route
+              path="/intro"
+              render={props => (
+                <Intro shortcode={intro.content} title={intro.title} />
+              )}
+            />
+            <Route
+              path="/dictionary/:letter?/:range?"
+              component={DictionaryContainer}
+            />
+            <Route
+              path="/dictionnaire/:letter?/:range?"
+              component={DictionaryContainer}
+            />
             <Route
               path="/old-asl-lsf/:letter?"
               component={EtymologyContainer}
@@ -165,6 +175,9 @@ export class AppRouter extends Component {
                 render={props => this.renderStatic(props, route)}
               />
             ))}
+            <Route 
+              path="/copyright"
+              render={props => this.renderStatic(props, COPYRIGHT_INFO)} />
             <Footer />
           </div>
         </Router>
@@ -174,13 +187,13 @@ export class AppRouter extends Component {
 }
 
 /*
-* Function that returns all branches of the state tree we want this container to subscribe to
-* Called every time the state is updated, these results get merged into the container's props
-* i.e this.props.definitions = state.definitions. Passed as an argument to connect()
-*
-*@param {Object} state - the Redux state set up in Reducer.js
-*@return {Object}
-*/
+ * Function that returns all branches of the state tree we want this container to subscribe to
+ * Called every time the state is updated, these results get merged into the container's props
+ * i.e this.props.definitions = state.definitions. Passed as an argument to connect()
+ *
+ *@param {Object} state - the Redux state set up in Reducer.js
+ *@return {Object}
+ */
 function mapStateToProps(state, ownProps): Object {
   return {
     definitions: state.definitions,

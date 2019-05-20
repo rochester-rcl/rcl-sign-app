@@ -6,7 +6,7 @@
   background-color: #4e58d5 !important;
   border-radius: 0 !important;
   box-shadow: 2px 2px 20px !important;
-  /*flex: 0.1;*/
+  flex: 0.1;
   z-index: 5000 !important;
 }
 
@@ -26,11 +26,11 @@
 }
 
 .lsf-nav-menu .item img {
-  width: 6vw !important;
+  width: 7vw !important;
 }
 
 .language-menu .item img {
-  width: 4vw !important;
+  width: 5vw !important;
 }
 
 .language-menu {

@@ -4,7 +4,7 @@
   width: 100vw;
   padding: 20px;
   display: flex;
-  flex: 0.1;
+  flex: 0.05;
   justify-content: center;
   align-items: baseline;
   z-index: 5000;
@@ -20,7 +20,7 @@
 }
 
 .lsf-app-footer-image {
-  width: 25vw !important;
+  width: 15vw !important;
 }
 
 .lsf-app-footer {

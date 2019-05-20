@@ -61,8 +61,6 @@ export default class Intro extends Component {
     if (src !== prevProps.src) {
       this.setSrc(src);
     }
-
-
   }
 
   togglePause() {

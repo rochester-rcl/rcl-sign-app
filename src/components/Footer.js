@@ -8,14 +8,16 @@ import { Image, Icon } from 'semantic-ui-react';
 // images
 import urLogo from "../images/ur-logo.png";
 
+import { Link } from "react-router-dom";
+
 const LinkIcon = (props: Object) => {
-  const { icon, href, alt } = props;
+  const { icon, href, alt, target } = props;
   return (
     <a
       className="lsf-app-footer-link"
       alt={alt}
       href={href}
-      target='_blank'
+      target={target}
     >
       <Icon
         className="lsf-app-footer-icon"
@@ -24,6 +26,23 @@ const LinkIcon = (props: Object) => {
       />
     </a>
   );
+}
+
+const ReactRouterLinkIcon = (props: Object) => {
+  const { icon, href, alt, target } = props;
+  return (
+    <Link
+      className="lsf-app-footer-link"
+      alt={alt}
+      to={href}
+      >
+         <Icon
+        className="lsf-app-footer-icon"
+        name={icon}
+        size='big'
+      />
+      </Link>
+  )
 }
 
 // TODO make copyright a static page
@@ -43,21 +62,25 @@ const Footer = (props: Object) => {
           alt='iOS App Store Link'
           href='https://itunes.apple.com/us/app/asl-lsf/id1325129354?ls=1&mt=8'
           icon='app store ios'
+          target="_blank"
         />
         <LinkIcon
           alt='Google Play Link'
           href='https://play.google.com/store/apps/details?id=com.lsfapp&hl=en'
           icon='google play'
+          target="_blank"
         />
         <LinkIcon
           alt='E-Mail'
           href='mailto:lsfaslrochester@gmail.com'
           icon='mail'
+          target="_blank"
         />
-        <LinkIcon
+        <ReactRouterLinkIcon
           alt='Copyright'
-          href='#'
+          href='/copyright'
           icon='copyright'
+          target="_self"
         />
       </footer>
     </div>
