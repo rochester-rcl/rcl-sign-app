@@ -26,11 +26,13 @@
 }
 
 .lsf-nav-menu .item img {
-  width: 7vw !important;
+  width: 6vw !important;
+  max-width: 80%;
 }
 
 .language-menu .item img {
-  width: 5vw !important;
+  width: 4vw !important;
+  max-width: 80%;
 }
 
 .language-menu {

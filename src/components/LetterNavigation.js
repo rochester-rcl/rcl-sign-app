@@ -30,7 +30,7 @@ const formattedAlphabet = Alphabet.map(letter => {
 
 export default class LetterNavigation extends Component {
   state = { search: "", rangeIndex: 0, letter: "a", isMobile: false };
-  MOBILE_WIDTH: Number = 767;
+  MOBILE_WIDTH: Number = 840;
   letterRange = LETTER_RANGES;
   letterRangeDropdown = this.letterRange.map((value, index) => {
     return { value: index, key: value, text: value };
@@ -200,9 +200,9 @@ export default class LetterNavigation extends Component {
     const options = showNumbers ? formattedAlphabet : formattedAlphabet.slice(1);
     return (
       <Segment className="lsf-letter-select-container">
-        <Grid columns={isMobile === false ? 3 : 2} divided>
+        <Grid columns={2} divided>
           <Grid.Column className="lsf-letter-select-column">
-            <h3 className="lsf-letter-select-prompt">{prompt}</h3>
+            {!isMobile ? <h3 className="lsf-letter-select-prompt">{prompt}</h3> : null}
             <Dropdown
               fluid
               placeholder={letter.toUpperCase()}
@@ -212,19 +212,15 @@ export default class LetterNavigation extends Component {
             />
             {showRange === true ? this.formatRangeButtons() : null}
           </Grid.Column>
-          {isMobile === false ? (
-            <Grid.Column className="lsf-letter-select-column">
-              <Divider vertical> {language === "en" ? "OR" : "OU"} </Divider>
-            </Grid.Column>
-          ) : null}
+          
           <Grid.Column className="lsf-letter-select-column">
-            <h3 className="lsf-letter-select-prompt">{searchPrompt}</h3>
+            {!isMobile ? <h3 className="lsf-letter-select-prompt">{searchPrompt}</h3> : null}
             <Input
               fluid
               className="lsf-letter-select-input"
               onChange={this.onSearchChange}
               onKeyDown={this.handleKeyDown}
-              placeholder="..."
+              placeholder={`${searchPrompt} ...`}
               action={<Button icon="search" onClick={this.submitSearch} />}
             />
           </Grid.Column>

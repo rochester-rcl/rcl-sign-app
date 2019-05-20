@@ -8,6 +8,7 @@
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  margin-top: 1px !important;
 }
 
 .lsf-etymology-term-title {
@@ -35,6 +36,11 @@
 
 .lsf-etymology-display .cards {
   flex-wrap: nowrap !important;
+}
+
+.lsf-etymology-term-modal {
+  display: flex !important;
+  justify-content: flex-start;
 }
 
 .lsf-etymology-term-modal .close.icon {
@@ -75,6 +81,7 @@
 .old-lsf-asl-links-container {
   width: 50% !important;
   border-radius: 5px;
+  margin: 1px !important;
 }
 
 .old-asl-lsf-external-link {
