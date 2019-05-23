@@ -30,6 +30,7 @@ class EtymologyDisplay extends Component {
     (this: any).toggleSecondaryVideo = this.toggleSecondaryVideo.bind(this);
     (this: any).setActive = this.setActive.bind(this);
     (this: any).setInactive = this.setInactive.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   handleClick() {
@@ -66,10 +67,24 @@ class EtymologyDisplay extends Component {
     });
   }
 
+  handleClose() {
+    const { mainVideoActive, secondaryVideoActive } = this.state;
+    const { onCloseCallback } = this.props;
+    if (mainVideoActive) {
+      this.toggleMainVideo();
+    }
+
+    if (secondaryVideoActive) {
+      this.toggleSecondaryVideo();
+    }
+
+    if (onCloseCallback) onCloseCallback();
+  }
+
   render() {
     const { engEtymology, frEtymology, display } = this.props.etymology;
     if (engEtymology !== null && frEtymology !== null) {
-      const { language, mountNode, onCloseCallback } = this.props;
+      const { language, mountNode } = this.props;
       const { secondaryVideoActive, mainVideoActive } = this.state;
       const mainEtymology = language === "en" ? frEtymology : engEtymology;
       const secondaryEtymology = language === "en" ? engEtymology : frEtymology;
@@ -90,7 +105,7 @@ class EtymologyDisplay extends Component {
       return (
         <Modal
           open={display}
-          onClose={onCloseCallback}
+          onClose={this.handleClose}
           mountNode={mountNode}
           className="lsf-etymology-term-modal"
           closeIcon
