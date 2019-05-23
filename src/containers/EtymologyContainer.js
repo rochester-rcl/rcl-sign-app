@@ -124,8 +124,8 @@ class EtymologyContainer extends Component {
                   href="http://hsldb.georgetown.edu/books/"
                 >
                   {language === "en"
-                    ? "Old ASL Resources"
-                    : "Ressources anciennes en ASL"}
+                    ? "Old ASL References"
+                    : "Références anciennes en ASL"}
                 </a>
               </Grid.Column>
               <Grid.Column className="old-lsf-asl-links-column">
@@ -135,8 +135,8 @@ class EtymologyContainer extends Component {
                   href="http://hsldb.georgetown.edu/projects/sl-france/"
                 >
                   {language === "en"
-                    ? "Old LSF Resources"
-                    : "Ressources anciennes en LSF"}
+                    ? "Old LSF References"
+                    : "Références anciennes en LSF"}
                 </a>
               </Grid.Column>
             </Grid>
