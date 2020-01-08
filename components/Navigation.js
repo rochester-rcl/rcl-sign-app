@@ -135,18 +135,11 @@ export default class Navigation extends Component {
   }
 
   onKeyboardHide(): void {
-    const { current } = this.textInputRef;
+    const {current} = this.textInputRef;
     this.handleSearchFocus(false);
     if (current) {
       current.blur();
     }
-  }
-
-  componentWillUnmount(): void {
-    BackHandler.removeEventListener(
-      'hardwareBackPress',
-      this.handleHardwareBack,
-    );
   }
 
   componentDidUpdate(prevProps: Object, prevState: Object): void {
@@ -180,6 +173,7 @@ export default class Navigation extends Component {
       if (language === 'fr') return 'Chercher ...';
       return 'Search ...';
     };
+    
     return (
       <View
         style={

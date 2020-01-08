@@ -115,12 +115,13 @@ export const NavigationStyles: Object = StyleSheet.create({
     fontSize: 16,
   },
   letterRange: {
-    flex: 0.4,
+    flex: 0.5,
     flexDirection: 'row',
     alignItems: 'center',
     shadowColor: '#ccc',
     shadowRadius: 1,
     shadowOpacity: 0.4,
+    backgroundColor: '#fff',
     shadowOffset: { width: 2, height: 2 }
   },
   hideNav: {
