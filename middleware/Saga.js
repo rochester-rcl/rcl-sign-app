@@ -12,6 +12,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 // uuid
 const uuidv4 = require('uuid/v4');
 
+// Other sagas
+import OfflineDownloadSaga from './OfflineDownloadSaga';
+
 /*
 * Generator function used to yield a saga that retrieves a set of definitions from the API
 * @param {Object} [loadDefinitionsAction = {type: LOAD_DEFINITIONS, definitionQuery: {language: 'en', letter: 'a', range:'a-g'}]
@@ -132,5 +135,6 @@ export default function* rootSaga(): Generator<any, any, any> {
     watchForLoadDefinitionsFromCache(),
     watchForFlushDefinitionsCache(),
     watchForSearchDefinitions(),
+    OfflineDownloadSaga()
   ]);
 }

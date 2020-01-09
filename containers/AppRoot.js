@@ -185,16 +185,16 @@ class AppRoot extends Component {
 *@param {Object} state - the Redux state set up in Reducer.js
 *@return {Object}
 */
-function mapStateToProps(state): Object {
+function mapStateToProps({ appState }): Object {
   return {
-    definitions: state.definitions,
-    language: state.language,
-    definitionsCache: state.definitionsCache,
-    fetchingDefinitions: state.fetchingDefinitions,
-    videoModal: state.videoModal,
-    layoutAspect: state.layoutAspect,
-    searchResults: state.searchResults,
-    introText: state.introText,
+    definitions: appState.definitions,
+    language: appState.language,
+    definitionsCache: appState.definitionsCache,
+    fetchingDefinitions: appState.fetchingDefinitions,
+    videoModal: appState.videoModal,
+    layoutAspect: appState.layoutAspect,
+    searchResults: appState.searchResults,
+    introText: appState.introText,
   }
 }
 

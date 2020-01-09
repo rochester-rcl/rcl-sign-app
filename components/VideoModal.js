@@ -34,6 +34,7 @@ export default class VideoModal extends Component {
     super(props);
     (this: any).sortVideo = this.sortVideo.bind(this);
     (this: any).handleOnLoad = this.handleOnLoad.bind(this);
+    this.handleOnEnd = this.handleOnEnd.bind(this);
     (this: any).handlePlayback = this.handlePlayback.bind(this);
     this.frPlayer = createRef();
     this.enPlayer = createRef();
@@ -62,6 +63,15 @@ export default class VideoModal extends Component {
     ];
     if (this.props.language === 'fr') return videos.reverse();
     return videos;
+  }
+
+  handleOnEnd(lang) {
+    const player = (lang === 'en') ? this.enPlayer : this.frPlayer;
+    const { current } = player;
+    if (current) {
+      current.seek(0);
+      this.handlePlayback(lang, true);
+    }
   }
 
   handleOnLoad(lang: string): void {
@@ -124,7 +134,7 @@ export default class VideoModal extends Component {
                 paused={video.lang === 'en' ? enVideoPaused : frVideoPaused}
                 onTimedMetadata={event => console.log(event)}
                 onLoad={() => this.handleOnLoad(video.lang)}
-                repeat={true}
+                onEnd={() => this.handleOnEnd(video.lang)}
                 hideShutterView={true}
                 poster={Image.resolveAssetSource(require('../images/asl-lsf-poster-background.png')).uri}
               />

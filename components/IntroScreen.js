@@ -48,7 +48,7 @@ const IntroScreen = (props: Object) => {
         <FlatList
           style={IntroStyles.instructions}
           data={intro.instructions}
-          renderItem={(item) =>
+          renderItem={( { item }) =>
             <Text style={DefinitionDisplayStyles.definition}>{item}</Text>
           }
           keyExtractor={(item) => item}
