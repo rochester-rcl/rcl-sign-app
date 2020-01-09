@@ -1,5 +1,5 @@
 // Redux Saga
-import {put, takeEvery, all, takeOne} from 'redux-saga/effects';
+import {put, all, takeEvery, call, fork, take} from 'redux-saga/effects';
 import {eventChannel, END} from 'redux-saga';
 
 // AsyncStorage
@@ -14,6 +14,16 @@ import {
   SUBSCRIBE_ONLINE_STATUS_LISTENER,
 } from '../actions/DownloadActions';
 
+// Based on https://github.com/redux-saga/redux-saga/issues/589
+// Only want to take the first instance of the action and none of the other ones
+function takeLeading(pattern, saga, ...args) {
+  return fork(function*() {
+    while (true) {
+      const action = yield take(pattern);
+      yield call(saga, ...args.concat(action));
+    }
+  });
+}
 function createNetInfoProgressChannel() {
   return eventChannel(emit => {
     const unsubscribe = NetInfo.addEventListener(state => {
@@ -32,9 +42,9 @@ function* listenForOnlineStatus() {
 }
 
 function* watchForOnlineStatuSubscription() {
-  yield takeOne(SUBSCRIBE_ONLINE_STATUS_LISTENER, listenForOnlineStatus);
+  yield takeLeading(SUBSCRIBE_ONLINE_STATUS_LISTENER, listenForOnlineStatus);
 }
 
-export default function* rootSaga() {
-  yield all([watchForOnlineStatuSubscription]);
+export default function* offlineDownloadSaga() {
+  yield all([watchForOnlineStatuSubscription()]);
 }

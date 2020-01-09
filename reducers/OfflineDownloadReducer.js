@@ -16,7 +16,7 @@ export default function offlineDownloadReducer(state = defaultState, action) {
       cloned.push(action.downloadInfo);
       return {...state, offlineDownloads: cloned};
     case ONLINE_STATUS_UPDATED:
-      return {...state, offline: action.status};
+      return {...state, offline: !action.status};
     default:
       return state;
   }

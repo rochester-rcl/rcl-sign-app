@@ -1,7 +1,7 @@
 /* @flow */
 
 // React Native
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 const GlobalStyles: Object = StyleSheet.create({
   container: {
@@ -26,7 +26,7 @@ const GlobalStyles: Object = StyleSheet.create({
 export const BannerStyles: Object = StyleSheet.create({
   bannerContainer: {
     flexDirection: 'row',
-    flex: 0.10,
+    flex: 0.1,
     alignSelf: 'stretch',
     backgroundColor: '#6ea5fa',
     paddingTop: 10,
@@ -39,6 +39,14 @@ export const BannerStyles: Object = StyleSheet.create({
     height: 25,
     opacity: 0.5,
     paddingRight: 10,
+  },
+  onlineStatusImage: {
+    width: 50,
+    height: 25,
+    opacity: 1,
+    paddingRight: 20,
+    position: 'absolute',
+    right: 0,
   },
   bannerImageHome: {
     width: 75,
@@ -54,7 +62,7 @@ export const BannerStyles: Object = StyleSheet.create({
     color: '#fff',
     marginTop: 5,
     fontSize: 10,
-  }
+  },
 });
 
 export const ModalStyles: Object = StyleSheet.create({
@@ -62,14 +70,12 @@ export const ModalStyles: Object = StyleSheet.create({
     justifyContent: 'center',
   },
   videoModalPortrait: {
-    justifyContent: 'center',
     flexDirection: 'column',
     flex: 1,
     backgroundColor: '#000',
   },
   videoModalLandscape: {
     flexDirection: 'row',
-    alignItems: 'center',
     flex: 1,
     backgroundColor: '#000',
   },
@@ -78,7 +84,7 @@ export const ModalStyles: Object = StyleSheet.create({
 export const PickerStyles: Object = StyleSheet.create({
   languagePicker: {
     flex: 1,
-  }
+  },
 });
 
 export const NavigationStyles: Object = StyleSheet.create({
@@ -93,6 +99,7 @@ export const NavigationStyles: Object = StyleSheet.create({
     flex: 0.3,
     alignSelf: 'stretch',
     elevation: 10,
+    backgroundColor: '#fff',
     shadowColor: '#ccc',
   },
   navContainerLandscape: {
@@ -122,11 +129,11 @@ export const NavigationStyles: Object = StyleSheet.create({
     shadowRadius: 1,
     shadowOpacity: 0.4,
     backgroundColor: '#fff',
-    shadowOffset: { width: 2, height: 2 }
+    shadowOffset: {width: 2, height: 2},
   },
   hideNav: {
     display: 'none',
-  }
+  },
 });
 
 export const ButtonStyles: Object = StyleSheet.create({
@@ -175,10 +182,9 @@ export const ButtonStyles: Object = StyleSheet.create({
     textAlign: 'center',
   },
   backButton: {
-    flexDirection: 'row',
-    flex: 0.25,
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   introBackButton: {
     flexDirection: 'row',
@@ -190,7 +196,6 @@ export const ButtonStyles: Object = StyleSheet.create({
   backButtonText: {
     color: '#fff',
     alignSelf: 'center',
-    margin: 20,
     borderColor: '#ccc',
     borderWidth: 2,
     paddingTop: 5,
@@ -227,64 +232,94 @@ export const ButtonStyles: Object = StyleSheet.create({
     borderRadius: 5,
     textAlign: 'center',
     fontWeight: 'bold',
-  }
+  },
+  buttonMenuContainerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    margin: 20,
+  },
+  buttonMenuContainerCol: {
+    flexDirection: 'column',
+    margin: 20,
+    alignSelf: 'stretch',
+    justifyContent: 'space-between',
+  },
+  downloadButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  downloadButton: {
+    width: 50,
+    height: 50,
+  },
 });
 
 export const DefinitionListStyles: Object = StyleSheet.create({
   definitionListContainer: {
     alignSelf: 'stretch',
     flex: 0.75,
-    backgroundColor: "#fff",
-  }
+    backgroundColor: '#fff',
+  },
 });
 
 export const DefinitionDisplayStyles: Object = StyleSheet.create({
   definition: {
-    color: "#484848",
+    color: '#484848',
     margin: 10,
-    borderBottomColor: "#ddd",
+    borderBottomColor: '#ddd',
     borderBottomWidth: 1,
   },
   definitionIOS: {
-    color: "#484848",
+    color: '#484848',
     margin: 10,
-    textDecorationLine: "underline",
-    textDecorationColor: "#ddd",
+    textDecorationLine: 'underline',
+    textDecorationColor: '#ddd',
   },
   errorMessage: {
     flex: 1,
     alignSelf: 'center',
     marginTop: 10,
-  }
-});
-
-export const VideoStyles: Object = StyleSheet.create({
-  videoPlayer: {
-    flex: 1,
-    backgroundColor: '#000',
   },
+});
+const VIDEO_ASPECT = 1.77;
+export const VideoStyles: Object = StyleSheet.create({
   touchableVideo: {
     flex: 1,
-    backgroundColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'stretch'
+  },
+  videoPlayerContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'space-evenly',
+  },
+  videoPlayer: {
+    flex: 1,
+    opacity: 1.0,
   },
   videoTitleContainer: {
+    flex: 0.1,
     flexDirection: 'row',
-    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
   },
   videoTitle: {
     color: '#fff',
     elevation: 5,
     fontSize: 20,
-    padding: 10,
   },
   videoImage: {
     width: 50,
     height: 25,
     opacity: 0.8,
-    paddingRight: 10,
+    marginRight: 15,
     alignSelf: 'center',
-  }
-})
+  },
+});
 
 export const IntroStyles: Object = StyleSheet.create({
   introView: {
@@ -307,7 +342,7 @@ export const IntroStyles: Object = StyleSheet.create({
   },
   instructions: {
     marginTop: 20,
-    flex: 1
+    flex: 1,
   },
   contactView: {
     marginBottom: 20,
@@ -322,8 +357,7 @@ export const IntroStyles: Object = StyleSheet.create({
     color: '#6ea5fa',
     fontSize: 16,
     padding: 10,
-  }
-
-})
+  },
+});
 
 export default GlobalStyles;

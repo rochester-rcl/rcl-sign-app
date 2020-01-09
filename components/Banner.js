@@ -20,7 +20,7 @@ const Banner = (props: Object) => {
         onPress={() => {
           setLanguage('fr');
         }}>
-        <View style={BannerStyles.bannerImageContainer}>
+        <View>
           <Image
             resizeMode={'contain'}
             style={
@@ -32,7 +32,7 @@ const Banner = (props: Object) => {
           />
         </View>
       </TouchableOpacity>
-      <View style={BannerStyles.bannerImageContainer}>
+      <View>
         <TouchableOpacity onPress={toggleIntro}>
           <Image
             resizeMode={'contain'}
@@ -51,7 +51,7 @@ const Banner = (props: Object) => {
         onPress={() => {
           setLanguage('en');
         }}>
-        <View style={BannerStyles.bannerImageContainer}>
+        <View>
           <Image
             resizeMode={'contain'}
             style={
@@ -63,9 +63,7 @@ const Banner = (props: Object) => {
           />
         </View>
       </TouchableOpacity>
-      <View style={BannerStyles.bannerImageContainer}>
-        <OfflineDownloadContainer />
-      </View>
+      <OfflineDownloadContainer style={BannerStyles.onlineStatusImage} />
     </View>
   );
 };
