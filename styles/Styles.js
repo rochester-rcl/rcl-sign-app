@@ -300,7 +300,7 @@ export const VideoStyles: Object = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
   },
   videoPlayerPortrait: {
     flex: 1,
@@ -309,11 +309,9 @@ export const VideoStyles: Object = StyleSheet.create({
   videoPlayerLandscape: {
     flex: 0.5,
     aspectRatio: VIDEO_ASPECT,
-    maxHeight: 200,
     width: 'auto',
   },
   videoTitleContainer: {
-    flex: 0.1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
