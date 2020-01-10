@@ -28,7 +28,7 @@ export default class VideoModal extends Component {
     videoLoaded: false,
     enVideoPaused: false,
     frVideoPaused: false,
-    fadeVals: {en: new Animated.Value(1), fr: new Animated.Value(1)},
+    transitionVals: {en: new Animated.Value(1), fr: new Animated.Value(1)},
   };
 
   constructor(props: Object): void {
@@ -37,9 +37,10 @@ export default class VideoModal extends Component {
     (this: any).handleOnLoad = this.handleOnLoad.bind(this);
     this.handleOnEnd = this.handleOnEnd.bind(this);
     (this: any).handlePlayback = this.handlePlayback.bind(this);
-    this.fadeIn = this.fadeIn.bind(this);
-    this.fadeOut = this.fadeOut.bind(this);
-    this.animateFade = this.animateFade.bind(this);
+    this.animateIn = this.animateIn.bind(this);
+    this.animateOut = this.animateOut.bind(this);
+    this.animateTransition = this.animateTransition.bind(this);
+    this.handleOnPress = this.handleOnPress.bind(this);
     this.frPlayer = createRef();
     this.enPlayer = createRef();
   }
@@ -79,30 +80,33 @@ export default class VideoModal extends Component {
   }
 
   handlePlayback(lang: string, override?: boolean): void {
-    let {enVideoPaused, frVideoPaused, fadeVals} = this.state;
+    let {enVideoPaused, frVideoPaused, transitionVals} = this.state;
     if (lang === 'en') {
-      this.setState({enVideoPaused: override ? override : !enVideoPaused}, () =>
-        this.animateFade(lang),
-      );
+      this.setState({enVideoPaused: override ? override : !enVideoPaused});
     } else {
-      this.setState({frVideoPaused: override ? override : !frVideoPaused}, () =>
-        this.animateFade(lang),
-      );
+      this.setState({frVideoPaused: override ? override : !frVideoPaused});
     }
   }
 
-  fadeOut(lang) {
-    const {fadeVals} = this.state;
-    return Animated.timing(fadeVals[lang], {toValue: 0, duration: 500});
+  handleOnPress(lang) {
+    this.animateTransition(lang, () => this.handlePlayback(lang));
   }
 
-  fadeIn(lang) {
-    const {fadeVals} = this.state;
-    return Animated.timing(fadeVals[lang], {toValue: 1, duration: 500});
+  animateIn(lang) {
+    const {transitionVals} = this.state;
+    return Animated.timing(transitionVals[lang], {toValue: 1.0, duration: 200});
   }
 
-  animateFade(lang) {
-    this.fadeOut(lang).start(this.fadeIn().start());
+  animateOut(lang) {
+    const {transitionVals} = this.state;
+    return Animated.timing(transitionVals[lang], {
+      toValue: 0.95,
+      duration: 200,
+    });
+  }
+
+  animateTransition(lang, cb) {
+    Animated.sequence([this.animateOut(lang), this.animateIn(lang)]).start(cb);
   }
 
   render() {
@@ -113,12 +117,16 @@ export default class VideoModal extends Component {
       layoutAspect,
       language,
     } = this.props;
-    const {enVideoPaused, frVideoPaused, fadeVals} = this.state;
+    const {enVideoPaused, frVideoPaused, transitionVals} = this.state;
     const exitModal = () => {
       this.handlePlayback('en', true);
       this.handlePlayback('fr', true);
       toggleModal(videoModalContent, false);
     };
+    const videoPlayerContainerStyle =
+      layoutAspect === 'LAYOUT_PORTRAIT'
+        ? VideoStyles.videoPlayerContainerPortrait
+        : VideoStyles.videoPlayerContainerLandscape;
     return (
       <Modal
         animationType={'fade'}
@@ -159,20 +167,28 @@ export default class VideoModal extends Component {
               key={index}
               style={VideoStyles.touchableVideo}
               activeOpacity={1}
-              onPress={() => this.handlePlayback(video.lang)}>
+              onPress={() => this.handleOnPress(video.lang)}>
               <Animated.View
                 style={{
-                  ...VideoStyles.videoPlayerContainer,
-                  opacity: fadeVals[video.lang],
+                  ...videoPlayerContainerStyle,
+                  flex: transitionVals[video.lang],
                 }}>
                 <Video
-                  style={VideoStyles.videoPlayer}
+                  style={
+                    layoutAspect === 'LAYOUT_PORTRAIT'
+                      ? VideoStyles.videoPlayerPortrait
+                      : VideoStyles.videoPlayerLandscape
+                  }
                   source={{uri: video.url}}
                   ref={video.ref}
                   key={video.url}
                   onError={error => console.log(error)}
-                  resizeMode="cover"
-                  posterResizeMode="cover"
+                  resizeMode={
+                    layoutAspect === 'LAYOUT_PORTRAIT' ? 'cover' : 'contain'
+                  }
+                  posterResizeMode={
+                    layoutAspect === 'LAYOUT_PORTRAIT' ? 'cover' : 'contain'
+                  }
                   paused={video.lang === 'en' ? enVideoPaused : frVideoPaused}
                   onTimedMetadata={event => console.log(event)}
                   onLoad={() => this.handleOnLoad(video.lang)}

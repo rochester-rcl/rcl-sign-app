@@ -288,17 +288,29 @@ export const VideoStyles: Object = StyleSheet.create({
   touchableVideo: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'stretch'
+    alignItems: 'stretch',
   },
-  videoPlayerContainer: {
+  videoPlayerContainerPortrait: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'stretch',
     justifyContent: 'space-evenly',
   },
-  videoPlayer: {
+  videoPlayerContainerLandscape: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  videoPlayerPortrait: {
     flex: 1,
     opacity: 1.0,
+  },
+  videoPlayerLandscape: {
+    flex: 0.5,
+    aspectRatio: VIDEO_ASPECT,
+    maxHeight: 200,
+    width: 'auto',
   },
   videoTitleContainer: {
     flex: 0.1,
