@@ -9,8 +9,8 @@ import {put, takeEvery, all, fork} from 'redux-saga/effects';
 // AsyncStorage
 import AsyncStorage from '@react-native-community/async-storage';
 
-// uuid
-const uuidv4 = require('uuid/v4');
+// keys
+import {STORAGE_DEFINITIONS_KEY, definitionKeys} from '../utils/Constants';
 
 // Other sagas
 import OfflineDownloadSaga from './OfflineDownloadSaga';
@@ -20,9 +20,7 @@ import OfflineDownloadSaga from './OfflineDownloadSaga';
  * @param {Object} [loadDefinitionsAction = {type: LOAD_DEFINITIONS, definitionQuery: {language: 'en', letter: 'a', range:'a-g'}]
  *
  */
-export function* loadDefinitionsSaga(
-  loadDefinitionsAction: Object,
-): Generator<Promise<Object>, any, any> {
+export function* loadDefinitionsSaga(loadDefinitionsAction) {
   const {language, letter, range} = loadDefinitionsAction.definitionQuery;
   try {
     yield put({type: 'FETCHING_DEFINITIONS', fetchingDefinitions: true});
@@ -30,10 +28,10 @@ export function* loadDefinitionsSaga(
     let results = {};
     results.searchResults = false;
     if (!definitionResults.hasOwnProperty('message')) {
-      let uuid = uuidv4();
       results.cacheInfo = {};
-      results.cacheInfo[range] = uuid;
-      AsyncStorage.setItem(uuid, JSON.stringify(definitionResults));
+      const id = `${STORAGE_DEFINITIONS_KEY}-${language}-${letter}-${range}`;
+      results.cacheInfo[range] = id;
+      AsyncStorage.setItem(id, JSON.stringify(definitionResults));
     } else {
       definitionResults.error = true;
     }
@@ -45,9 +43,7 @@ export function* loadDefinitionsSaga(
   }
 }
 
-export function* searchDefinitionsSaga(
-  searchDefinitionsAction: Object,
-): Generator<Promise<Object>, any, any> {
+export function* searchDefinitionsSaga(searchDefinitionsAction) {
   let {language, term} = searchDefinitionsAction;
   try {
     let results = {};
@@ -65,11 +61,9 @@ export function* searchDefinitionsSaga(
   }
 }
 
-export function* loadDefinitionsFromCacheSaga(
-  action: Object,
-): Generator<Promise<Object>, any, any> {
+export function* loadDefinitionsFromCacheSaga(action) {
   try {
-    const cachedDefinitionResults = yield AsyncStorage.getItem(action.uuid);
+    const cachedDefinitionResults = yield AsyncStorage.getItem(action.id);
     let results = {};
     results.cacheInfo = {};
     results.definitions = JSON.parse(cachedDefinitionResults);
@@ -79,23 +73,18 @@ export function* loadDefinitionsFromCacheSaga(
   }
 }
 
-export function* flushDefinitionsCacheSaga(
-  action: Object,
-): Generator<Promise<Object>, any, any> {
+export function* flushDefinitionsCacheSaga(action) {
+  // DO WE EVEN USE THIS?
   try {
-    const cacheCleared = yield AsyncStorage.getAllKeys().then(keys => {
-      if (keys) {
-        return AsyncStorage.multiRemove(keys).then(errors => {
-          if (!errors) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-      } else {
-        return false;
-      }
-    });
+    const cacheCleared = yield AsyncStorage.multiRemove(definitionKeys()).then(
+      errors => {
+        if (!errors) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+    );
     if (cacheCleared) {
       yield put({type: 'DEFINITIONS_CACHE_CLEARED'});
       yield put(action.callbackAction);
@@ -109,7 +98,7 @@ export function* flushDefinitionsCacheSaga(
  * Generator function used to listen for all LOAD_DEFINITIONS dispatches and route them to loadDefinitionsSaga
  *
  */
-export function* watchForLoadDefinitions(): Generator<any, any, any> {
+export function* watchForLoadDefinitions() {
   yield takeEvery('LOAD_DEFINITIONS', loadDefinitionsSaga);
 }
 
@@ -117,7 +106,7 @@ export function* watchForLoadDefinitions(): Generator<any, any, any> {
  * Generator function used to listen for all LOAD_DEFINITIONS_FROM_CACHE dispatches and route them to loadDefinitionsSaga
  *
  */
-export function* watchForLoadDefinitionsFromCache(): Generator<any, any, any> {
+export function* watchForLoadDefinitionsFromCache() {
   yield takeEvery('LOAD_DEFINITIONS_FROM_CACHE', loadDefinitionsFromCacheSaga);
 }
 
@@ -125,11 +114,11 @@ export function* watchForLoadDefinitionsFromCache(): Generator<any, any, any> {
  * Generator function used to listen for all FLUSH_DEFINITIONS_CACHE dispatches and route them to loadDefinitionsSaga
  *
  */
-export function* watchForFlushDefinitionsCache(): Generator<any, any, any> {
+export function* watchForFlushDefinitionsCache() {
   yield takeEvery('FLUSH_DEFINITIONS_CACHE', flushDefinitionsCacheSaga);
 }
 
-export function* watchForSearchDefinitions(): Generator<any, any, any> {
+export function* watchForSearchDefinitions() {
   yield takeEvery('SEARCH_DEFINITIONS', searchDefinitionsSaga);
 }
 
@@ -137,7 +126,7 @@ export function* watchForSearchDefinitions(): Generator<any, any, any> {
  * Generator function that initializes all of our 'watch' sagas
  *
  */
-export default function* rootSaga(): Generator<any, any, any> {
+export default function* rootSaga() {
   yield all([
     watchForLoadDefinitions(),
     watchForLoadDefinitionsFromCache(),

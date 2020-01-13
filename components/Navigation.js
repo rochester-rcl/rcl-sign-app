@@ -17,7 +17,7 @@ import {
 const Item = Picker.Item;
 
 // Constants
-import {Alphabet} from '../utils/Constants';
+import {Alphabet, LETTER_RANGE} from '../utils/Constants';
 
 import {LAYOUT_PORTRAIT, LAYOUT_LANDSCAPE} from '../containers/AppRoot';
 
@@ -39,7 +39,7 @@ export default class Navigation extends Component {
     searchTerm: null,
     isSearching: false,
   };
-  letterRange: Array<string> = ['a-g', 'h-m', 'n-r', 's-z'];
+  letterRange: Array<string> = LETTER_RANGE;
   constructor(props: Object) {
     super(props);
     (this: any).handleLetterChange = this.handleLetterChange.bind(this);
@@ -173,7 +173,7 @@ export default class Navigation extends Component {
       if (language === 'fr') return 'Chercher ...';
       return 'Search ...';
     };
-    
+
     return (
       <View
         style={

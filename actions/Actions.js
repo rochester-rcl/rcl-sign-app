@@ -37,10 +37,10 @@ export function searchDefinitionsAction(language: string, term: string): Object 
   }
 }
 
-export function loadDefinitionsFromCacheAction(uuid: string): Object {
+export function loadDefinitionsFromCacheAction(id) {
   return {
     type: LOAD_DEFINITIONS_FROM_CACHE,
-    uuid: uuid,
+    id: id,
   }
 }
 

@@ -1,7 +1,6 @@
 /* @flow */
 
 import {combineReducers} from 'redux';
-import OfflineDownloadReducer from './OfflineDownloadReducer';
 import offlineDownloadReducer from './OfflineDownloadReducer';
 
 const defaultState: Object = {
