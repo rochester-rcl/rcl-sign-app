@@ -12,6 +12,7 @@ import NetInfo from '@react-native-community/netinfo';
 import {
   ONLINE_STATUS_UPDATED,
   SUBSCRIBE_ONLINE_STATUS_LISTENER,
+  DOWNLOAD_FILE,
 } from '../actions/DownloadActions';
 
 // Based on https://github.com/redux-saga/redux-saga/issues/589
@@ -24,6 +25,7 @@ function takeLeading(pattern, saga, ...args) {
     }
   });
 }
+
 function createNetInfoProgressChannel() {
   return eventChannel(emit => {
     const unsubscribe = NetInfo.addEventListener(state => {
@@ -31,6 +33,10 @@ function createNetInfoProgressChannel() {
     });
     return unsubscribe;
   });
+}
+
+function* downloadDefinition(action) {
+  console.log(action.definition);
 }
 
 function* listenForOnlineStatus() {
@@ -41,10 +47,14 @@ function* listenForOnlineStatus() {
   }
 }
 
+function* watchForDownloadDefinition() {
+  yield takeEvery(DOWNLOAD_FILE, downloadDefinition);
+}
+
 function* watchForOnlineStatuSubscription() {
   yield takeLeading(SUBSCRIBE_ONLINE_STATUS_LISTENER, listenForOnlineStatus);
 }
 
 export default function* offlineDownloadSaga() {
-  yield all([watchForOnlineStatuSubscription()]);
+  yield all([watchForOnlineStatuSubscription(), watchForDownloadDefinition()]);
 }

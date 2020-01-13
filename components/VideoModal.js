@@ -9,16 +9,13 @@ import {
   View,
   Modal,
   TouchableOpacity,
-  TouchableHighlight,
   Image,
   Animated,
-  StyleSheet,
 } from 'react-native';
 
-// Video Component
+// Components
 import Video from 'react-native-video';
-
-import HomeLogo from '../images/home_logo.png';
+import OfflineDownload, {OfflineDownloadContext} from './OfflineDownload';
 
 // Stylesheets
 import {ModalStyles, VideoStyles, ButtonStyles} from '../styles/Styles';
@@ -30,22 +27,22 @@ export default class VideoModal extends Component {
     frVideoPaused: false,
     transitionVals: {en: new Animated.Value(1), fr: new Animated.Value(1)},
   };
-
-  constructor(props: Object): void {
+  constructor(props) {
     super(props);
-    (this: any).sortVideo = this.sortVideo.bind(this);
-    (this: any).handleOnLoad = this.handleOnLoad.bind(this);
+    this.sortVideo = this.sortVideo.bind(this);
+    this.handleOnLoad = this.handleOnLoad.bind(this);
     this.handleOnEnd = this.handleOnEnd.bind(this);
-    (this: any).handlePlayback = this.handlePlayback.bind(this);
+    this.handlePlayback = this.handlePlayback.bind(this);
     this.animateIn = this.animateIn.bind(this);
     this.animateOut = this.animateOut.bind(this);
     this.animateTransition = this.animateTransition.bind(this);
     this.handleOnPress = this.handleOnPress.bind(this);
+    this.handleDownload = this.handleDownload.bind(this);
     this.frPlayer = createRef();
     this.enPlayer = createRef();
   }
 
-  sortVideo(): Array<Object> {
+  sortVideo() {
     let {videoModalContent} = this.props;
     let {en, fr} = videoModalContent;
     let videos = [
@@ -79,6 +76,12 @@ export default class VideoModal extends Component {
     this.handlePlayback(lang, true);
   }
 
+  handleDownload() {
+    const { onDownloadRequested } = this.context;
+    const { display, ...rest } = this.props.videoModalContent;
+    onDownloadRequested(rest);
+  }
+
   handlePlayback(lang: string, override?: boolean): void {
     let {enVideoPaused, frVideoPaused, transitionVals} = this.state;
     if (lang === 'en') {
@@ -109,6 +112,11 @@ export default class VideoModal extends Component {
     Animated.sequence([this.animateOut(lang), this.animateIn(lang)]).start(cb);
   }
 
+  getId(modalContent) {
+    const {en} = modalContent;
+    return en.definition_id;
+  }
+
   render() {
     const {
       videoModalContent,
@@ -117,6 +125,10 @@ export default class VideoModal extends Component {
       layoutAspect,
       language,
     } = this.props;
+
+    const { offlineDownloads } = this.context;
+    const id = this.getId(videoModalContent);
+
     const {enVideoPaused, frVideoPaused, transitionVals} = this.state;
     const exitModal = () => {
       this.handlePlayback('en', true);
@@ -153,14 +165,10 @@ export default class VideoModal extends Component {
                 {language === 'en' ? 'back' : 'retour'}
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={exitModal}
-              style={ButtonStyles.downloadButtonContainer}>
-              <Image
-                style={ButtonStyles.downloadButton}
-                source={require('../images/cloud-download.png')}
-              />
-            </TouchableOpacity>
+            <OfflineDownload
+              onDownloadRequested={this.handleDownload}
+              status={offlineDownloads[id]}
+            />
           </View>
           {this.sortVideo().map((video, index) => (
             <TouchableOpacity
@@ -220,3 +228,5 @@ export default class VideoModal extends Component {
     );
   }
 }
+
+VideoModal.contextType = OfflineDownloadContext;

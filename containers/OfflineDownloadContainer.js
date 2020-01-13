@@ -1,7 +1,7 @@
 /* @flow */
 
 // React
-import React, {Component} from 'react';
+import React, {Component, createContext} from 'react';
 
 // Redux
 import {connect} from 'react-redux';
@@ -14,6 +14,7 @@ import * as DownloadActions from '../actions/DownloadActions';
 import { BannerStyles } from '../styles/Styles';
 
 import {Image, View} from 'react-native';
+
 
 class OfflineDownloadContainer extends Component {
   componentDidMount() {

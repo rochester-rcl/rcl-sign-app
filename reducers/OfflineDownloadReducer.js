@@ -2,11 +2,14 @@ import {
   FILE_DOWNLOADED,
   CACHE_READ,
   ONLINE_STATUS_UPDATED,
+  DOWNLOAD_FILE
 } from '../actions/DownloadActions';
 
 const defaultState = {
-  offlineDownloads: [],
+  offlineDownloads: {},
+  definitions: [],
   offline: false,
+  status: DOWNLOAD_FILE
 };
 
 export default function offlineDownloadReducer(state = defaultState, action) {
