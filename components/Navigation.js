@@ -62,7 +62,7 @@ export default class Navigation extends Component {
       this.setState({currentLetter: selectedLetter}, () =>
         this.props.toggleSearchResultsDisplay(false),
       );
-      this.loadNewDefinitions(selectedLetter, currentRange, true);
+      this.loadNewDefinitions(selectedLetter, currentRange);
     }
     this.handleModalToggle();
   }
@@ -98,23 +98,19 @@ export default class Navigation extends Component {
       this.setState({currentRange: selectedRange, currentIndex: index}, () =>
         this.props.toggleSearchResultsDisplay(false),
       );
-      this.loadNewDefinitions(currentLetter, selectedRange, false);
+      this.loadNewDefinitions(currentLetter, selectedRange);
     }
   }
 
   loadNewDefinitions(
     currentLetter: string,
     currentRange: string,
-    clearCache: boolean,
   ): void {
-    this.props.loadDefinitions(
-      {
-        language: this.props.language,
-        letter: currentLetter,
-        range: currentRange,
-      },
-      clearCache,
-    );
+    this.props.loadDefinitions({
+      language: this.props.language,
+      letter: currentLetter,
+      range: currentRange,
+    });
   }
 
   handleModalToggle() {

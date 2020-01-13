@@ -8,23 +8,18 @@ import AsyncStorage from '@react-native-community/async-storage';
 // NetInfo
 import NetInfo from '@react-native-community/netinfo';
 
+// FS
+import RNFS from 'react-native-fs';
+
+// Utils 
+import { takeLeading } from './Saga';
+
 // Actions
 import {
   ONLINE_STATUS_UPDATED,
   SUBSCRIBE_ONLINE_STATUS_LISTENER,
   DOWNLOAD_FILE,
 } from '../actions/DownloadActions';
-
-// Based on https://github.com/redux-saga/redux-saga/issues/589
-// Only want to take the first instance of the action and none of the other ones
-function takeLeading(pattern, saga, ...args) {
-  return fork(function*() {
-    while (true) {
-      const action = yield take(pattern);
-      yield call(saga, ...args.concat(action));
-    }
-  });
-}
 
 function createNetInfoProgressChannel() {
   return eventChannel(emit => {
@@ -36,7 +31,7 @@ function createNetInfoProgressChannel() {
 }
 
 function* downloadDefinition(action) {
-  console.log(action.definition);
+  console.log(action);
 }
 
 function* listenForOnlineStatus() {

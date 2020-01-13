@@ -37,7 +37,7 @@ export const STORAGE_DEFINITIONS_KEY = 'asl-lsf-app-definitions';
 export const STORAGE_DOWNLOADS_KEY = 'asl-lsf-app-downloads';
 export const LANGUAGES = ['en', 'fr'];
 
-export const definitionKeys = () => {
+export function definitionKeys() {
   const keys = [];
   for (let i = 0; i < Alphabet.length; i++) {
     const letter = Alphabet[i];
@@ -50,5 +50,9 @@ export const definitionKeys = () => {
       }
     }
   }
-  return definitionKeys;
+  return keys;
+}
+
+export function createDefinitionsCacheKey(language, letter, range) {
+  return `${STORAGE_DEFINITIONS_KEY}-${language}-${letter}-${range}`;
 }

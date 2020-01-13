@@ -75,13 +75,13 @@ function lsfReducer(state: Object = defaultState, action: Object): Object {
     case 'DEFINITIONS_LOADED':
       let results = action.results;
       let definitions = results.definitions;
-      let cacheInfo = results.cacheInfo
-        ? results.cacheInfo
-        : state.definitionsCache;
+      const { cacheKey } = results;
+      const definitionsCache = {...state.definitionsCache};
+      definitionsCache[cacheKey] = cacheKey;
       return {
         ...state,
         definitions: definitions,
-        definitionsCache: {...state.definitionsCache, ...cacheInfo},
+        definitionsCache: definitionsCache,
       };
 
     case 'DEFINITIONS_CACHE_CLEARED':

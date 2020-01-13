@@ -4,16 +4,32 @@
 import {fetchDefinitions, searchDefinitions} from './LSFetch';
 
 // Redux Saga
-import {put, takeEvery, all, fork} from 'redux-saga/effects';
+import {put, takeEvery, all, fork, take, call} from 'redux-saga/effects';
 
 // AsyncStorage
 import AsyncStorage from '@react-native-community/async-storage';
 
 // keys
-import {STORAGE_DEFINITIONS_KEY, definitionKeys} from '../utils/Constants';
+import {createDefinitionsCacheKey, definitionKeys} from '../utils/Constants';
 
 // Other sagas
 import OfflineDownloadSaga from './OfflineDownloadSaga';
+
+// Based on https://github.com/redux-saga/redux-saga/issues/589
+// Only want to take the first instance of the action and none of the other ones
+export function takeLeading(pattern, saga, ...args) {
+  return fork(function*() {
+    while (true) {
+      const action = yield take(pattern);
+      yield call(saga, ...args.concat(action));
+    }
+  });
+}
+// This should only be called once,when the application mounts
+function* initializeAppStateSaga(action) {
+  yield flushDefinitionsCacheSaga();
+  yield loadDefinitionsSaga(action);
+}
 
 /*
  * Generator function used to yield a saga that retrieves a set of definitions from the API
@@ -28,10 +44,8 @@ export function* loadDefinitionsSaga(loadDefinitionsAction) {
     let results = {};
     results.searchResults = false;
     if (!definitionResults.hasOwnProperty('message')) {
-      results.cacheInfo = {};
-      const id = `${STORAGE_DEFINITIONS_KEY}-${language}-${letter}-${range}`;
-      results.cacheInfo[range] = id;
-      AsyncStorage.setItem(id, JSON.stringify(definitionResults));
+      results.cacheKey = createDefinitionsCacheKey(language, letter, range);
+      AsyncStorage.setItem(results.cacheKey, JSON.stringify(definitionResults));
     } else {
       definitionResults.error = true;
     }
@@ -73,8 +87,7 @@ export function* loadDefinitionsFromCacheSaga(action) {
   }
 }
 
-export function* flushDefinitionsCacheSaga(action) {
-  // DO WE EVEN USE THIS?
+export function* flushDefinitionsCacheSaga() {
   try {
     const cacheCleared = yield AsyncStorage.multiRemove(definitionKeys()).then(
       errors => {
@@ -87,11 +100,14 @@ export function* flushDefinitionsCacheSaga(action) {
     );
     if (cacheCleared) {
       yield put({type: 'DEFINITIONS_CACHE_CLEARED'});
-      yield put(action.callbackAction);
     }
   } catch (error) {
     console.log(error);
   }
+}
+
+export function* watchForInitializeAppState() {
+  yield takeLeading('INITIALIZE_APP_STATE', initializeAppStateSaga);
 }
 
 /*
@@ -128,6 +144,7 @@ export function* watchForSearchDefinitions() {
  */
 export default function* rootSaga() {
   yield all([
+    watchForInitializeAppState(),
     watchForLoadDefinitions(),
     watchForLoadDefinitionsFromCache(),
     watchForFlushDefinitionsCache(),

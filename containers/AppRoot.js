@@ -30,6 +30,9 @@ import Navigation from '../components/Navigation';
 import DefinitionList from '../components/DefinitionList';
 import VideoModal from '../components/VideoModal';
 
+// Constants
+import {createDefinitionsCacheKey} from '../utils/Constants';
+
 // Context
 import {OfflineDownloadContext} from '../components/OfflineDownload';
 
@@ -51,86 +54,79 @@ class AppRoot extends Component {
   LAYOUT_PORTRAIT = 'LAYOUT_PORTRAIT';
   LAYOUT_LANDSCAPE = 'LAYOUT_LANDSCAPE';
   state = {showIntroScreen: false, portraitKeyboardActive: false};
-  constructor(props: Object) {
+  constructor(props) {
     super(props);
-    // Bind all methods to 'this' context here
-    (this: any).setAppLanguage = this.setAppLanguage.bind(this);
-    (this: any).toggleIntroScreen = this.toggleIntroScreen.bind(this);
-    (this: any).loadDefinitions = this.loadDefinitions.bind(this);
-    (this: any).flushDefinitionsCache = this.flushDefinitionsCache.bind(this);
-    (this: any).handleLayoutChange = this.handleLayoutChange.bind(this);
-    (this: any).handleKeyboardShow = this.handleKeyboardShow.bind(this);
-    (this: any).handleKeyboardHide = this.handleKeyboardHide.bind(this);
-    (this: any).keyboardShowListener = Keyboard.addListener(
+    this.setAppLanguage = this.setAppLanguage.bind(this);
+    this.toggleIntroScreen = this.toggleIntroScreen.bind(this);
+    this.loadDefinitions = this.loadDefinitions.bind(this);
+    this.flushDefinitionsCache = this.flushDefinitionsCache.bind(this);
+    this.handleLayoutChange = this.handleLayoutChange.bind(this);
+    this.handleKeyboardShow = this.handleKeyboardShow.bind(this);
+    this.handleKeyboardHide = this.handleKeyboardHide.bind(this);
+    this.keyboardShowListener = Keyboard.addListener(
       'keyboardDidShow',
       this.handleKeyboardShow,
     );
-    (this: any).keyboardHideListener = Keyboard.addListener(
+    this.keyboardHideListener = Keyboard.addListener(
       'keyboardDidHide',
       this.handleKeyboardHide,
     );
   }
 
   componentDidMount() {
-    // Get our first batch of definitions - we can load this with a default value
-    let definitionQuery = {
+    const definitionQuery = {
       language: this.props.language, // defaults to English
       letter: 'a',
       range: 'a-g',
     };
     this.props.listenForOnlineStatus();
-    this.props.loadDefinitionsAction(definitionQuery);
+    this.props.initializeAppStateAction(definitionQuery);
   }
 
-  componentDidUpdate(prevProps: Object): void {
+  componentDidUpdate(prevProps) {
     if (prevProps.layoutAspect !== this.props.layoutAspect) {
       LayoutAnimation.configureNext(fadeInOut);
     }
   }
 
-  loadDefinitions(definitionQuery: Object, clearCache: boolean) {
-    let {range} = definitionQuery;
-    let {definitionsCache} = this.props;
-    if (clearCache) {
-      this.flushDefinitionsCache(
-        this.props.loadDefinitionsAction(definitionQuery),
-      );
+  loadDefinitions(definitionQuery) {
+    const {language, letter, range} = definitionQuery;
+    const key = createDefinitionsCacheKey(language, letter, range);
+    const {definitionsCache} = this.props;
+    if (definitionsCache.hasOwnProperty(key)) {
+      this.props.loadDefinitionsFromCacheAction(key);
     } else {
-      if (this.props.definitionsCache.hasOwnProperty(range)) {
-        this.props.loadDefinitionsFromCacheAction(definitionsCache[range]);
-      } else {
-        this.props.loadDefinitionsAction(definitionQuery);
-      }
+      this.props.loadDefinitionsAction(definitionQuery);
     }
   }
 
-  flushDefinitionsCache(callbackAction: Object): void {
-    this.props.flushDefinitionsCacheAction(callbackAction);
+  flushDefinitionsCache() {
+    this.props.flushDefinitionsCacheAction();
   }
 
-  setAppLanguage(language): void {
+  setAppLanguage(language) {
     this.props.toggleSearchResultsDisplayAction(false);
     this.props.setAppLanguageAction(language);
   }
 
-  toggleIntroScreen(): void {
+  toggleIntroScreen() {
     this.setState({showIntroScreen: !this.state.showIntroScreen});
   }
 
-  handleLayoutChange({nativeEvent}): void {
+  handleLayoutChange({nativeEvent}) {
     let {width, height} = nativeEvent.layout;
     let aspect = height > width ? this.LAYOUT_PORTRAIT : this.LAYOUT_LANDSCAPE;
     if (aspect !== this.props.layoutAspect)
       this.props.updateLayoutAspectAction(aspect);
   }
 
-  handleKeyboardShow(): void {
+  handleKeyboardShow() {
     if (this.props.layoutAspect === this.LAYOUT_PORTRAIT) {
       this.setState({portraitKeyboardActive: true});
     }
   }
 
-  handleKeyboardHide(): void {
+  handleKeyboardHide() {
     this.setState({portraitKeyboardActive: false});
   }
 
@@ -139,9 +135,7 @@ class AppRoot extends Component {
       definitions,
       language,
       introText,
-      loadDefinitionsAction,
       searchDefinitionsAction,
-      definitionsCache,
       fetchingDefinitions,
       videoModal,
       toggleVideoModalAction,
@@ -152,7 +146,7 @@ class AppRoot extends Component {
       downloadDefinition,
       offlineStatus,
     } = this.props;
-  
+
     const {showIntroScreen, portraitKeyboardActive} = this.state;
 
     return (
@@ -208,7 +202,7 @@ class AppRoot extends Component {
  *@param {Object} state - the Redux state set up in Reducer.js
  *@return {Object}
  */
-function mapStateToProps({appState, offlineModeState}): Object {
+function mapStateToProps({appState, offlineModeState}) {
   return {
     definitions: appState.definitions,
     language: appState.language,

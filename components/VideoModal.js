@@ -47,13 +47,13 @@ export default class VideoModal extends Component {
     let {en, fr} = videoModalContent;
     let videos = [
       {
-        url: fr.video_url,
+        url: fr.videoUrl,
         ref: this.frPlayer,
         lang: 'fr',
         title: fr.title,
       },
       {
-        url: en.video_url,
+        url: en.videoUrl,
         ref: this.enPlayer,
         lang: 'en',
         title: en.title,
@@ -114,7 +114,7 @@ export default class VideoModal extends Component {
 
   getId(modalContent) {
     const {en} = modalContent;
-    return en.definition_id;
+    return en.definitionId;
   }
 
   render() {
