@@ -5,6 +5,7 @@ import {
   CACHE_READ,
   ONLINE_STATUS_UPDATED,
   DOWNLOAD_FILE,
+  CACHE_UPDATED,
 } from '../actions/DownloadActions';
 
 const defaultState = {
@@ -25,6 +26,9 @@ export default function offlineDownloadReducer(state = defaultState, action) {
       return {...state, offlineDownloads: downloads};
     case ONLINE_STATUS_UPDATED:
       return {...state, offline: !action.status};
+    case CACHE_UPDATED:
+      console.log(action.definitions);
+      return {...state, definitions: action.definitions};
     default:
       return state;
   }

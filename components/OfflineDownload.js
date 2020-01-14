@@ -1,5 +1,5 @@
 import React, {Component, createContext} from 'react';
-import {View, TouchableOpacity, Image} from 'react-native';
+import {View, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
 import {
   downloadFile,
   DOWNLOAD_FILE,
@@ -23,6 +23,14 @@ const DownloadButton = props => {
       style={ButtonStyles.downloadButtonContainer}
       onPress={onPress}>
       <Image style={ButtonStyles.downloadButton} source={source} />
+      {status === FILE_DOWNLOAD_PENDING ? (
+        <ActivityIndicator
+          animating={true}
+          style={ButtonStyles.downloadButtonActivity}
+          size="small"
+          color="#fff"
+        />
+      ) : null}
     </TouchableOpacity>
   );
 };

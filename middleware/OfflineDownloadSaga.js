@@ -9,10 +9,11 @@ import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 
 // FS
-import RNFS, {downloadFile} from 'react-native-fs';
+import RNFS from 'react-native-fs';
 
 // Utils
 import {takeLeading} from './Saga';
+import lodash from 'lodash';
 
 // Actions
 import {
@@ -23,7 +24,10 @@ import {
   FILE_DOWNLOADED,
   ALL_DOWNLOADS_COMPLETE,
   FILE_DOWNLOAD_ERROR,
+  CACHE_UPDATED,
 } from '../actions/DownloadActions';
+
+import {STORAGE_DOWNLOADS_KEY} from '../utils/Constants';
 
 function createNetInfoProgressChannel() {
   return eventChannel(emit => {
@@ -44,7 +48,7 @@ function downloadDefinition(definition, emit) {
   // THE ID IS THE ENGLISH ONE
   const {definitionId} = en;
 
-  const doDownload = term => {
+  const doDownload = (term, key) => {
     const {videoUrl, language} = term;
     const ext = getExt(videoUrl);
     const filePath = `${RNFS.CachesDirectoryPath}/${language}-${definitionId}.${ext}`;
@@ -74,7 +78,8 @@ function downloadDefinition(definition, emit) {
         status: status,
         id: definitionId,
         language: language,
-        path: filePath,
+        videoUrl: `file://${filePath}`,
+        key: key,
       });
     };
     const downloadOptions = {
@@ -85,20 +90,36 @@ function downloadDefinition(definition, emit) {
     const {promise} = RNFS.downloadFile(downloadOptions);
     return promise.then(handleResult);
   };
-  return Promise.all([doDownload(en), doDownload(fr)]);
+
+  const reduceDownload = values => {
+    const obj = values.reduce(
+      (a, b) => {
+        const {key, status, ...rest} = b;
+        a[key] = rest;
+        if (a.status !== status) {
+          a.status = status;
+        }
+        return a;
+      },
+      {status: false},
+    );
+    return obj;
+  };
+  return Promise.all([doDownload(en, 'en'), doDownload(fr, 'fr')]).then(
+    reduceDownload,
+  );
 }
 
 function createDownloadProgressChannel(definition) {
   const channel = eventChannel(emit => {
     downloadDefinition(definition, emit)
-      .then(values => {
-        const success = values.every(info => info.status === true);
-        const {id} = values[0];
-        if (success) {
+      .then(downloadInfo => {
+        const {status, ...rest} = downloadInfo;
+        if (status) {
           emit({
             type: ALL_DOWNLOADS_COMPLETE,
-            id: id,
-            fileData: values
+            id: rest.en.id,
+            info: rest,
           });
         } else {
           // some failure state that gets emitted
@@ -113,16 +134,74 @@ function createDownloadProgressChannel(definition) {
   return channel;
 }
 
+function* getCachedDefinitions() {
+  const cached = yield AsyncStorage.getItem(STORAGE_DOWNLOADS_KEY);
+  if (cached) {
+    const data = JSON.parse(cached);
+    return data;
+  }
+  return null;
+}
+
+function* setCachedDefinitions(definitions) {
+  let status, saved;
+  try {
+    yield AsyncStorage.setItem(
+      STORAGE_DOWNLOADS_KEY,
+      JSON.stringify(definitions),
+    );
+    status = true;
+    saved = definitions;
+  } catch (error) {
+    status = false;
+    saved = null;
+  }
+  return {status: status, definitions: saved};
+}
+
+function* updateCachedDefinitions(id, definition, prevDefinitions = null) {
+  const toUpdate = prevDefinitions
+    ? prevDefinitions
+    : yield getCachedDefinitions();
+  const index = yield findCachedDefinitionIndex(id, toUpdate);
+  if (index > -1) {
+    toUpdate[index] = definition;
+  } else {
+    toUpdate.push(definition);
+  }
+  return yield setCachedDefinitions(toUpdate);
+}
+
+function* findCachedDefinitionIndex(id, prevDefinitions = null) {
+  const definitions = prevDefinitions ? prevDefinitions : yield getCachedDefinitions();
+  return definitions.findIndex(definition => definition.en.definitionId === id);
+}
+
 function* downloadDefinitionSaga(action) {
   const {definition} = action;
   const channel = createDownloadProgressChannel(definition);
   while (true) {
     const downloadStatus = yield take(channel);
     yield put(downloadStatus);
-    if (downloadStatus.type === ALL_DOWNLOADS_COMPLETE) {
-      console.log(downloadStatus.fileData);
-      const cloned = {...definition};
-      console.log(cloned);
+    const {type, info, id} = downloadStatus;
+    if (type === ALL_DOWNLOADS_COMPLETE) {
+      yield put({type: type, id: id});
+      const merged = lodash.merge(definition, info);
+      // cache the newly downloaded definition
+      const cached = yield getCachedDefinitions();
+      let status, definitions;
+      if (cached) {
+        ({status, definitions} = yield updateCachedDefinitions(
+          id,
+          merged,
+          cached,
+        ));
+      } else {
+        ({status, definitions} = yield setCachedDefinitions([merged]));
+      }
+      if (status) {
+        yield put({type: CACHE_UPDATED, definitions: definitions});
+      }
     }
   }
 }

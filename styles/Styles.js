@@ -254,6 +254,10 @@ export const ButtonStyles: Object = StyleSheet.create({
     width: 50,
     height: 50,
   },
+  downloadButtonActivity: {
+    position: 'absolute',
+    alignSelf: 'center',
+  },
 });
 
 export const DefinitionListStyles: Object = StyleSheet.create({
