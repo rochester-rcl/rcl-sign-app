@@ -25,9 +25,21 @@ import {
   ALL_DOWNLOADS_COMPLETE,
   FILE_DOWNLOAD_ERROR,
   CACHE_UPDATED,
+  CACHE_READ,
+  READ_CACHE
 } from '../actions/DownloadActions';
 
 import {STORAGE_DOWNLOADS_KEY} from '../utils/Constants';
+
+// Loads all definitions from cache
+function* loadDefinitionsFromCache() {
+  try {
+    const definitions = yield getCachedDefinitions();
+    yield put({type: CACHE_READ, definitions: definitions});
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 function createNetInfoProgressChannel() {
   return eventChannel(emit => {
@@ -45,7 +57,7 @@ function getExt(url) {
 
 function downloadDefinition(definition, emit) {
   const {en, fr} = definition;
-  // THE ID IS THE ENGLISH ONE
+  // THE ID IS en.definitionId
   const {definitionId} = en;
 
   const doDownload = (term, key) => {
@@ -173,7 +185,9 @@ function* updateCachedDefinitions(id, definition, prevDefinitions = null) {
 }
 
 function* findCachedDefinitionIndex(id, prevDefinitions = null) {
-  const definitions = prevDefinitions ? prevDefinitions : yield getCachedDefinitions();
+  const definitions = prevDefinitions
+    ? prevDefinitions
+    : yield getCachedDefinitions();
   return definitions.findIndex(definition => definition.en.definitionId === id);
 }
 
@@ -222,6 +236,14 @@ function* watchForOnlineStatuSubscription() {
   yield takeLeading(SUBSCRIBE_ONLINE_STATUS_LISTENER, listenForOnlineStatus);
 }
 
+function* watchForLoadDefinitionsFromCache() {
+  yield takeEvery(READ_CACHE, loadDefinitionsFromCache);
+}
+
 export default function* offlineDownloadSaga() {
-  yield all([watchForOnlineStatuSubscription(), watchForDownloadDefinition()]);
+  yield all([
+    watchForOnlineStatuSubscription(),
+    watchForDownloadDefinition(),
+    watchForLoadDefinitionsFromCache(),
+  ]);
 }

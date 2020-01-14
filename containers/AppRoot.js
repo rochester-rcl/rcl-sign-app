@@ -213,7 +213,7 @@ function mapStateToProps({appState, offlineModeState}) {
     searchResults: appState.searchResults,
     introText: appState.introText,
     offlineStatus: offlineModeState.offline,
-    offlineDownloads: offlineModeState.offlineDownloads,
+    offlineDownloads: offlineModeState.offlineDownloadsMap,
   };
 }
 
