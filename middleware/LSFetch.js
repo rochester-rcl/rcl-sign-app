@@ -20,10 +20,32 @@ export function searchDefinitions(language, term) {
 }
 
 function prepareDefinitionResults(response) {
-  return response.json().then(definitions => toCamelCase(definitions));
+  return response.json().then(definitions => formatDefinitions(definitions));
 }
 
-function toCamelCase(definitions) {
+function formatDefinitions(definitions) {
+  return Promise.all(
+    definitions.map(definition =>
+      swapKeys(OLD_KEYS, NEW_KEYS, toCamelCase(definition)),
+    ),
+  );
+}
+
+const OLD_KEYS = ['engDefinition', 'frDefinition'];
+const NEW_KEYS = ['en', 'fr'];
+
+function swapKeys(oldKeys, newKeys, obj) {
+  const swap = (oldKey, newKey, {[oldKey]: val, ...rest}) => ({
+    [newKey]: val,
+    ...rest,
+  });
+  const result = oldKeys.reduce((a, b, index) => swap(b, newKeys[index], a), {
+    ...obj,
+  });
+  return result;
+}
+
+function toCamelCase(definition) {
   const convertedKeys = {};
   const convert = val => {
     let converted;
@@ -46,5 +68,5 @@ function toCamelCase(definitions) {
     }
     return converted;
   };
-  return definitions.map(convert);
+  return convert(definition);
 }

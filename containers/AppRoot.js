@@ -84,19 +84,30 @@ class AppRoot extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    const {offlineStatus} = this.props;
     if (prevProps.layoutAspect !== this.props.layoutAspect) {
       LayoutAnimation.configureNext(fadeInOut);
+    }
+    if (prevProps.offlineStatus !== offlineStatus) {
+      if (offlineStatus) {
+        this.props.loadOfflineDefinitions();
+      }
     }
   }
 
   loadDefinitions(definitionQuery) {
+    const {offlineStatus} = this.props;
     const {language, letter, range} = definitionQuery;
     const key = createDefinitionsCacheKey(language, letter, range);
     const {definitionsCache} = this.props;
-    if (definitionsCache.hasOwnProperty(key)) {
-      this.props.loadDefinitionsFromCacheAction(key);
+    if (offlineStatus) {
+      this.props.queryOfflineDefinitions(definitionQuery);
     } else {
-      this.props.loadDefinitionsAction(definitionQuery);
+      if (definitionsCache.hasOwnProperty(key)) {
+        this.props.loadDefinitionsFromCacheAction(key);
+      } else {
+        this.props.loadDefinitionsAction(definitionQuery);
+      }
     }
   }
 
@@ -133,6 +144,7 @@ class AppRoot extends Component {
   render() {
     const {
       definitions,
+      cachedDefinitions,
       language,
       introText,
       searchDefinitionsAction,
@@ -176,7 +188,7 @@ class AppRoot extends Component {
           />
           <DefinitionList
             currentLanguage={language}
-            definitions={definitions}
+            definitions={offlineStatus ? cachedDefinitions : definitions}
             fetchingDefinitions={fetchingDefinitions}
             toggleModal={toggleVideoModalAction}
             searchResults={searchResults}
@@ -214,6 +226,7 @@ function mapStateToProps({appState, offlineModeState}) {
     introText: appState.introText,
     offlineStatus: offlineModeState.offline,
     offlineDownloads: offlineModeState.offlineDownloadsMap,
+    cachedDefinitions: offlineModeState.filteredDefinitions,
   };
 }
 

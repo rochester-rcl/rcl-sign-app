@@ -1,5 +1,13 @@
 // Redux Saga
-import {put, all, takeEvery, call, fork, take} from 'redux-saga/effects';
+import {
+  put,
+  all,
+  takeEvery,
+  call,
+  fork,
+  take,
+  select,
+} from 'redux-saga/effects';
 import {eventChannel, END} from 'redux-saga';
 
 // AsyncStorage
@@ -24,9 +32,12 @@ import {
   FILE_DOWNLOADED,
   ALL_DOWNLOADS_COMPLETE,
   FILE_DOWNLOAD_ERROR,
+  OFFLINE_DOWNLOADS_MAP_LOADED,
   CACHE_UPDATED,
   CACHE_READ,
-  READ_CACHE
+  READ_CACHE,
+  QUERY_OFFLINE_DEFINITIONS,
+  OFFLINE_DEFINITIONS_QUERIED,
 } from '../actions/DownloadActions';
 
 import {STORAGE_DOWNLOADS_KEY} from '../utils/Constants';
@@ -36,9 +47,44 @@ function* loadDefinitionsFromCache() {
   try {
     const definitions = yield getCachedDefinitions();
     yield put({type: CACHE_READ, definitions: definitions});
+    if (definitions) {
+      const downloadsMap = definitions.reduce((a, b) => {
+        a[b.en.definitionId] = FILE_DOWNLOADED;
+        return a;
+      }, {});
+      yield put({
+        type: OFFLINE_DOWNLOADS_MAP_LOADED,
+        offlineDownloadsMap: downloadsMap,
+      });
+    }
   } catch (error) {
     console.error(error);
   }
+}
+
+function definitionsSelector(definitions, query) {
+  // TODO need to load based on language - i.e. cant filter
+  // english definition with letter "a" and french language with letter "a"
+  const {language, letter, range} = query;
+  return definitions.filter(definition => {
+    const d = definition[language];
+    const dLetter = d.letter.toLowerCase();
+    const dRange = d.letterRange.toLowerCase().replace('to', '-');
+    if (dLetter === letter && dRange === range) return true;
+    return false;
+  });
+}
+
+function* queryOfflineDefinitions(action) {
+  const {definitionQuery} = action;
+  const selector = state => {
+    return definitionsSelector(
+      state.offlineModeState.definitions,
+      definitionQuery,
+    );
+  };
+  const results = yield select(selector);
+  yield put({type: OFFLINE_DEFINITIONS_QUERIED, definitions: results});
 }
 
 function createNetInfoProgressChannel() {
@@ -63,7 +109,7 @@ function downloadDefinition(definition, emit) {
   const doDownload = (term, key) => {
     const {videoUrl, language} = term;
     const ext = getExt(videoUrl);
-    const filePath = `${RNFS.CachesDirectoryPath}/${language}-${definitionId}.${ext}`;
+    const filePath = `${RNFS.DocumentDirectoryPath}/${language}-${definitionId}.${ext}`;
     const begin = downloadResult => {
       emit({
         type: FILE_DOWNLOAD_PENDING,
@@ -240,10 +286,15 @@ function* watchForLoadDefinitionsFromCache() {
   yield takeEvery(READ_CACHE, loadDefinitionsFromCache);
 }
 
+function* watchForQueryOfflineDefinitions() {
+  yield takeEvery(QUERY_OFFLINE_DEFINITIONS, queryOfflineDefinitions);
+}
+
 export default function* offlineDownloadSaga() {
   yield all([
     watchForOnlineStatuSubscription(),
     watchForDownloadDefinition(),
     watchForLoadDefinitionsFromCache(),
+    watchForQueryOfflineDefinitions(),
   ]);
 }

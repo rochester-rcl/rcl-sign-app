@@ -45,13 +45,13 @@ export default class DefinitionList extends Component {
               data={definitions}
               renderItem={({item}) => (
                 <DefinitionDisplay
-                  engDefinition={item.engDefinition}
-                  frDefinition={item.frDefinition}
+                  engDefinition={item.en}
+                  frDefinition={item.fr}
                   currentLanguage={currentLanguage}
                   toggleModal={toggleModal}
                 />
               )}
-              keyExtractor={item => item.engDefinition.definitionId.toString()}
+              keyExtractor={item => item.en.definitionId.toString()}
             />
           </View>
         );
@@ -62,14 +62,14 @@ export default class DefinitionList extends Component {
               data={definitions}
               renderItem={({item}) => (
                 <DefinitionDisplay
-                  engDefinition={item.engDefinition}
-                  frDefinition={item.frDefinition}
+                  engDefinition={item.en}
+                  frDefinition={item.fr}
                   currentLanguage={currentLanguage}
                   toggleModal={toggleModal}
                 />
               )}
               keyExtractor={item =>
-                item.engDefinition.definitionId.toString()
+                item.en.definitionId.toString()
               }
             />
           </View>

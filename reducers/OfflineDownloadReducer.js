@@ -3,10 +3,11 @@ import {
   FILE_DOWNLOAD_PENDING,
   FILE_DOWNLOADED,
   CACHE_READ,
-  QUERY_CACHED_DEFINITIONS,
+  OFFLINE_DOWNLOADS_MAP_LOADED,
   ONLINE_STATUS_UPDATED,
   DOWNLOAD_FILE,
   CACHE_UPDATED,
+  OFFLINE_DEFINITIONS_QUERIED
 } from '../actions/DownloadActions';
 
 const defaultState = {
@@ -28,10 +29,14 @@ export default function offlineDownloadReducer(state = defaultState, action) {
     case ALL_DOWNLOADS_COMPLETE:
       downloads[action.id] = FILE_DOWNLOADED;
       return {...state, offlineDownloadsMap: downloads};
+    case OFFLINE_DOWNLOADS_MAP_LOADED:
+      return {...state, offlineDownloadsMap: action.offlineDownloadsMap};
     case ONLINE_STATUS_UPDATED:
       return {...state, offline: !action.status};
     case CACHE_UPDATED:
       return {...state, definitions: action.definitions};
+    case OFFLINE_DEFINITIONS_QUERIED:
+      return {...state, filteredDefinitions: action.definitions };
     default:
       return state;
   }
