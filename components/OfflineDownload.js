@@ -38,7 +38,7 @@ const DownloadButton = props => {
 export const OfflineStatus = props => {
   const {offline, style} = props;
   const source = offline
-    ? require('../images/offline.png')
+    ? require('../images/offline-alternate.png')
     : require('../images/online.png');
   return <Image resizeMode={'contain'} source={source} style={style} />;
 };
