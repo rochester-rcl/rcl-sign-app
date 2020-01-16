@@ -91,9 +91,10 @@ class AppRoot extends Component {
     }
     if (prevProps.offlineStatus !== offlineStatus) {
       if (offlineStatus) {
-        this.props.loadOfflineDefinitions();
+        this.props.loadOfflineDefinitions(currentQuery);
+      } else {
+        this.loadDefinitions(currentQuery);
       }
-      this.loadDefinitions(currentQuery);
     }
   }
 

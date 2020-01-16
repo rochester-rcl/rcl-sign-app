@@ -43,7 +43,7 @@ import {
 import {STORAGE_DOWNLOADS_KEY} from '../utils/Constants';
 
 // Loads all definitions from cache
-function* loadDefinitionsFromCache() {
+export function* loadOfflineDefinitionsFromCache(action) {
   try {
     const definitions = yield getCachedDefinitions();
     yield put({type: CACHE_READ, definitions: definitions});
@@ -56,6 +56,10 @@ function* loadDefinitionsFromCache() {
         type: OFFLINE_DOWNLOADS_MAP_LOADED,
         offlineDownloadsMap: downloadsMap,
       });
+      const { definitionQuery } = action;
+      if (definitionQuery) {
+        yield queryOfflineDefinitions(action);
+      }
     }
   } catch (error) {
     console.error(error);
@@ -83,7 +87,7 @@ function definitionsSelector(definitions, query) {
   return errorMessage;
 }
 
-function* queryOfflineDefinitions(action) {
+export function* queryOfflineDefinitions(action) {
   const {definitionQuery} = action;
   const selector = state => {
     return definitionsSelector(
@@ -91,6 +95,7 @@ function* queryOfflineDefinitions(action) {
       definitionQuery,
     );
   };
+  
   const results = yield select(selector);
   yield put({type: OFFLINE_DEFINITIONS_QUERIED, definitions: results});
 }
@@ -290,8 +295,8 @@ function* watchForOnlineStatuSubscription() {
   yield takeLeading(SUBSCRIBE_ONLINE_STATUS_LISTENER, listenForOnlineStatus);
 }
 
-function* watchForLoadDefinitionsFromCache() {
-  yield takeEvery(READ_CACHE, loadDefinitionsFromCache);
+function* watchForLoadOfflineDefinitionsFromCache() {
+  yield takeEvery(READ_CACHE, loadOfflineDefinitionsFromCache);
 }
 
 function* watchForQueryOfflineDefinitions() {
@@ -302,7 +307,7 @@ export default function* offlineDownloadSaga() {
   yield all([
     watchForOnlineStatuSubscription(),
     watchForDownloadDefinition(),
-    watchForLoadDefinitionsFromCache(),
+    watchForLoadOfflineDefinitionsFromCache(),
     watchForQueryOfflineDefinitions(),
   ]);
 }

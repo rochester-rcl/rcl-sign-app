@@ -31,19 +31,20 @@ export default class DefinitionList extends Component {
     } = this.props;
     if (definitions.length > 0 && !fetchingDefinitions) {
       return (
-        <FlatList
-          key={key}
-          data={definitions}
-          renderItem={({item}) => (
-            <DefinitionDisplay
-              engDefinition={item.en}
-              frDefinition={item.fr}
-              currentLanguage={currentLanguage}
-              toggleModal={toggleModal}
-            />
-          )}
-          keyExtractor={item => item.en.definitionId.toString()}
-        />
+        <View key={key} style={DefinitionListStyles.definitionListContainer}>
+          <FlatList
+            data={definitions}
+            renderItem={({item}) => (
+              <DefinitionDisplay
+                engDefinition={item.en}
+                frDefinition={item.fr}
+                currentLanguage={currentLanguage}
+                toggleModal={toggleModal}
+              />
+            )}
+            keyExtractor={item => item.en.definitionId.toString()}
+          />
+        </View>
       );
     }
     return null;
@@ -86,8 +87,7 @@ export default class DefinitionList extends Component {
   }
 
   renderStatus(key) {
-    const {definitions, fetchingDefinitions, offlineMode} = this.props;
-    console.log(this.props);
+    const {definitions, fetchingDefinitions} = this.props;
     if (!definitions.length && !fetchingDefinitions) {
       return (
         <Text key={key} style={DefinitionDisplayStyles.errorMessage}>
@@ -108,7 +108,6 @@ export default class DefinitionList extends Component {
   }
 
   render() {
-    console.log(this.props.fetchingDefinitions, this.props.definitions.length);
     return (
       <View style={DefinitionListStyles.definitionListContainer}>
         {this.renderAll()}

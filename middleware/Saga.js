@@ -21,7 +21,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {createDefinitionsCacheKey, definitionKeys} from '../utils/Constants';
 
 // Other sagas
-import OfflineDownloadSaga from './OfflineDownloadSaga';
+import OfflineDownloadSaga, { loadOfflineDefinitionsFromCache } from './OfflineDownloadSaga';
 
 // Based on https://github.com/redux-saga/redux-saga/issues/589
 // Only want to take the first instance of the action and none of the other ones
@@ -40,6 +40,8 @@ function* initializeAppStateSaga(action) {
   const offline = yield select(state => state.offlineModeState.offline);
   if (!offline) {
     yield loadDefinitionsSaga(action);
+  } else {
+    yield loadOfflineDefinitionsFromCache(action);
   }
 }
 

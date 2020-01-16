@@ -3,27 +3,29 @@
 // React Native
 import {StyleSheet} from 'react-native';
 
-const GlobalStyles: Object = StyleSheet.create({
+const GlobalStyles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
+    fontFamily: 'RobotoCondensed-Regular',
   },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+    fontFamily: 'RobotoCondensed-Regular',
   },
   instructions: {
     textAlign: 'center',
     color: '#333333',
-    marginBottom: 5,
+    fontFamily: 'RobotoCondensed-Regular',
   },
 });
 
-export const BannerStyles: Object = StyleSheet.create({
+export const BannerStyles = StyleSheet.create({
   bannerContainer: {
     flexDirection: 'row',
     flex: 0.1,
@@ -44,7 +46,7 @@ export const BannerStyles: Object = StyleSheet.create({
     width: 50,
     height: 25,
     opacity: 1,
-    paddingRight: 20,
+    marginRight: 20,
     position: 'absolute',
     right: 0,
   },
@@ -62,12 +64,14 @@ export const BannerStyles: Object = StyleSheet.create({
     color: '#fff',
     marginTop: 5,
     fontSize: 10,
+    fontFamily: 'RobotoCondensed-Regular',
   },
 });
 
-export const ModalStyles: Object = StyleSheet.create({
+export const ModalStyles = StyleSheet.create({
   letterPickerModal: {
     justifyContent: 'center',
+    fontFamily: 'RobotoCondensed-Regular',
   },
   videoModalPortrait: {
     flexDirection: 'column',
@@ -81,19 +85,21 @@ export const ModalStyles: Object = StyleSheet.create({
   },
 });
 
-export const PickerStyles: Object = StyleSheet.create({
+export const PickerStyles = StyleSheet.create({
   languagePicker: {
     flex: 1,
+    fontFamily: 'RobotoCondensed-Regular',
   },
 });
 
-export const NavigationStyles: Object = StyleSheet.create({
+export const NavigationStyles = StyleSheet.create({
   letterPicker: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     flex: 0.3,
     backgroundColor: '#ddd',
+    fontFamily: 'RobotoCondensed-Regular',
   },
   navContainer: {
     flex: 0.3,
@@ -114,12 +120,14 @@ export const NavigationStyles: Object = StyleSheet.create({
     textAlign: 'center',
     flex: 0.2,
     fontSize: 10,
+    fontFamily: 'RobotoCondensed-Regular',
   },
   searchBarFocused: {
     backgroundColor: '#fff',
     textAlign: 'center',
     flex: 1,
     fontSize: 16,
+    fontFamily: 'RobotoCondensed-Regular',
   },
   letterRange: {
     flex: 0.5,
@@ -130,13 +138,14 @@ export const NavigationStyles: Object = StyleSheet.create({
     shadowOpacity: 0.4,
     backgroundColor: '#fff',
     shadowOffset: {width: 2, height: 2},
+    fontFamily: 'RobotoCondensed-Regular',
   },
   hideNav: {
     display: 'none',
   },
 });
 
-export const ButtonStyles: Object = StyleSheet.create({
+export const ButtonStyles = StyleSheet.create({
   buttonBackground: {
     backgroundColor: '#5ec44e',
     flex: 1,
@@ -176,10 +185,12 @@ export const ButtonStyles: Object = StyleSheet.create({
   selectedRangeButtonText: {
     color: '#fff',
     textAlign: 'center',
+    fontFamily: 'RobotoCondensed-Regular',
   },
   buttonText: {
     color: '#484848',
     textAlign: 'center',
+    fontFamily: 'RobotoCondensed-Regular',
   },
   backButton: {
     flexDirection: 'column',
@@ -204,13 +215,12 @@ export const ButtonStyles: Object = StyleSheet.create({
     paddingBottom: 5,
     borderRadius: 5,
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontFamily: 'RobotoCondensed-Regular',
   },
   introBackButtonText: {
     color: '#fff',
     alignSelf: 'center',
     textAlign: 'center',
-    fontWeight: 'bold',
     borderColor: '#fff',
     borderWidth: 2,
     paddingTop: 5,
@@ -218,6 +228,7 @@ export const ButtonStyles: Object = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 5,
     borderRadius: 5,
+    fontFamily: 'RobotoCondensed-Regular',
   },
   backButtonTextInverted: {
     color: '#484848',
@@ -231,7 +242,7 @@ export const ButtonStyles: Object = StyleSheet.create({
     paddingBottom: 5,
     borderRadius: 5,
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontFamily: 'RobotoCondensed-Regular',
   },
   buttonMenuContainerRow: {
     flexDirection: 'row',
@@ -260,37 +271,45 @@ export const ButtonStyles: Object = StyleSheet.create({
   },
 });
 
-export const DefinitionListStyles: Object = StyleSheet.create({
+export const DefinitionListStyles = StyleSheet.create({
   definitionListContainer: {
     alignSelf: 'stretch',
-    flex: 0.75,
+    flex: 1,
+    elevation: 0,
     backgroundColor: '#fff',
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 });
 
-export const DefinitionDisplayStyles: Object = StyleSheet.create({
+export const DefinitionDisplayStyles = StyleSheet.create({
   definition: {
     color: '#484848',
-    margin: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 20,
     borderBottomColor: '#ddd',
     borderBottomWidth: 1,
+    fontFamily: 'RobotoCondensed-Regular',
+    fontSize: 15,
   },
   definitionIOS: {
     color: '#484848',
     margin: 10,
     textDecorationLine: 'underline',
     textDecorationColor: '#ddd',
+    fontFamily: 'RobotoCondensed-Regular',
   },
   errorMessage: {
     flex: 1,
     alignSelf: 'center',
-    marginTop: 10,
+    marginTop: 20,
+    fontFamily: 'RobotoCondensed-Regular',
+    fontSize: 15
   },
 });
 const VIDEO_ASPECT = 1.77;
-export const VideoStyles: Object = StyleSheet.create({
+export const VideoStyles = StyleSheet.create({
   touchableVideo: {
     flex: 1,
     justifyContent: 'center',
@@ -327,6 +346,7 @@ export const VideoStyles: Object = StyleSheet.create({
     color: '#fff',
     elevation: 5,
     fontSize: 20,
+    fontFamily: 'RobotoCondensed-Regular',
   },
   videoImage: {
     width: 50,
@@ -337,15 +357,15 @@ export const VideoStyles: Object = StyleSheet.create({
   },
 });
 
-export const IntroStyles: Object = StyleSheet.create({
+export const IntroStyles = StyleSheet.create({
   introView: {
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: '#fff',
     flex: 1,
     alignItems: 'center',
   },
   headerView: {
-    flex: 1,
+    flex: 0.3,
     backgroundColor: '#6ea5fa',
     flexDirection: 'column',
     alignSelf: 'stretch',
@@ -354,25 +374,33 @@ export const IntroStyles: Object = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     color: '#fff',
-    flex: 1,
+    margin: 15,
+    fontFamily: 'RobotoCondensed-Regular',
+  },
+  instructionsContainer: {
+    justifyContent: 'center',
+    flex: 0.3,
   },
   instructions: {
     marginTop: 20,
-    flex: 1,
+    fontFamily: 'RobotoCondensed-Regular',
   },
   contactView: {
-    marginBottom: 20,
     alignItems: 'center',
-    flex: 1,
+    flex: 0.4,
   },
   contactText: {
-    textAlign: 'center',
-    padding: 10,
+    textAlign: 'justify',
+    alignSelf: 'center',
+    marginLeft: 20,
+    marginRight: 20,
+    fontFamily: 'RobotoCondensed-Regular',
   },
   contactLink: {
     color: '#6ea5fa',
     fontSize: 16,
     padding: 10,
+    fontFamily: 'RobotoCondensed-Regular',
   },
 });
 

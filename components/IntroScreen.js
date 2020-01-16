@@ -1,7 +1,7 @@
 /* @flow */
 
 // React
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 // React Native
 import {
@@ -14,10 +14,14 @@ import {
 } from 'react-native';
 
 // Styles
-import { IntroStyles, DefinitionDisplayStyles, ButtonStyles } from '../styles/Styles';
+import {
+  IntroStyles,
+  DefinitionDisplayStyles,
+  ButtonStyles,
+} from '../styles/Styles';
 
 const IntroScreen = (props: Object) => {
-  const { language, introText, visible, onClose } = props;
+  const {language, introText, visible, onClose} = props;
 
   let intro;
   if (language === 'en') {
@@ -25,15 +29,15 @@ const IntroScreen = (props: Object) => {
   } else {
     intro = introText.fr;
   }
-  let mailto = 'mailto:' + intro.contact.link.address + '?subject=LSF-ASL App Feedback';
+  let mailto =
+    'mailto:' + intro.contact.link.address + '?subject=LSF-ASL App Feedback';
   return (
     <Modal
-      animationType={"fade"}
+      animationType={'fade'}
       transparent={false}
       visible={visible}
       onRequestClose={onClose}
-      supportedOrientations={['portrait', 'landscape']}
-      >
+      supportedOrientations={['portrait', 'landscape']}>
       <View style={IntroStyles.introView}>
         <View style={IntroStyles.headerView}>
           <TouchableOpacity
@@ -45,32 +49,39 @@ const IntroScreen = (props: Object) => {
           </TouchableOpacity>
           <Text style={IntroStyles.header}>{intro.intro}</Text>
         </View>
-        <FlatList
-          style={IntroStyles.instructions}
-          data={intro.instructions}
-          renderItem={( { item }) =>
-            <Text style={DefinitionDisplayStyles.definition}>{item}</Text>
-          }
-          keyExtractor={(item) => item}
-        />
+        <View style={IntroStyles.instructionsContainer}>
+          <FlatList
+            style={IntroStyles.instructions}
+            data={intro.instructions}
+            renderItem={({item}) => (
+              <Text style={DefinitionDisplayStyles.definition}>{item}</Text>
+            )}
+            keyExtractor={item => item}
+          />
+        </View>
         <View style={IntroStyles.contactView}>
           <Text style={IntroStyles.contactText}>{intro.contact.message}</Text>
-          <Text style={IntroStyles.contactText}>{intro.contact.link.message}</Text>
-          <TouchableOpacity onPress={() => Linking.canOpenURL(mailto).then(
-            supported => {
-              if (!supported) {
-                console.log("can't open " + intro.contact.link.address);
-              } else {
-                Linking.openURL(mailto);
-              }
-            }
-          )}>
-            <Text style={IntroStyles.contactLink}>{intro.contact.link.address}</Text>
+          <Text style={IntroStyles.contactText}>
+            {intro.contact.link.message}
+          </Text>
+          <TouchableOpacity
+            onPress={() =>
+              Linking.canOpenURL(mailto).then(supported => {
+                if (!supported) {
+                  console.log("can't open " + intro.contact.link.address);
+                } else {
+                  Linking.openURL(mailto);
+                }
+              })
+            }>
+            <Text style={IntroStyles.contactLink}>
+              {intro.contact.link.address}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
     </Modal>
   );
-}
+};
 
 export default IntroScreen;

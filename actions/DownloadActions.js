@@ -20,9 +20,10 @@ export function downloadDefinition(definition) {
   };
 }
 
-export function loadOfflineDefinitions() {
+export function loadOfflineDefinitions(definitionQuery = null) {
   return {
     type: READ_CACHE,
+    definitionQuery: definitionQuery
   };
 }
 

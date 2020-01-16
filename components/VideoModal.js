@@ -77,8 +77,8 @@ export default class VideoModal extends Component {
   }
 
   handleDownload() {
-    const { onDownloadRequested } = this.context;
-    const { display, ...rest } = this.props.videoModalContent;
+    const {onDownloadRequested} = this.context;
+    const {display, ...rest} = this.props.videoModalContent;
     onDownloadRequested(rest);
   }
 
@@ -126,7 +126,7 @@ export default class VideoModal extends Component {
       language,
     } = this.props;
 
-    const { offlineDownloads } = this.context;
+    const offlineDownloads = this.context ? this.context.offlineDownloads : {};
     const id = this.getId(videoModalContent);
 
     const {enVideoPaused, frVideoPaused, transitionVals} = this.state;

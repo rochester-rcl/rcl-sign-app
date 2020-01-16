@@ -35,7 +35,7 @@ const defaultState: Object = {
       ],
       contact: {
         message:
-          'You will see videos of both the LSF and ASL sign for the entry you choose.',
+          "You will see videos of both the LSF and ASL sign for the entry you choose. Tap the download icon to save both definition videos for offline use. Offline videos will be deleted when the app's storage is cleared.",
         link: {
           message: 'To contact us, please tap ',
           address: 'lsfaslrochester@gmail.com',
