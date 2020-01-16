@@ -203,6 +203,7 @@ export const ButtonStyles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
     padding: 10,
+    marginTop: 10
   },
   backButtonText: {
     color: '#fff',
@@ -287,7 +288,9 @@ export const DefinitionDisplayStyles = StyleSheet.create({
     color: '#484848',
     marginLeft: 10,
     marginRight: 10,
-    marginTop: 20,
+    marginTop: 10,
+    marginBottom: 5,
+    paddingBottom: 5,
     borderBottomColor: '#ddd',
     borderBottomWidth: 1,
     fontFamily: 'RobotoCondensed-Regular',

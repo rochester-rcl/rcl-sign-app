@@ -88,6 +88,7 @@ function definitionsSelector(definitions, query) {
 }
 
 export function* queryOfflineDefinitions(action) {
+  yield put({type: 'FETCHING_DEFINITIONS', fetchingDefinitions: true});
   const {definitionQuery} = action;
   const selector = state => {
     return definitionsSelector(
@@ -97,6 +98,7 @@ export function* queryOfflineDefinitions(action) {
   };
   
   const results = yield select(selector);
+  yield put({type: 'FETCHING_DEFINITIONS', fetchingDefinitions: false});
   yield put({type: OFFLINE_DEFINITIONS_QUERIED, definitions: results});
 }
 

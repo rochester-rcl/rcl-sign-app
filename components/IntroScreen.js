@@ -20,7 +20,7 @@ import {
   ButtonStyles,
 } from '../styles/Styles';
 
-const IntroScreen = (props: Object) => {
+const IntroScreen = (props) => {
   const {language, introText, visible, onClose} = props;
 
   let intro;
