@@ -24,11 +24,13 @@ function prepareDefinitionResults(response) {
 }
 
 function formatDefinitions(definitions) {
-  return Promise.all(
-    definitions.map(definition =>
-      swapKeys(OLD_KEYS, NEW_KEYS, toCamelCase(definition)),
-    ),
-  );
+  if (!definitions.hasOwnProperty('message')) {
+    return Promise.all(
+      definitions.map(definition =>
+        swapKeys(OLD_KEYS, NEW_KEYS, toCamelCase(definition)),
+      ),
+    );
+  } else return definitions;
 }
 
 const OLD_KEYS = ['engDefinition', 'frDefinition'];

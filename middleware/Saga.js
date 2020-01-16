@@ -4,7 +4,15 @@
 import {fetchDefinitions, searchDefinitions} from './LSFetch';
 
 // Redux Saga
-import {put, takeEvery, all, fork, take, call} from 'redux-saga/effects';
+import {
+  put,
+  takeEvery,
+  all,
+  fork,
+  take,
+  call,
+  select,
+} from 'redux-saga/effects';
 
 // AsyncStorage
 import AsyncStorage from '@react-native-community/async-storage';
@@ -25,10 +33,14 @@ export function takeLeading(pattern, saga, ...args) {
     }
   });
 }
+
 // This should only be called once,when the application mounts
 function* initializeAppStateSaga(action) {
   yield flushDefinitionsCacheSaga();
-  yield loadDefinitionsSaga(action);
+  const offline = yield select(state => state.offlineModeState.offline);
+  if (!offline) {
+    yield loadDefinitionsSaga(action);
+  }
 }
 
 /*

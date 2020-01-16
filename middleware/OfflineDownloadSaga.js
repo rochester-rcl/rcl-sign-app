@@ -66,13 +66,21 @@ function definitionsSelector(definitions, query) {
   // TODO need to load based on language - i.e. cant filter
   // english definition with letter "a" and french language with letter "a"
   const {language, letter, range} = query;
-  return definitions.filter(definition => {
-    const d = definition[language];
-    const dLetter = d.letter.toLowerCase();
-    const dRange = d.letterRange.toLowerCase().replace('to', '-');
-    if (dLetter === letter && dRange === range) return true;
-    return false;
-  });
+  const errorMessage = {
+    error: true,
+    message: `No offline definitions saved for letter ${letter} with range ${range}`,
+  };
+  if (definitions) {
+    const filtered = definitions.filter(definition => {
+      const d = definition[language];
+      const dLetter = d.letter.toLowerCase();
+      const dRange = d.letterRange.toLowerCase().replace('to', '-');
+      if (dLetter === letter && dRange === range) return true;
+      return false;
+    });
+    if (filtered.length > 0) return filtered;
+  }
+  return errorMessage;
 }
 
 function* queryOfflineDefinitions(action) {

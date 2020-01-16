@@ -53,7 +53,11 @@ const fadeInOut = {
 class AppRoot extends Component {
   LAYOUT_PORTRAIT = 'LAYOUT_PORTRAIT';
   LAYOUT_LANDSCAPE = 'LAYOUT_LANDSCAPE';
-  state = {showIntroScreen: false, portraitKeyboardActive: false};
+  state = {
+    showIntroScreen: false,
+    portraitKeyboardActive: false,
+    currentQuery: {language: 'en', range: 'a-g', letter: 'a'},
+  };
   constructor(props) {
     super(props);
     this.setAppLanguage = this.setAppLanguage.bind(this);
@@ -74,17 +78,14 @@ class AppRoot extends Component {
   }
 
   componentDidMount() {
-    const definitionQuery = {
-      language: this.props.language, // defaults to English
-      letter: 'a',
-      range: 'a-g',
-    };
+    const {currentQuery} = this.state;
     this.props.listenForOnlineStatus();
-    this.props.initializeAppStateAction(definitionQuery);
+    this.props.initializeAppStateAction(currentQuery);
   }
 
   componentDidUpdate(prevProps) {
     const {offlineStatus} = this.props;
+    const {currentQuery} = this.state;
     if (prevProps.layoutAspect !== this.props.layoutAspect) {
       LayoutAnimation.configureNext(fadeInOut);
     }
@@ -92,23 +93,25 @@ class AppRoot extends Component {
       if (offlineStatus) {
         this.props.loadOfflineDefinitions();
       }
+      this.loadDefinitions(currentQuery);
     }
   }
 
   loadDefinitions(definitionQuery) {
     const {offlineStatus} = this.props;
     const {language, letter, range} = definitionQuery;
-    const key = createDefinitionsCacheKey(language, letter, range);
     const {definitionsCache} = this.props;
     if (offlineStatus) {
       this.props.queryOfflineDefinitions(definitionQuery);
     } else {
+      const key = createDefinitionsCacheKey(language, letter, range);
       if (definitionsCache.hasOwnProperty(key)) {
         this.props.loadDefinitionsFromCacheAction(key);
       } else {
         this.props.loadDefinitionsAction(definitionQuery);
       }
     }
+    this.setState({currentQuery: definitionQuery});
   }
 
   flushDefinitionsCache() {

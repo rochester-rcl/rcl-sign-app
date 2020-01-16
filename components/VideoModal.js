@@ -97,14 +97,14 @@ export default class VideoModal extends Component {
 
   animateIn(lang) {
     const {transitionVals} = this.state;
-    return Animated.timing(transitionVals[lang], {toValue: 1.0, duration: 200});
+    return Animated.timing(transitionVals[lang], {toValue: 1.0, duration: 100});
   }
 
   animateOut(lang) {
     const {transitionVals} = this.state;
     return Animated.timing(transitionVals[lang], {
       toValue: 0.95,
-      duration: 200,
+      duration: 100,
     });
   }
 

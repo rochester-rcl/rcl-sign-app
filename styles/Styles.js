@@ -265,6 +265,8 @@ export const DefinitionListStyles: Object = StyleSheet.create({
     alignSelf: 'stretch',
     flex: 0.75,
     backgroundColor: '#fff',
+    flexDirection: 'column',
+    justifyContent: 'center'
   },
 });
 
