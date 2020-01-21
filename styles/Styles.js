@@ -286,6 +286,16 @@ export const DefinitionListStyles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
   },
+  definitionListContainerLandscape: {
+    alignSelf: 'stretch',
+    flex: 1,
+    elevation: 0,
+    backgroundColor: '#fff',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    marginLeft: 40,
+    marginRight: 40
+  }
 });
 
 export const DefinitionDisplayStyles = StyleSheet.create({

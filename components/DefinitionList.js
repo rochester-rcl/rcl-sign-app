@@ -28,10 +28,15 @@ export default class DefinitionList extends Component {
       fetchingDefinitions,
       currentLanguage,
       toggleModal,
+      layoutAspect,
     } = this.props;
+    const listContainerStyle =
+      layoutAspect === 'LAYOUT_PORTRAIT'
+        ? DefinitionListStyles.definitionListContainer
+        : DefinitionListStyles.definitionListContainerLandscape;
     if (definitions.length > 0 && !fetchingDefinitions) {
       return (
-        <View key={key} style={DefinitionListStyles.definitionListContainer}>
+        <View key={key} style={listContainerStyle}>
           <FlatList
             data={definitions}
             renderItem={({item}) => (
