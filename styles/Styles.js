@@ -28,13 +28,12 @@ const GlobalStyles = StyleSheet.create({
 export const BannerStyles = StyleSheet.create({
   bannerContainer: {
     flexDirection: 'row',
-    flex: 0.1,
+    flex: 0.2,
     alignSelf: 'stretch',
     backgroundColor: '#6ea5fa',
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingBottom: 20,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
   bannerImage: {
     width: 50,
@@ -46,8 +45,10 @@ export const BannerStyles = StyleSheet.create({
     width: 50,
     height: 25,
     opacity: 1,
-    marginRight: 20,
+    margin: 'auto',
     position: 'absolute',
+    alignSelf: 'flex-end',
+    bottom: 20, // needs to be the same as paddingBottom on bannerContainer
     right: 0,
   },
   bannerImageHome: {
@@ -250,10 +251,12 @@ export const ButtonStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     margin: 20,
+    flex: 0.4
   },
   buttonMenuContainerCol: {
     flexDirection: 'column',
     margin: 20,
+    flex: 0.4,
     alignSelf: 'stretch',
     justifyContent: 'space-between',
   },
@@ -372,6 +375,7 @@ export const IntroStyles = StyleSheet.create({
     backgroundColor: '#6ea5fa',
     flexDirection: 'column',
     alignSelf: 'stretch',
+    justifyContent: 'flex-end'
   },
   header: {
     fontSize: 20,
