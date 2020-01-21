@@ -28,7 +28,7 @@ const GlobalStyles = StyleSheet.create({
 export const BannerStyles = StyleSheet.create({
   bannerContainer: {
     flexDirection: 'row',
-    flex: 0.2,
+    flex: 0.175,
     alignSelf: 'stretch',
     backgroundColor: '#6ea5fa',
     paddingBottom: 20,
@@ -112,9 +112,11 @@ export const NavigationStyles = StyleSheet.create({
   navContainerLandscape: {
     flex: 0.5,
     alignSelf: 'stretch',
+    paddingLeft: 40,
+    paddingRight: 40,
     elevation: 10,
     shadowColor: '#ccc',
-    backgroundColor: '#fff',
+    backgroundColor: '#6ea5fa',
   },
   searchBar: {
     backgroundColor: '#fff',
@@ -200,7 +202,7 @@ export const ButtonStyles = StyleSheet.create({
   },
   introBackButton: {
     flexDirection: 'row',
-    flex: 0.35,
+    flex: 1,
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
     padding: 10,
@@ -279,7 +281,7 @@ export const DefinitionListStyles = StyleSheet.create({
   definitionListContainer: {
     alignSelf: 'stretch',
     flex: 1,
-    elevation: 0,
+    elevation: 12,
     backgroundColor: '#fff',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -298,6 +300,7 @@ export const DefinitionDisplayStyles = StyleSheet.create({
     borderBottomWidth: 1,
     fontFamily: 'RobotoCondensed-Regular',
     fontSize: 15,
+    alignSelf: 'stretch'
   },
   definitionIOS: {
     color: '#484848',
@@ -390,6 +393,7 @@ export const IntroStyles = StyleSheet.create({
   },
   instructions: {
     marginTop: 20,
+    marginBottom: 20,
     fontFamily: 'RobotoCondensed-Regular',
   },
   contactView: {
@@ -399,8 +403,8 @@ export const IntroStyles = StyleSheet.create({
   contactText: {
     textAlign: 'justify',
     alignSelf: 'center',
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: 40,
+    marginRight: 40,
     fontFamily: 'RobotoCondensed-Regular',
   },
   contactLink: {
