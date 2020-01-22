@@ -7,7 +7,10 @@ import React, {Component} from 'react';
 import {Text, View, FlatList, ActivityIndicator} from 'react-native';
 
 // Styles
-import {DefinitionListStyles, DefinitionDisplayStyles} from '../styles/Styles';
+import GlobalStyles, {
+  DefinitionListStyles,
+  DefinitionDisplayStyles,
+} from '../styles/Styles';
 
 // Components
 import DefinitionDisplay from './DefinitionDisplay';
@@ -113,10 +116,14 @@ export default class DefinitionList extends Component {
   }
 
   render() {
+    const {layoutAspect} = this.props;
+    const {containerPortrait, containerLandscape} = DefinitionListStyles;
+    const containerStyle =
+      layoutAspect === 'LAYOUT_PORTRAIT'
+        ? containerPortrait
+        : containerLandscape;
     return (
-      <View style={DefinitionListStyles.definitionListContainer}>
-        {this.renderAll()}
-      </View>
+      <View style={containerStyle}>{this.renderAll()}</View>
     );
   }
 }

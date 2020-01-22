@@ -9,7 +9,7 @@ const GlobalStyles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#6ea5fa',
     fontFamily: 'RobotoCondensed-Regular',
   },
   welcome: {
@@ -105,15 +105,28 @@ export const NavigationStyles = StyleSheet.create({
   navContainer: {
     flex: 0.3,
     alignSelf: 'stretch',
-    elevation: 1,
     backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   navContainerLandscape: {
     flex: 0.5,
     alignSelf: 'stretch',
-    paddingLeft: 40,
-    paddingRight: 40,
+    marginLeft: 40,
+    marginRight: 40,
     backgroundColor: '#6ea5fa',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   searchBar: {
     backgroundColor: '#fff',
@@ -133,10 +146,6 @@ export const NavigationStyles = StyleSheet.create({
     flex: 0.5,
     flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: '#ccc',
-    shadowRadius: 10,
-    elevation: 2,
-    shadowOpacity: 1,
     backgroundColor: '#fff',
     fontFamily: 'RobotoCondensed-Regular',
   },
@@ -203,7 +212,7 @@ export const ButtonStyles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
     padding: 10,
-    marginTop: 10
+    marginTop: 10,
   },
   backButtonText: {
     color: '#fff',
@@ -250,7 +259,7 @@ export const ButtonStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     margin: 20,
-    flex: 0.4
+    flex: 0.4,
   },
   buttonMenuContainerCol: {
     flexDirection: 'column',
@@ -278,50 +287,81 @@ export const DefinitionListStyles = StyleSheet.create({
   definitionListContainer: {
     alignSelf: 'stretch',
     flex: 1,
-    elevation: 0,
     backgroundColor: '#fff',
     flexDirection: 'column',
     justifyContent: 'center',
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 20,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   definitionListContainerLandscape: {
     alignSelf: 'stretch',
     flex: 1,
-    elevation: 0,
     backgroundColor: '#fff',
     flexDirection: 'column',
     justifyContent: 'center',
     marginLeft: 40,
-    marginRight: 40
-  }
+    marginRight: 40,
+    marginBottom: 20,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  containerLandscape: {
+    flex: 1,
+    marginTop: 20,
+    backgroundColor: '#6ea5fa',
+    flexDirection: 'row',
+    alignSelf: 'stretch',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
+  },
+  containerPortrait: {
+    flex: 1,
+    marginTop: 20,
+    backgroundColor: '#6ea5fa',
+    flexDirection: 'row',
+    alignSelf: 'stretch',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
+  },
 });
 
 export const DefinitionDisplayStyles = StyleSheet.create({
-  definition: {
-    color: '#484848',
+  definitionTouchableOpacity: {
     marginLeft: 10,
     marginRight: 10,
-    marginTop: 10,
-    marginBottom: 5,
-    paddingBottom: 5,
+    marginTop: 5,
+    marginBottom: 15,
     borderBottomColor: '#ddd',
     borderBottomWidth: 1,
+    alignSelf: 'stretch',
+  },
+  definition: {
+    color: '#484848',
     fontFamily: 'RobotoCondensed-Regular',
     fontSize: 15,
-    alignSelf: 'stretch'
-  },
-  definitionIOS: {
-    color: '#484848',
-    margin: 10,
-    textDecorationLine: 'underline',
-    textDecorationColor: '#ddd',
-    fontFamily: 'RobotoCondensed-Regular',
   },
   errorMessage: {
     flex: 1,
     alignSelf: 'center',
     marginTop: 20,
     fontFamily: 'RobotoCondensed-Regular',
-    fontSize: 15
+    fontSize: 15,
   },
 });
 const VIDEO_ASPECT = 1.77;
@@ -336,6 +376,7 @@ export const VideoStyles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'stretch',
     justifyContent: 'space-evenly',
+    marginBottom: 10,
   },
   videoPlayerContainerLandscape: {
     flex: 1,
@@ -360,7 +401,6 @@ export const VideoStyles = StyleSheet.create({
   },
   videoTitle: {
     color: '#fff',
-    elevation: 5,
     fontSize: 20,
     fontFamily: 'RobotoCondensed-Regular',
   },
@@ -385,7 +425,7 @@ export const IntroStyles = StyleSheet.create({
     backgroundColor: '#6ea5fa',
     flexDirection: 'column',
     alignSelf: 'stretch',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   header: {
     fontSize: 20,
