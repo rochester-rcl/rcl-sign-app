@@ -105,17 +105,14 @@ export const NavigationStyles = StyleSheet.create({
   navContainer: {
     flex: 0.3,
     alignSelf: 'stretch',
-    elevation: 10,
+    elevation: 1,
     backgroundColor: '#fff',
-    shadowColor: '#ccc',
   },
   navContainerLandscape: {
     flex: 0.5,
     alignSelf: 'stretch',
     paddingLeft: 40,
     paddingRight: 40,
-    elevation: 10,
-    shadowColor: '#ccc',
     backgroundColor: '#6ea5fa',
   },
   searchBar: {
@@ -137,10 +134,10 @@ export const NavigationStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     shadowColor: '#ccc',
-    shadowRadius: 1,
-    shadowOpacity: 0.4,
+    shadowRadius: 10,
+    elevation: 2,
+    shadowOpacity: 1,
     backgroundColor: '#fff',
-    shadowOffset: {width: 2, height: 2},
     fontFamily: 'RobotoCondensed-Regular',
   },
   hideNav: {
@@ -281,7 +278,7 @@ export const DefinitionListStyles = StyleSheet.create({
   definitionListContainer: {
     alignSelf: 'stretch',
     flex: 1,
-    elevation: 12,
+    elevation: 0,
     backgroundColor: '#fff',
     flexDirection: 'column',
     justifyContent: 'center',
