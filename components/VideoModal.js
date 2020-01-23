@@ -72,7 +72,7 @@ export default class VideoModal extends Component {
     }
   }
 
-  handleOnLoad(lang: string): void {
+  handleOnLoad(lang) {
     this.handlePlayback(lang, true);
   }
 
@@ -82,8 +82,8 @@ export default class VideoModal extends Component {
     onDownloadRequested(rest);
   }
 
-  handlePlayback(lang: string, override?: boolean): void {
-    let {enVideoPaused, frVideoPaused, transitionVals} = this.state;
+  handlePlayback(lang, override) {
+    let {enVideoPaused, frVideoPaused} = this.state;
     if (lang === 'en') {
       this.setState({enVideoPaused: override ? override : !enVideoPaused});
     } else {
@@ -92,6 +92,7 @@ export default class VideoModal extends Component {
   }
 
   handleOnPress(lang) {
+    console.log(this.props.videoModalContent);
     this.animateTransition(lang, () => this.handlePlayback(lang));
   }
 

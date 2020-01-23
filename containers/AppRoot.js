@@ -53,6 +53,7 @@ const fadeInOut = {
 class AppRoot extends Component {
   LAYOUT_PORTRAIT = 'LAYOUT_PORTRAIT';
   LAYOUT_LANDSCAPE = 'LAYOUT_LANDSCAPE';
+  ASPECT_RATIO_TOLERANCE = 50;
   state = {
     showIntroScreen: false,
     portraitKeyboardActive: false,
@@ -75,6 +76,7 @@ class AppRoot extends Component {
       'keyboardDidHide',
       this.handleKeyboardHide,
     );
+    this.getAspectRatio = this.getAspectRatio.bind(this);
   }
 
   componentDidMount() {
@@ -128,9 +130,19 @@ class AppRoot extends Component {
     this.setState({showIntroScreen: !this.state.showIntroScreen});
   }
 
+  getAspectRatio(width, height) {
+    const {layoutAspect} = this.props;
+    const difference = height - width;
+    if (Math.abs(difference) > this.ASPECT_RATIO_TOLERANCE) {
+      if (difference > 0) return this.LAYOUT_PORTRAIT;
+      return this.LAYOUT_LANDSCAPE;
+    }
+    return layoutAspect;
+  }
+
   handleLayoutChange({nativeEvent}) {
-    let {width, height} = nativeEvent.layout;
-    let aspect = height > width ? this.LAYOUT_PORTRAIT : this.LAYOUT_LANDSCAPE;
+    const {width, height} = nativeEvent.layout;
+    const aspect = this.getAspectRatio(width, height);
     if (aspect !== this.props.layoutAspect)
       this.props.updateLayoutAspectAction(aspect);
   }

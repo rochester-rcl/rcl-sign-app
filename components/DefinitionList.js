@@ -67,11 +67,7 @@ export default class DefinitionList extends Component {
       return (
         <Text
           key={key}
-          style={{
-            alignSelf: 'center',
-            marginBottom: 15,
-            marginTop: 15,
-          }}>
+          style={DefinitionDisplayStyles.searchResultsText}>
           {message}
         </Text>
       );
@@ -88,7 +84,7 @@ export default class DefinitionList extends Component {
           animating={true}
           style={{alignSelf: 'center', flex: 1}}
           size="large"
-          color="#4286f4"
+          color="#fff"
         />
       );
     }
