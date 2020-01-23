@@ -28,7 +28,7 @@ const GlobalStyles = StyleSheet.create({
 export const BannerStyles = StyleSheet.create({
   bannerContainer: {
     flexDirection: 'row',
-    flex: 0.175,
+    flex: 0.1,
     alignSelf: 'stretch',
     backgroundColor: '#6ea5fa',
     paddingVertical: 20,
@@ -100,7 +100,7 @@ export const NavigationStyles = StyleSheet.create({
     alignItems: 'stretch',
     alignSelf: 'center',
     maxWidth: 150,
-    
+    minHeight: 10,
     flex: 0.3,
     backgroundColor: '#ddd',
     fontFamily: 'RobotoCondensed-Regular',
@@ -143,6 +143,9 @@ export const NavigationStyles = StyleSheet.create({
     flex: 0.3,
     fontSize: 15,
     marginHorizontal: 15,
+    marginBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#4286f4',
     fontFamily: 'RobotoCondensed-Regular',
   },
   searchBarFocused: {
@@ -272,7 +275,7 @@ export const ButtonStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     margin: 20,
-    flex: 0.4,
+    flex: 0.3,
   },
   buttonMenuContainerCol: {
     flexDirection: 'column',
