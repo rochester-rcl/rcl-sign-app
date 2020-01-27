@@ -11,11 +11,13 @@ import {
   TouchableOpacity,
   Image,
   Animated,
+  Button,
 } from 'react-native';
 
 // Components
 import Video from 'react-native-video';
 import OfflineDownload, {OfflineDownloadContext} from './OfflineDownload';
+import VideoCaptions from './VideoCaptions';
 
 // Stylesheets
 import {ModalStyles, VideoStyles, ButtonStyles} from '../styles/Styles';
@@ -26,6 +28,7 @@ export default class VideoModal extends Component {
     enVideoPaused: false,
     frVideoPaused: false,
     transitionVals: {en: new Animated.Value(1), fr: new Animated.Value(1)},
+    sentenceMode: false,
   };
   constructor(props) {
     super(props);
@@ -38,25 +41,54 @@ export default class VideoModal extends Component {
     this.animateTransition = this.animateTransition.bind(this);
     this.handleOnPress = this.handleOnPress.bind(this);
     this.handleDownload = this.handleDownload.bind(this);
+    this.handleShowSentence = this.handleShowSentence.bind(this);
+    this.renderSentenceButton = this.renderSentenceButton.bind(this);
+    this.getCurrentVideos = this.getCurrentVideos.bind(this);
     this.frPlayer = createRef();
     this.enPlayer = createRef();
   }
 
+  getCurrentVideos() {
+    const {videoModalContent} = this.props;
+    const {sentenceMode} = this.state;
+    const {en, fr} = videoModalContent;
+    const enVideo = {url: en.videoUrl, captions: null};
+    const frVideo = {url: fr.videoUrl, captions: null};
+    if (sentenceMode) {
+      if (en.sentence.videoUrl) {
+        enVideo.url = en.sentence.videoUrl;
+      }
+      if (en.sentence.captions) {
+        enVideo.captions = en.sentence.captions;
+      }
+      if (fr.sentence.videoUrl) {
+        frVideo.url = fr.sentence.videoUrl;
+      }
+      if (fr.sentence.captions) {
+        frVideo.captions = fr.sentence.captions;
+      }
+    }
+    return [enVideo, frVideo];
+  }
+
   sortVideo() {
-    let {videoModalContent} = this.props;
-    let {en, fr} = videoModalContent;
-    let videos = [
+    const {videoModalContent} = this.props;
+    const {en, fr} = videoModalContent;
+    const [enVideo, frVideo] = this.getCurrentVideos();
+    const videos = [
       {
-        url: fr.videoUrl,
+        url: frVideo.url,
         ref: this.frPlayer,
         lang: 'fr',
         title: fr.title,
+        captions: frVideo.captions,
       },
       {
-        url: en.videoUrl,
+        url: enVideo.url,
         ref: this.enPlayer,
         lang: 'en',
         title: en.title,
+        captions: enVideo.captions,
       },
     ];
     if (this.props.language === 'fr') return videos.reverse();
@@ -91,8 +123,22 @@ export default class VideoModal extends Component {
     }
   }
 
+  handleShowSentence() {
+    this.setState(prevState => ({sentenceMode: !prevState.sentenceMode}));
+  }
+
+  checkForSentences(videoModalContent) {
+    const {en, fr} = videoModalContent;
+    if (en && en) {
+      if (!en.sentence.videoUrl) return false;
+    }
+    if (fr) {
+      if (!fr.sentence.videoUrl) return false;
+    }
+    return true;
+  }
+
   handleOnPress(lang) {
-    console.log(this.props.videoModalContent);
     this.animateTransition(lang, () => this.handlePlayback(lang));
   }
 
@@ -118,6 +164,25 @@ export default class VideoModal extends Component {
     return en.definitionId;
   }
 
+  renderSentenceButton() {
+    const {videoModalContent} = this.props;
+    if (this.checkForSentences(videoModalContent)) {
+      return (
+        <TouchableOpacity
+          style={ButtonStyles.sentenceButtonContainer}
+          onPress={this.handleShowSentence}>
+          <Image
+            style={ButtonStyles.sentenceButton}
+            resizeMode={'contain'}
+            source={require('../images/asl-icon.png')}
+          />
+        </TouchableOpacity>
+      );
+    } else {
+      return null;
+    }
+  }
+
   render() {
     const {
       videoModalContent,
@@ -126,7 +191,7 @@ export default class VideoModal extends Component {
       layoutAspect,
       language,
     } = this.props;
-
+    const {sentenceMode} = this.state;
     const offlineDownloads = this.context ? this.context.offlineDownloads : {};
     const id = this.getId(videoModalContent);
 
@@ -166,6 +231,7 @@ export default class VideoModal extends Component {
                 {language === 'en' ? 'back' : 'retour'}
               </Text>
             </TouchableOpacity>
+            {this.renderSentenceButton()}
             <OfflineDownload
               onDownloadRequested={this.handleDownload}
               status={offlineDownloads[id]}
@@ -188,7 +254,9 @@ export default class VideoModal extends Component {
                       ? VideoStyles.videoPlayerPortrait
                       : VideoStyles.videoPlayerLandscape
                   }
-                  source={{uri: video.url}}
+                  source={{
+                    uri: video.url,
+                  }}
                   ref={video.ref}
                   key={video.url}
                   onError={error => console.log(error)}
@@ -209,19 +277,20 @@ export default class VideoModal extends Component {
                     ).uri
                   }
                 />
-                <View style={VideoStyles.videoTitleContainer}>
-                  <Image
-                    resizeMode="contain"
-                    style={VideoStyles.videoImage}
-                    source={
-                      video.lang === 'en'
-                        ? require('../images/us_flag.png')
-                        : require('../images/fr_flag.png')
-                    }
-                  />
-                  <Text style={VideoStyles.videoTitle}>{video.title}</Text>
-                </View>
+                <VideoCaptions captions={video.captions} />
               </Animated.View>
+              <View style={VideoStyles.videoTitleContainer}>
+                <Image
+                  resizeMode="contain"
+                  style={VideoStyles.videoImage}
+                  source={
+                    video.lang === 'en'
+                      ? require('../images/us_flag.png')
+                      : require('../images/fr_flag.png')
+                  }
+                />
+                <Text style={VideoStyles.videoTitle}>{video.title}</Text>
+              </View>
             </TouchableOpacity>
           ))}
         </View>

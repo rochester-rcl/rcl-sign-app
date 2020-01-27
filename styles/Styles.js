@@ -281,6 +281,15 @@ export const ButtonStyles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'space-between',
   },
+  sentenceButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sentenceButton: {
+    width: 50,
+    height: 50
+  },
   downloadButtonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -432,6 +441,23 @@ export const VideoStyles = StyleSheet.create({
     marginRight: 15,
     alignSelf: 'center',
   },
+  captionsContainer: {
+    backgroundColor: '#000',
+    position: 'absolute',
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    bottom: 0,
+    opacity: 0.8,
+    padding: 5
+  },
+  captions: {
+    fontFamily: 'RobotoCondensed-Regular',
+    fontSize: 15,
+    color: '#fff',
+    textAlign: 'center'
+  }
 });
 
 export const IntroStyles = StyleSheet.create({

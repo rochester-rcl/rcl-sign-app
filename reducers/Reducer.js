@@ -15,10 +15,12 @@ const defaultState: Object = {
     en: {
       url: null,
       title: null,
+      sentence: {videoUrl: null},
     },
     fr: {
       url: null,
       title: null,
+      sentence: {videoUrl: null},
     },
     display: false,
   },
@@ -75,7 +77,7 @@ function lsfReducer(state: Object = defaultState, action: Object): Object {
     case 'DEFINITIONS_LOADED':
       let results = action.results;
       let definitions = results.definitions;
-      const { cacheKey } = results;
+      const {cacheKey} = results;
       const definitionsCache = {...state.definitionsCache};
       definitionsCache[cacheKey] = cacheKey;
       return {
