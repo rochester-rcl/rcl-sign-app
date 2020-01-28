@@ -44,6 +44,7 @@ export default class VideoModal extends Component {
     this.handleShowSentence = this.handleShowSentence.bind(this);
     this.renderSentenceButton = this.renderSentenceButton.bind(this);
     this.getCurrentVideos = this.getCurrentVideos.bind(this);
+    this.isVideoPlaying = this.isVideoPlaying.bind(this);
     this.frPlayer = createRef();
     this.enPlayer = createRef();
   }
@@ -115,7 +116,7 @@ export default class VideoModal extends Component {
   }
 
   handlePlayback(lang, override) {
-    let {enVideoPaused, frVideoPaused} = this.state;
+    const {enVideoPaused, frVideoPaused} = this.state;
     if (lang === 'en') {
       this.setState({enVideoPaused: override ? override : !enVideoPaused});
     } else {
@@ -123,11 +124,21 @@ export default class VideoModal extends Component {
     }
   }
 
+  isVideoPlaying(lang) {
+    const {enVideoPaused, frVideoPaused} = this.state;
+    if (lang === 'en') {
+      return !enVideoPaused;
+    }
+    return !frVideoPaused;
+  }
+
   handleShowSentence() {
     this.setState(prevState => ({sentenceMode: !prevState.sentenceMode}));
   }
 
   checkForSentences(videoModalContent) {
+    const {offlineStatus} = this.context;
+    if (offlineStatus) return false;
     const {en, fr} = videoModalContent;
     if (en && en) {
       if (!en.sentence.videoUrl) return false;
@@ -191,7 +202,6 @@ export default class VideoModal extends Component {
       layoutAspect,
       language,
     } = this.props;
-    const {sentenceMode} = this.state;
     const offlineDownloads = this.context ? this.context.offlineDownloads : {};
     const id = this.getId(videoModalContent);
 
@@ -278,7 +288,10 @@ export default class VideoModal extends Component {
                     ).uri
                   }
                 />
-                <VideoCaptions captions={video.captions} />
+                <VideoCaptions
+                  captions={video.captions}
+                  show={this.isVideoPlaying(video.lang)}
+                />
               </Animated.View>
               <View style={VideoStyles.videoTitleContainer}>
                 <Image

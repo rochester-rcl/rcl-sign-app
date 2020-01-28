@@ -37,7 +37,9 @@ import {createDefinitionsCacheKey} from '../utils/Constants';
 import {OfflineDownloadContext} from '../components/OfflineDownload';
 
 if (Platform.OS === 'android') {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
 }
 const fadeInOut = {
   duration: 300,
@@ -148,9 +150,7 @@ class AppRoot extends Component {
   }
 
   handleKeyboardShow() {
-    if (this.props.layoutAspect === this.LAYOUT_PORTRAIT) {
-      this.setState({portraitKeyboardActive: true});
-    }
+    this.setState({portraitKeyboardActive: true});
   }
 
   handleKeyboardHide() {

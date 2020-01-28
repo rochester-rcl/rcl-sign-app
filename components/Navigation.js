@@ -9,7 +9,7 @@ import {
   View,
   Picker,
   TouchableOpacity,
-  BackHandler,
+  Animated,
   Modal,
   TextInput,
   Keyboard,
@@ -38,6 +38,7 @@ export default class Navigation extends Component {
     searchFocused: false,
     searchTerm: null,
     isSearching: false,
+    searchFocusTransition: new Animated.Value(1),
   };
   letterRange = LETTER_RANGE;
   constructor(props) {
@@ -49,11 +50,16 @@ export default class Navigation extends Component {
     this.handleSearchTextChange = this.handleSearchTextChange.bind(this);
     this.loadNewDefinitions = this.loadNewDefinitions.bind(this);
     this.onKeyboardHide = this.onKeyboardHide.bind(this);
+    this.animateSearchBarFocus = this.animateSearchBarFocus.bind(this);
     this.keyboardHideListener = Keyboard.addListener(
       'keyboardDidHide',
-      this.onKeyboardHide,
+      () => this.onKeyboardHide(),
     );
     this.textInputRef = createRef();
+  }
+
+  componentWillUnmount() {
+    this.keyboardHideListener.remove();
   }
 
   handleLetterChange(selectedLetter) {
@@ -123,8 +129,32 @@ export default class Navigation extends Component {
     }
   }
 
+  animateSearchBarFocus() {
+    const {searchFocusTransition, searchFocused} = this.state;
+    if (searchFocused) {
+      Animated.timing(searchFocusTransition, {
+        toValue: 0,
+        duration: 500,
+      }).start();
+    } else {
+      Animated.timing(searchFocusTransition, {
+        toValue: 1,
+        duration: 500,
+      }).start();
+    }
+  }
+
   handleSearchFocus(focusState) {
-    this.setState({searchFocused: focusState});
+    this.setState({searchFocused: focusState}, this.animateSearchBarFocus);
+  }
+  // onKeyboardHide not firing on Android in landscape mode - this should fix it for now
+  handleBackDuringSearch() {
+    console.log("HERE");
+    const { searchFocused } = this.state;
+    const { layoutAspect } = this.props;
+    if (searchFocused && layoutAspect === 'LAYOUT_LANDSCAPE') {
+      this.handleSearchFocus(false);
+    }
   }
 
   onKeyboardHide() {
@@ -152,6 +182,7 @@ export default class Navigation extends Component {
       currentIndex,
       searchFocused,
       isSearching,
+      searchFocusTransition,
     } = this.state;
     const {
       searchResults,
@@ -159,14 +190,19 @@ export default class Navigation extends Component {
       portraitKeyboardActive,
       layoutAspect,
     } = this.props;
-    let title = currentLetter.toUpperCase();
-    let promptMessage =
+    const title = currentLetter.toUpperCase();
+    const promptMessage =
       language === 'en' ? 'Choose a letter' : 'Choisissez une lettre';
     const searchMessage = () => {
       if (language === 'fr') return 'Chercher ...';
       return 'Search ...';
     };
-
+    const pickerModalStyle = searchFocused
+      ? NavigationStyles.hideNav
+      : NavigationStyles.letterPicker;
+    const letterRangeStyle = searchFocused
+      ? NavigationStyles.hideNav
+      : NavigationStyles.letterRange;
     return (
       <View
         style={
@@ -187,12 +223,11 @@ export default class Navigation extends Component {
           onChangeText={this.handleSearchTextChange}
           onSubmitEditing={this.handleSearchSubmit}
         />
-        <View
-          style={
-            searchFocused && portraitKeyboardActive
-              ? NavigationStyles.hideNav
-              : NavigationStyles.letterPicker
-          }>
+        <Animated.View
+          style={{
+            ...pickerModalStyle,
+            opacity: searchFocusTransition,
+          }}>
           <Modal
             animationType={'fade'}
             transparent={false}
@@ -241,13 +276,12 @@ export default class Navigation extends Component {
               {title}
             </Text>
           </TouchableOpacity>
-        </View>
-        <View
-          style={
-            searchFocused && portraitKeyboardActive
-              ? NavigationStyles.hideNav
-              : NavigationStyles.letterRange
-          }>
+        </Animated.View>
+        <Animated.View
+          style={{
+            ...letterRangeStyle,
+            opacity: searchFocusTransition,
+          }}>
           {this.letterRange.map((range, index) => (
             <TouchableOpacity
               key={index}
@@ -273,7 +307,7 @@ export default class Navigation extends Component {
               </Text>
             </TouchableOpacity>
           ))}
-        </View>
+        </Animated.View>
       </View>
     );
   }

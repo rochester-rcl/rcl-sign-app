@@ -141,9 +141,10 @@ export const NavigationStyles = StyleSheet.create({
   searchBar: {
     backgroundColor: '#fff',
     flex: 0.3,
-    fontSize: 15,
+    fontSize: 12,
     marginHorizontal: 15,
     marginBottom: 15,
+    paddingBottom: 0,
     borderBottomWidth: 1,
     borderBottomColor: '#4286f4',
     fontFamily: 'RobotoCondensed-Regular',
@@ -164,7 +165,7 @@ export const NavigationStyles = StyleSheet.create({
     marginHorizontal: 15,
   },
   hideNav: {
-    display: 'none',
+    display: 'none'
   },
 });
 
@@ -453,7 +454,8 @@ export const VideoStyles = StyleSheet.create({
     alignSelf: 'center',
     bottom: 0,
     opacity: 0.8,
-    padding: 5
+    padding: 5,
+    marginBottom: 5
   },
   captions: {
     fontFamily: 'RobotoCondensed-Regular',
