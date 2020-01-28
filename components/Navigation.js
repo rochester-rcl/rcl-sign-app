@@ -183,7 +183,6 @@ export default class Navigation extends Component {
           placeholder={searchMessage()}
           placeholderColor="#000"
           onFocus={() => this.handleSearchFocus(true)}
-          underlineColorAndroid="#4286f4"
           ref={this.textInputRef}
           onChangeText={this.handleSearchTextChange}
           onSubmitEditing={this.handleSearchSubmit}

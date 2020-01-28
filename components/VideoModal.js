@@ -199,6 +199,7 @@ export default class VideoModal extends Component {
     const exitModal = () => {
       this.handlePlayback('en', true);
       this.handlePlayback('fr', true);
+      this.setState({sentenceMode: false});
       toggleModal(videoModalContent, false);
     };
     const videoPlayerContainerStyle =
