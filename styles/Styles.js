@@ -473,7 +473,7 @@ export const IntroStyles = StyleSheet.create({
     alignItems: 'center',
   },
   headerView: {
-    flex: 0.3,
+    flex: 0.290,
     backgroundColor: '#6ea5fa',
     flexDirection: 'column',
     alignSelf: 'stretch',
@@ -488,11 +488,11 @@ export const IntroStyles = StyleSheet.create({
   },
   instructionsContainer: {
     justifyContent: 'center',
-    flex: 0.3,
+    alignItems: 'stretch',
+    flex: 0.275,
   },
   instructions: {
-    marginTop: 20,
-    marginBottom: 20,
+    margin: 20,
     fontFamily: 'RobotoCondensed-Regular',
   },
   contactView: {

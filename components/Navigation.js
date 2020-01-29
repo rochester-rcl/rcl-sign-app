@@ -51,10 +51,7 @@ export default class Navigation extends Component {
     this.loadNewDefinitions = this.loadNewDefinitions.bind(this);
     this.onKeyboardHide = this.onKeyboardHide.bind(this);
     this.animateSearchBarFocus = this.animateSearchBarFocus.bind(this);
-    this.keyboardHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => this.onKeyboardHide(),
-    );
+    this.keyboardHideListener = Keyboard.addListener('keyboardDidHide', this.onKeyboardHide);
     this.textInputRef = createRef();
   }
 
@@ -130,31 +127,26 @@ export default class Navigation extends Component {
   }
 
   animateSearchBarFocus() {
-    const {searchFocusTransition, searchFocused} = this.state;
-    if (searchFocused) {
-      Animated.timing(searchFocusTransition, {
-        toValue: 0,
-        duration: 500,
-      }).start();
-    } else {
-      Animated.timing(searchFocusTransition, {
-        toValue: 1,
-        duration: 500,
-      }).start();
+    const {layoutAspect} = this.props;
+    // TODO figure out why keyboardHide events aren't firing in landscape
+    if (layoutAspect === 'LAYOUT_PORTRAIT') {
+      const {searchFocusTransition, searchFocused} = this.state;
+      if (searchFocused) {
+        Animated.timing(searchFocusTransition, {
+          toValue: 0,
+          duration: 500,
+        }).start();
+      } else {
+        Animated.timing(searchFocusTransition, {
+          toValue: 1,
+          duration: 500,
+        }).start();
+      }
     }
   }
 
   handleSearchFocus(focusState) {
     this.setState({searchFocused: focusState}, this.animateSearchBarFocus);
-  }
-  // onKeyboardHide not firing on Android in landscape mode - this should fix it for now
-  handleBackDuringSearch() {
-    console.log("HERE");
-    const { searchFocused } = this.state;
-    const { layoutAspect } = this.props;
-    if (searchFocused && layoutAspect === 'LAYOUT_LANDSCAPE') {
-      this.handleSearchFocus(false);
-    }
   }
 
   onKeyboardHide() {
@@ -166,7 +158,7 @@ export default class Navigation extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    let {currentLetter, currentRange} = this.state;
+    const {currentLetter, currentRange} = this.state;
     if (prevProps.language !== this.props.language)
       this.loadNewDefinitions(currentLetter, currentRange, true);
     if (prevProps.searchResults !== this.props.searchResults) {
@@ -197,12 +189,8 @@ export default class Navigation extends Component {
       if (language === 'fr') return 'Chercher ...';
       return 'Search ...';
     };
-    const pickerModalStyle = searchFocused
-      ? NavigationStyles.hideNav
-      : NavigationStyles.letterPicker;
-    const letterRangeStyle = searchFocused
-      ? NavigationStyles.hideNav
-      : NavigationStyles.letterRange;
+    const pickerModalStyle = NavigationStyles.letterPicker;
+    const letterRangeStyle = NavigationStyles.letterRange;
     return (
       <View
         style={

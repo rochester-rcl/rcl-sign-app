@@ -55,7 +55,7 @@ const defaultState: Object = {
       ],
       contact: {
         message:
-          'Vous pourrez voir des vidéos pour le signe LSF et ASL que vous choisissez.',
+          "Vous pourrez voir des vidéos pour le signe LSF et ASL que vous choisissez. Cliquez sur 'télécharger' pour sauvegarder les deux vidéos (anglais/français) pour un usage hors-ligne. Les vidéos hors-ligne seront supprimées lors du nettoyage de l'espace de stockage.",
         link: {
           message: 'Pour nous contacter, veuillez cliquer sur ',
           address: 'lsfaslrochester@gmail.com',
