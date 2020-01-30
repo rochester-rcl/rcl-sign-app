@@ -154,6 +154,7 @@ export const NavigationStyles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     fontSize: 20,
+    paddingLeft: 10,
     fontFamily: 'RobotoCondensed-Regular',
   },
   letterRange: {

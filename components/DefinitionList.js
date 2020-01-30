@@ -61,13 +61,11 @@ export default class DefinitionList extends Component {
   renderSearchResults(key) {
     const {searchResults, currentLanguage, definitions} = this.props;
     if (searchResults) {
-      const message = `${definitions.length} ${
+      const message = `${definitions.length ? definitions.length : 0} ${
         currentLanguage === 'en' ? 'Results' : 'Résultat'
       }`;
       return (
-        <Text
-          key={key}
-          style={DefinitionDisplayStyles.searchResultsText}>
+        <Text key={key} style={DefinitionDisplayStyles.searchResultsText}>
           {message}
         </Text>
       );
@@ -118,8 +116,6 @@ export default class DefinitionList extends Component {
       layoutAspect === 'LAYOUT_PORTRAIT'
         ? containerPortrait
         : containerLandscape;
-    return (
-      <View style={containerStyle}>{this.renderAll()}</View>
-    );
+    return <View style={containerStyle}>{this.renderAll()}</View>;
   }
 }
