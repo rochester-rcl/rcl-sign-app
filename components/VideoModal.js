@@ -134,11 +134,11 @@ export default class VideoModal extends Component {
     }
   }
 
-  handleIOSLayoutChange({nativeEvent}) {
-    const {onIOSLayoutChange} = this.props;
-    if (Platform.OS === 'ios') {
+  handleIOSLayoutChange(event) {
+    const {onIOSLayoutChange, displayModal} = this.props;
+    if (Platform.OS === 'ios' && displayModal) {
       if (onIOSLayoutChange) {
-        onIOSLayoutChange(nativeEvent);
+        onIOSLayoutChange(event);
       }
     }
   }
