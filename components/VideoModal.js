@@ -100,8 +100,7 @@ export default class VideoModal extends Component {
     const player = lang === 'en' ? this.enPlayer : this.frPlayer;
     const {current} = player;
     if (current) {
-      current.seek(0);
-      this.handlePlayback(lang, true);
+      this.handlePlayback(lang, true, () => current.seek(0));
     }
   }
 
@@ -115,12 +114,18 @@ export default class VideoModal extends Component {
     onDownloadRequested(rest);
   }
 
-  handlePlayback(lang, override) {
+  execCallback(cb) {
+    if (cb) {
+      cb();
+    }
+  }
+
+  handlePlayback(lang, override, cb = null) {
     const {enVideoPaused, frVideoPaused} = this.state;
     if (lang === 'en') {
-      this.setState({enVideoPaused: override ? override : !enVideoPaused});
+      this.setState({enVideoPaused: override ? override : !enVideoPaused}, () => this.execCallback(cb));
     } else {
-      this.setState({frVideoPaused: override ? override : !frVideoPaused});
+      this.setState({frVideoPaused: override ? override : !frVideoPaused}, () => this.execCallback(cb));
     }
   }
 
@@ -271,6 +276,7 @@ export default class VideoModal extends Component {
                   ref={video.ref}
                   key={video.url}
                   onError={error => console.log(error)}
+                  repeat={false}
                   resizeMode={
                     layoutAspect === 'LAYOUT_PORTRAIT' ? 'cover' : 'contain'
                   }
