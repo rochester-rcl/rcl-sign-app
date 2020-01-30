@@ -217,6 +217,7 @@ class AppRoot extends Component {
             displayModal={videoModal.display}
             toggleModal={toggleVideoModalAction}
             layoutAspect={layoutAspect}
+            onIOSLayoutChange={this.handleLayoutChange}
           />
         </View>
       </OfflineDownloadContext.Provider>

@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   Image,
   Animated,
-  Button,
+  Platform,
 } from 'react-native';
 
 // Components
@@ -45,6 +45,7 @@ export default class VideoModal extends Component {
     this.renderSentenceButton = this.renderSentenceButton.bind(this);
     this.getCurrentVideos = this.getCurrentVideos.bind(this);
     this.isVideoPlaying = this.isVideoPlaying.bind(this);
+    this.handleIOSLayoutChange = this.handleIOSLayoutChange.bind(this);
     this.frPlayer = createRef();
     this.enPlayer = createRef();
   }
@@ -123,9 +124,22 @@ export default class VideoModal extends Component {
   handlePlayback(lang, override, cb = null) {
     const {enVideoPaused, frVideoPaused} = this.state;
     if (lang === 'en') {
-      this.setState({enVideoPaused: override ? override : !enVideoPaused}, () => this.execCallback(cb));
+      this.setState({enVideoPaused: override ? override : !enVideoPaused}, () =>
+        this.execCallback(cb),
+      );
     } else {
-      this.setState({frVideoPaused: override ? override : !frVideoPaused}, () => this.execCallback(cb));
+      this.setState({frVideoPaused: override ? override : !frVideoPaused}, () =>
+        this.execCallback(cb),
+      );
+    }
+  }
+
+  handleIOSLayoutChange({nativeEvent}) {
+    const {onIOSLayoutChange} = this.props;
+    if (Platform.OS === 'ios') {
+      if (onIOSLayoutChange) {
+        onIOSLayoutChange(nativeEvent);
+      }
     }
   }
 
@@ -233,7 +247,8 @@ export default class VideoModal extends Component {
             layoutAspect === 'LAYOUT_PORTRAIT'
               ? ModalStyles.videoModalPortrait
               : ModalStyles.videoModalLandscape
-          }>
+          }
+          onLayout={this.handleIOSLayoutChange}>
           <View
             style={
               layoutAspect === 'LAYOUT_PORTRAIT'
