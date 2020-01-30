@@ -145,7 +145,6 @@ class AppRoot extends Component {
   handleLayoutChange({nativeEvent}) {
     const {width, height} = nativeEvent.layout;
     const aspect = this.getAspectRatio(width, height);
-    console.log(aspect);
     if (aspect !== this.props.layoutAspect)
       this.props.updateLayoutAspectAction(aspect);
   }
