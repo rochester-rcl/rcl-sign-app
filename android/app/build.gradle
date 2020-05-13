@@ -119,6 +119,24 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
+// https://pilloxa.gitlab.io/posts/safer-passwords-in-gradle/
+
+def getPassword(String currentUser, String keyChain) {
+    def stdout = new ByteArrayOutputStream()
+    def stderr = new ByteArrayOutputStream()
+    exec {
+        commandLine 'security', '-q', 'find-generic-password', '-a', currentUser, '-s', keyChain, '-w'
+        standardOutput = stdout
+        errorOutput = stderr
+        ignoreExitValue true
+    }
+    //noinspection GroovyAssignabilityCheck
+    stdout.toString().trim()
+}
+
+def pass = getPassword("dsladmin","asl-lsf-app-keystore")
+
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -131,8 +149,8 @@ android {
         applicationId "com.lsfapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.1.1"
     }
     splits {
         abi {
@@ -149,6 +167,14 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('ASL_LSF_UPLOAD_STORE_FILE')) {
+                storeFile file(ASL_LSF_UPLOAD_STORE_FILE)
+                keyAlias ASL_LSF_UPLOAD_KEY_ALIAS
+                storePassword pass
+                keyPassword pass 
+            }
+        }
     }
     buildTypes {
         debug {
@@ -157,7 +183,8 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            // signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -177,6 +204,8 @@ android {
         }
     }
 }
+
+
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
