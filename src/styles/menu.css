@@ -6,7 +6,7 @@
   background-color: #4e58d5 !important;
   border-radius: 0 !important;
   box-shadow: 2px 2px 20px !important;
-  flex: 0.1;
+  height: 8%;
   z-index: 5000 !important;
 }
 
@@ -17,9 +17,6 @@
   font-size: 2vw;
 }
 
-.lsf-nav-menu-item {
-
-}
 
 .lsf-nav-menu .item.active {
   background-color: rgba(0, 0, 0, 0.15) !important;

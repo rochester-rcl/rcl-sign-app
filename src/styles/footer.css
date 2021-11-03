@@ -4,15 +4,15 @@
   width: 100vw;
   padding: 5px;
   display: flex;
-  flex: 0.05;
+  height: 8%;
   justify-content: center;
-  align-items: baseline;
+  align-items: center;
   z-index: 5000;
 }
 
 .lsf-app-footer-link {
   color: #fff;
-  margin: 10px;
+  margin: 0px;
 }
 
 .lsf-app-footer-link:hover {
@@ -21,6 +21,8 @@
 
 .lsf-app-footer-image {
   width: 15vw !important;
+  max-width: 200px;
+  max-height: 200px;
 }
 
 .lsf-app-footer {
@@ -31,4 +33,7 @@
 
 .lsf-app-footer a {
   font-size: 1.4vw;
+  margin-right: 10px;
+  max-width: 200px;
+  max-height: 200px;
 }

@@ -52,6 +52,7 @@ const Footer = (props: Object) => {
       <footer className="lsf-app-footer">
         <Image
           className='lsf-app-footer-link lsf-app-footer-image'
+          id="lsf-app-footer-image-ur"
           src={urLogo}
           alt='University of Rochester Link'
           size='medium'

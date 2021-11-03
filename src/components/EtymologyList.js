@@ -249,3 +249,13 @@ export default class EtymologyList extends Component {
     );
   }
 }
+
+/**
+ <source src="/lsf-asl/wp-content/uploads/old-lsf-asl-fr.mp4" type="video/mp4">
+          <track label="English" kind="subtitles" srclang="en" src="<?php echo get_stylesheet_directory_uri() . '/captions/old-asl-fr.vtt';?>" default>
+ */
+
+/**
+ <source src="/lsf-asl/wp-content/uploads/old-lsf-asl-fr.mp4" type="video/mp4">
+          <track label="English" kind="subtitles" srclang="en" src="<?php echo get_stylesheet_directory_uri() . '/captions/old-asl-fr.vtt';?>" default>
+ */
