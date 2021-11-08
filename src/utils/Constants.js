@@ -19,9 +19,9 @@ export const LSF_ETYMO_SEARCH_ENDPOINT: string =
   "https://projects.lib.rochester.edu/lsf-asl/wp-json/lsf-rest/v1/search-etymo/";
 
 export const LSF_ETYMO_VIDEO_EN = "https://projects.lib.rochester.edu/lsf-asl/wp-content/uploads/old-lsf-asl-en.mp4";
-export const LSF_ETYMO_CAPTIONS_EN = "https://projects.lib.rochester.edu/lsf-asl/wp-content/uploads/captions/old-asl-en.vtt";
+export const LSF_ETYMO_CAPTIONS_EN = "https://projects.lib.rochester.edu/lsf-asl/wp-content/themes/twentyfifteen-child/captions/old-asl-en.vtt";
 export const LSF_ETYMO_VIDEO_FR = "https://projects.lib.rochester.edu/lsf-asl/wp-content/uploads/old-lsf-asl-fr.mp4";
-export const LSF_ETYMO_CAPTIONS_FR = "https://projects.lib.rochester.edu/lsf-asl/wp-content/uploads/captions/old-asl-fr.vtt";
+export const LSF_ETYMO_CAPTIONS_FR = "https://projects.lib.rochester.edu/lsf-asl/wp-content/themes/twentyfifteen-child/captions/old-asl-fr.vtt";
 
 export const Alphabet: Array<string> = [
   "0-9",
