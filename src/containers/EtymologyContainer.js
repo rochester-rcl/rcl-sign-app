@@ -9,7 +9,15 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 // Semantic UI
-import { Segment, Header, Message, Divider, Grid } from "semantic-ui-react";
+import {
+  Segment,
+  Message,
+  Grid,
+  Icon,
+  Modal,
+  Card,
+  Image,
+} from "semantic-ui-react";
 // Actions
 import * as AppActions from "../actions/Actions";
 
@@ -17,8 +25,19 @@ import * as AppActions from "../actions/Actions";
 import Loading from "../components/Loader";
 import LetterNavigation from "../components/LetterNavigation";
 import EtymologyList from "../components/EtymologyList";
+import VideoPlayer from "../components/VideoPlayer";
+import {
+  LSF_ETYMO_VIDEO_EN,
+  LSF_ETYMO_CAPTIONS_EN,
+  LSF_ETYMO_VIDEO_FR,
+  LSF_ETYMO_CAPTIONS_FR,
+} from "../utils/Constants";
+import posterLogo from "../images/main_logo.png";
 
 class EtymologyContainer extends Component {
+  state = {
+    showIntroVideo: false,
+  };
   constructor(props: Object) {
     super(props);
     (this: any).handleSelectLetter = this.handleSelectLetter.bind(this);
@@ -33,7 +52,7 @@ class EtymologyContainer extends Component {
     // kluge to load english letters at the first go because a state change won't be trigger if language === 'en'
     this.props.loadEtymologyAction({
       language: language,
-      letter: letter !== undefined ? letter : "a"
+      letter: letter !== undefined ? letter : "a",
     });
   }
 
@@ -42,7 +61,7 @@ class EtymologyContainer extends Component {
       language,
       loadEtymologyAction,
       letter,
-      currentEtymology
+      currentEtymology,
     } = this.props;
     let _letter = letter !== undefined ? letter : "a";
     const { engEtymology, frEtymology } = currentEtymology;
@@ -62,7 +81,7 @@ class EtymologyContainer extends Component {
         _letter = _letter.toLowerCase();
         this.props.loadEtymologyAction({
           language: language,
-          letter: _letter !== undefined ? _letter : "a"
+          letter: _letter !== undefined ? _letter : "a",
         });
         this.updateURL(_letter);
       }
@@ -74,7 +93,7 @@ class EtymologyContainer extends Component {
     const { letter } = letterInfo;
     loadEtymologyAction({
       language: language,
-      letter: letter
+      letter: letter,
     });
     this.props.history.push(letter);
   }
@@ -90,6 +109,11 @@ class EtymologyContainer extends Component {
     this.props.history.push(`/${basename}/${letter}`);
   }
 
+  toggleIntroVideo = () => {
+    const { showIntroVideo } = this.state;
+    this.setState({ showIntroVideo: !showIntroVideo });
+  };
+
   render() {
     const {
       language,
@@ -99,8 +123,9 @@ class EtymologyContainer extends Component {
       searchEtymologyAction,
       toggleEtymoModalAction,
       currentEtymology,
-      query
+      query,
     } = this.props;
+    const { showIntroVideo } = this.state;
     const title = language === "en" ? "Old ASL/LSF" : "Ancienne ASL/LSF";
     const _letter = letter !== undefined ? letter : "a";
     return (
@@ -109,6 +134,16 @@ class EtymologyContainer extends Component {
         id="lsf-app-modal-container"
         className="lsf-etymology-container lsf-app-body"
       >
+        <Modal closeIcon open={showIntroVideo} onClose={this.toggleIntroVideo}>
+          <Modal.Content>
+            <VideoPlayer
+              className="old-lsf-intro-video"
+              captions={language === "en" ? LSF_ETYMO_CAPTIONS_EN : LSF_ETYMO_CAPTIONS_FR}
+              src={language === "en" ? LSF_ETYMO_VIDEO_EN : LSF_ETYMO_VIDEO_FR}
+              poster={posterLogo}
+            />
+          </Modal.Content>
+        </Modal>
         <LetterNavigation
           language={language}
           letter={_letter}
@@ -116,7 +151,25 @@ class EtymologyContainer extends Component {
           onSearch={searchEtymologyAction}
           showNumbers={false}
           extraContent={
-            <Grid celled columns="equal" className="old-lsf-asl-links-container">
+            <Grid
+              celled
+              columns="equal"
+              className="old-lsf-asl-links-container"
+            >
+              <Grid.Column
+                className="old-lsf-asl-links-column"
+                id="old-asl-lsf-into-link-column"
+              >
+                <div
+                  className="old-asl-lsf-intro-link-container"
+                  onClick={this.toggleIntroVideo}
+                >
+                  <Icon name="info circle" className="old-asl-lsf-intro-icon" />
+                  <span className="old-asl-lsf-intro-link">
+                    Introduction
+                  </span>
+                </div>
+              </Grid.Column>
               <Grid.Column className="old-lsf-asl-links-column">
                 <a
                   className="old-asl-lsf-external-link"
@@ -149,7 +202,7 @@ class EtymologyContainer extends Component {
         ) : null}
         {etymology.length > 0 && fetchingEtymology === false ? (
           <EtymologyList
-            ref={ref => (this.etymoList = ref)}
+            ref={(ref) => (this.etymoList = ref)}
             etymology={etymology}
             language={language}
             mountNode={document.getElementById("lsf-app-modal-container")}
@@ -173,7 +226,7 @@ function mapStateToProps(state, ownProps: Object): Object {
     query: state.query,
     letter: ownProps.match.params.letter,
     history: ownProps.history,
-    currentEtymology: state.etymoModal
+    currentEtymology: state.etymoModal,
   };
 }
 

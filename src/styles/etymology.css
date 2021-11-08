@@ -95,3 +95,25 @@
 .old-lsf-asl-links-column {
   text-align: center;
 }
+
+#old-asl-lsf-into-link-column {
+  display: flex;
+  align-items: center;
+}
+
+.old-asl-lsf-intro-link {
+  color: #4183D4;
+  font-size: 1.5vw;
+  cursor: pointer;
+}
+
+.old-asl-lsf-intro-icon {
+  color: #4183D4;
+  height: auto !important;
+}
+
+.old-asl-lsf-intro-link-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
